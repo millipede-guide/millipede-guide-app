@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  nextjs:
+    image: "node:13"
+    volumes:
+      - .:/app:delegated
+      - node_modules:/app/node_modules
+      - next:/app/.next
+    ports:
+      - "3000:3000"
+    working_dir: /app
+    networks:
+      - default
+    command: npm run dev
+
+  nginx:
+    image: nginx
+    env_file:
+      - .env
+    restart: unless-stopped
+    volumes:
+      - ./nginx-gzip.conf:/etc/nginx/conf.d/gzip.conf:ro
+      - ./out:/usr/share/nginx/html:ro
+    networks:
+      - default
+      - www
+    
+volumes:
+  node_modules:
+  next:
+        
+networks:
+  www:
+    external:
+      name: www

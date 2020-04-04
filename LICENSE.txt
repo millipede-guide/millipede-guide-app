@@ -1,0 +1,4 @@
+Copyright Reilly Beacom 2020
+
+(TODO: Choose an appropriate open source license.)
+

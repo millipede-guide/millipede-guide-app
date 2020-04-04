@@ -1,0 +1,14 @@
+.DS_Store
+.next
+node_modules
+out
+public/export/**
+!public/export/.keep
+public/photos/index.json
+public/photos/orig/**
+!public/photos/orig/.keep
+public/photos/sm/**
+!public/photos/sm/.keep
+public/photos/lg/**
+!public/photos/lg/.keep
+.env

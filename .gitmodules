@@ -1,0 +1,3 @@
+[submodule "public/docs"]
+	path = public/docs
+	url = https://github.com/millipede-guide/millipede-guide-docs.git

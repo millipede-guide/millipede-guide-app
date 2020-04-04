@@ -1,0 +1,51 @@
+.mapicon {
+    display: block;
+    box-sizing: border-box;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: center;
+    border: 0px;
+    border-radius: 5px;
+    overflow: hidden;
+    color: white;
+    background-color: black;
+}
+
+.mapicon-marker {
+    color: white;
+    background-color: red;
+}
+
+.mapicon-campsite {
+    color: black;
+    background-color: #0F0;
+}
+
+.mapicon-photo {
+    color: black;
+    background-color: #FFF;
+}
+
+.mapicon-parking {
+    color: white;
+    background-color: #00F;
+}
+
+.mapicon-toilets, .mapicon-toilets_f, .mapicon-toilets_m {
+    color: black;
+    background-color: #FFFF00;
+}
+
+.mapicon-water {
+    color: black;
+    background-color: #0FF;
+}
+
+.mapicon-altitude {
+    background-color: black;
+    border: 0px;
+    border-radius: 3px;
+}
+
