@@ -158,8 +158,8 @@ export default ({ center, markers, category, geoJsonUrl, showAltitudeProfile }) 
                                                         height: '140px',
                                                         marginBottom: '5px',
                                                         backgroundImage: `url("/photos/sm/${
-                                                            photoIndex[i.photos[0].src].cache
-                                                        }")`,
+                                                            photoIndex[i.photos[0].src].hash
+                                                        }.jpg")`,
                                                     }}
                                                 />
                                             )}

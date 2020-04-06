@@ -16,7 +16,7 @@ export default ({ item, keys }) => (
     <LightboxContext.Consumer>
         {lightbox => (
             <Card>
-                {item.photos && item.photos.length > 0 && (
+                {('photos' in item) && item.photos.length > 0 && item.photos[0].src in photoIndex && (
                     <CardActionArea
                         onClick={() =>
                             lightbox({
@@ -29,7 +29,7 @@ export default ({ item, keys }) => (
                             style={{
                                 height: '140px',
                             }}
-                            image={`/photos/sm/${photoIndex[item.photos[0].src].cache}`}
+                            image={`/photos/sm/${photoIndex[item.photos[0].src].hash}.jpg`}
                         />
                     </CardActionArea>
                 )}

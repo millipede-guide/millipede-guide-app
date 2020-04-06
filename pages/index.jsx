@@ -10,6 +10,7 @@ import Box from '@material-ui/core/Box';
 import Head from 'next/head';
 import Layout from '../components/Layout';
 import { H1, H2, Small } from '../components/Typography';
+import photoIndex from '../public/photos/index.json';
 
 export default function Index() {
     const links = [
@@ -71,6 +72,7 @@ export default function Index() {
                                                 height: '140px',
                                             }}
                                             image={image}
+                                            image={`/photos/sm/${photoIndex[image].hash}.jpg`}
                                         />
                                         <CardContent>
                                             <Typography variant="h2" component="span">

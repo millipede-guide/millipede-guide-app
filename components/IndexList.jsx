@@ -128,8 +128,8 @@ export default ({ category, index }) => {
                                                 item.photos.length > 0 &&
                                                 item.photos[0].src in photoIndex
                                                     ? `/photos/sm/${
-                                                          photoIndex[item.photos[0].src].cache
-                                                      }`
+                                                          photoIndex[item.photos[0].src].hash
+                                                      }.jpg`
                                                     : null
                                             }
                                         >
