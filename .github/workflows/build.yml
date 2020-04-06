@@ -50,6 +50,4 @@ jobs:
           repository: millipede-guide/millipede-guide-build
           branch: master
           force: true
-
-          
-          
+          github_token: ${{ secrets.PAT }}
