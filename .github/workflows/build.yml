@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: millipede-guide/millipede-guide-docs
-          path: build/public/docs
+          path: public/docs
 
       - run: npm ci
       - run: npm run docs
