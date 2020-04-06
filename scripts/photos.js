@@ -15,7 +15,7 @@ const regenerate = process.argv.indexOf('-r') !== -1;
 
 const indexFilePath = 'public/photos/index.json';
 
-const index = JSON.parse(FS.readFileSync(indexFilePath));
+const index = FS.existsSync(indexFilePath) ? JSON.parse(FS.readFileSync(indexFilePath)) : {};
 let counter = Math.max(0, ...Object.values(index).map(i => parseInt(i.cache, 10))); // TODO
 
 // https://stackoverflow.com/a/10073761/5165
