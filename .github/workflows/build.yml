@@ -1,0 +1,30 @@
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+# TODO: https://github.com/ad-m/github-push-action
+
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Checkout Docs
+        uses: actions/checkout@v2
+        with:
+          repository: millipede-guide/millipede-guide-docs
+          path: public/docs
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '13.x'
+      - run: npm ci
+      - run: npm run docs
+      - run: npm run build
+      - run: npm run export
