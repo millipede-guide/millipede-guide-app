@@ -8,11 +8,11 @@ import { H2, ContentBox } from './Typography';
 // import FileTable from 'mdi-material-ui/FileTable';
 
 const iconMap = {
-    yaml: FileDocument,
-    json: FileLink,
-    'geo.json': FileLink,
     gpx: FileCode,
     kml: FileCode,
+    'geo.json': FileLink,
+    json: FileLink,
+    yaml: FileDocument,
 };
 
 const icon = i => {
@@ -22,16 +22,12 @@ const icon = i => {
 
 export default ({ jsonUrl }) => (
     <ContentBox>
-        <H2>Downloads</H2>
+        <H2>File Downloads</H2>
         {Object.keys(iconMap).map(ext => (
             <Button
                 key={ext}
                 color="primary"
-                href={
-                    ext === 'yaml'
-                        ? jsonUrl.replace('/export/', '/docs/').replace('.json', '.yaml')
-                        : jsonUrl.replace('.json', `.${ext}`)
-                }
+                href={jsonUrl.replace('.json', `.${ext}`)}
                 startIcon={icon(ext)}
                 style={{ marginRight: '1em' }}
             >

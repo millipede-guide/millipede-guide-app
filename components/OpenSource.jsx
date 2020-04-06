@@ -1,7 +1,7 @@
 import Button from '@material-ui/core/Button';
-import FileEdit from 'mdi-material-ui/FileEdit';
-import Git from 'mdi-material-ui/GithubCircle';
+import FileEditIcon from 'mdi-material-ui/FileEdit';
 import Box from '@material-ui/core/Box';
+import AlertIcon from 'mdi-material-ui/Alert';
 import { H2, P, ContentBox } from './Typography';
 
 export default ({ jsonUrl }) => (
@@ -14,21 +14,23 @@ export default ({ jsonUrl }) => (
         </Box>
         <Button
             color="primary"
-            href="https://github.com/millipede-guide/millipede-guide-docs"
-            startIcon={<Git />}
-            style={{ marginRight: '1em' }}
-        >
-            Github
-        </Button>
-        <Button
-            color="primary"
             href={`https://github.com/millipede-guide/millipede-guide-docs/blob/master/${jsonUrl
                 .replace('/export/', '')
                 .replace('.json', '.yaml')}`}
-            startIcon={<FileEdit />}
+            startIcon={<FileEditIcon />}
             style={{ marginRight: '1em' }}
         >
             Edit This Page
+        </Button>
+        <Button
+            color="primary"
+            href={`https://github.com/millipede-guide/millipede-guide-docs/issues/new?title=${encodeURIComponent(
+                `Report: ${jsonUrl.replace('/export/', '').replace('.json', '')}`,
+            )}`}
+            startIcon={<AlertIcon />}
+            style={{ marginRight: '1em' }}
+        >
+            Report An Issue
         </Button>
     </ContentBox>
 );

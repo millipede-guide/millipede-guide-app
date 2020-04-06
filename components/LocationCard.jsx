@@ -59,18 +59,21 @@ export default ({ item, keys }) => (
                 </CardContent>
                 <CardActions>
                     <IconButton
+                        size="small"
                         color="primary"
                         href={`https://www.openstreetmap.org/#map=18/${item.location[0]}/${item.location[1]}`}
                     >
                         <MapIcon />
                     </IconButton>
                     <IconButton
+                        size="small"
                         color="primary"
                         href={`https://www.google.com/maps/dir/?api=1&destination=${item.location[0]},${item.location[1]}`}
                     >
                         <GoogleMapsIcon />
                     </IconButton>
                     <IconButton
+                        size="small"
                         color="primary"
                         href={`http://maps.apple.com/?daddr=${item.location[0]},${item.location[1]}`}
                     >

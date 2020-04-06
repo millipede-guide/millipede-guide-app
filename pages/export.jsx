@@ -29,11 +29,11 @@ export default () => {
             </Box>
             <Box mt={2}>
                 <P>
-                    All data for this web site / app is privately stored on your device. It is never
+                    All data for this web site app is privately stored on your device. It is never
                     sent to a server or shared with any other service.
                 </P>
-                <P>This includes bookmarks (stars), done and favourite items.</P>
-                <P>You may backup your data or export it to another device as a JSON file.</P>
+                <P>This includes bookmarks (stars), done (check) and favourite (heart) items.</P>
+                <P>You may backup your data or import it to another device as a JSON file.</P>
                 <Box mt={2}>
                     <StorageContext.Consumer>
                         {([storage]) => (
@@ -48,14 +48,14 @@ export default () => {
                         )}
                     </StorageContext.Consumer>
                 </Box>
-                <H2>Note: iPhone Safari</H2>
+                <H2>Note for iPhone</H2>
                 <P>
-                    Please note, as a privacy measure, Apple has decided that Safari on the iPhone
-                    will delete all user data after 7 days of inactivity.
+                    Please note, as a privacy measure, Apple has decided that Safari web browser on
+                    the iPhone will delete all user data for a web site after 7 days.
                 </P>
                 <P>
-                    To keep your data for a longer time, you must add this app to the home-screen of
-                    your device:
+                    To prevent that from happening and to keep your data indeinetely, you must add
+                    this app to the home-screen of your device as a Web App:
                 </P>
                 <Typography variant="body1" component="ol">
                     <li style={{ lineHeight: '2rem' }}>Open Safari web browser on an iPhone</li>

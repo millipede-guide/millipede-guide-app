@@ -49,7 +49,7 @@ export default ({ doc }) => {
                     </P>
                 ))}
                 <P>
-                    Document <LicenseLink attr={doc.copyright} license={doc.license} />.
+                    Document <LicenseLink attr={doc.copyright.join(', ')} license={doc.license} />.
                 </P>
                 <P>
                     Map data &copy; <Link href="https://www.openstreetmap.org/">OpenStreetMap</Link>{' '}

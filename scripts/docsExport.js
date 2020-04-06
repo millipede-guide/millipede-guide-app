@@ -14,13 +14,22 @@ const { docToGeoJson } = require('./docToGeoJson');
 ['attractions', 'campsites', 'parks', 'routes'].forEach(category => {
     Glob.sync(`public/docs/${category}/**/*.yaml`).forEach(filePath => {
         console.log(' ', filePath);
-        const doc = YAML.safeLoad(FS.readFileSync(filePath));
-        const fileName = Path.basename(filePath, '.yaml');
+
         const exportDir = Path.dirname(filePath).replace('/docs/', '/export/');
-        console.log(`  => ${exportDir}`);
+        const fileName = Path.basename(filePath, '.yaml');
+
         MkDir.sync(exportDir);
+
+        console.log(`  => ${exportDir}`);
+
+        const yaml = FS.readFileSync(filePath);
+        FS.writeFileSync(Path.join(exportDir, `${fileName}.yaml`), yaml);
+
+        const doc = YAML.safeLoad(yaml);
         FS.writeFileSync(Path.join(exportDir, `${fileName}.json`), JSON.stringify(doc, null, 4));
+
         // FS.writeFileSync(Path.join(exportDir, fileName + '.xml'), data2xml('document', doc));
+
         const geoBaseFilePath = filePath.replace('.yaml', '.geo.json');
         let geo;
         if (FS.existsSync(geoBaseFilePath)) {
@@ -36,7 +45,9 @@ const { docToGeoJson } = require('./docToGeoJson');
             Path.join(exportDir, `${fileName}.geo.json`),
             JSON.stringify(geo, null, 4),
         );
+
         FS.writeFileSync(Path.join(exportDir, `${fileName}.kml`), tokml(geo));
+
         FS.writeFileSync(Path.join(exportDir, `${fileName}.gpx`), togpx(geo));
     });
 });
