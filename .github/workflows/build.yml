@@ -22,7 +22,34 @@ jobs:
           repository: millipede-guide/millipede-guide-docs
           path: public/docs
 
-      - run: npm ci
-      - run: npm run docs
-      - run: npm run build
-      - run: npm run export
+      - name: NPM Install
+        run: npm ci
+        
+      - name: Compile docs
+        run: npm run docs
+        
+      - name: Next.js build
+        run: npm run build
+        
+      - name: Next.js export
+        run: npm run export
+        
+      - name: Git commit
+        run: |
+          sed -i '/^\/docs$/d' .gitignore
+          echo '/docs/docs' >> .gitignore
+          echo '/docs/photos/orig' >> .gitignore
+          git config --local user.email "action@github.com"
+          git config --local user.name "Auto Build"
+          git add .
+          git commit -m "build"
+
+      - name: Git push
+        uses: ad-m/github-push-action@master
+        with:
+          repository: millipede-guide/millipede-guide-build
+          branch: master
+          force: true
+
+          
+          
