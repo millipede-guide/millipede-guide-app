@@ -34,20 +34,20 @@ jobs:
       - name: Next.js export
         run: npm run export
         
-      - name: Git commit
+      - name: Fix Git Ignore
         run: |
           sed -i '/^\/docs$/d' .gitignore
           echo '/docs/docs' >> .gitignore
           echo '/docs/photos/orig' >> .gitignore
-          git config --local user.email "action@github.com"
-          git config --local user.name "Auto Build"
-          git add .
-          git commit -m "build"
+          touch ./docs/.nojekyll
+          echo 'www.millipede-guide.com' > ./docs/CNAME
 
-      - name: Git push
-        uses: ad-m/github-push-action@master
+      - name: Git Deploy
+        uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
-          repository: millipede-guide/millipede-guide-build
-          branch: master
-          force: true
-          github_token: ${{ secrets.PAT }}
+          BRANCH: gh-pages
+          FOLDER: docs
+          CLEAN: true
+          SINGLE_COMMIT: true
+          
+

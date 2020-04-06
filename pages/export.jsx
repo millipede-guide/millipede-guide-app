@@ -54,7 +54,7 @@ export default () => {
                     the iPhone will delete all user data for a web site after 7 days.
                 </P>
                 <P>
-                    To prevent that from happening and to keep your data indeinetely, you must add
+                    To prevent that from happening and to keep your data indefinitely, you must add
                     this app to the home-screen of your device as a Web App:
                 </P>
                 <Typography variant="body1" component="ol">
