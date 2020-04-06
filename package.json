@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "next",
         "build": "next build",
-        "export": "next export",
+        "export": "next export -o docs",
         "prod": "next start",
         "routes": "node -e 'require(\"./next.config.js\").exportPathMap()'",
         "prettier": "prettier --write '*.js'  'pages/**/*.js*' 'components/**/*.js*' 'css/**/*.js' 'utils/**/*.js' 'scripts/**/*.js'",
