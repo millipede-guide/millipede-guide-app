@@ -15,14 +15,6 @@ jobs:
     steps:
       - name: Checkout main
         uses: actions/checkout@v2
-        with:
-          path: main
-          
-      - name: Checkout build
-        uses: actions/checkout@v2
-        with:
-          repository: millipede-guide/millipede-guide-build
-          path: build
         
       - name: Checkout docs
         uses: actions/checkout@v2
@@ -30,8 +22,6 @@ jobs:
           repository: millipede-guide/millipede-guide-docs
           path: build/public/docs
 
-      - run: cd build
-      - run: git merge ../main
       - run: npm ci
       - run: npm run docs
       - run: npm run build
