@@ -16,7 +16,7 @@ export default ({ item, keys }) => (
     <LightboxContext.Consumer>
         {lightbox => (
             <Card>
-                {('photos' in item) && item.photos.length > 0 && item.photos[0].src in photoIndex && (
+                {'photos' in item && item.photos.length > 0 && item.photos[0].src in photoIndex && (
                     <CardActionArea
                         onClick={() =>
                             lightbox({
@@ -34,7 +34,7 @@ export default ({ item, keys }) => (
                     </CardActionArea>
                 )}
                 <CardContent>
-                    {'name' in item && <strong>{item.name}</strong>}
+                    <strong>{'name' in item ? item.name : 'Unnamed'}</strong>
                     <Typography variant="body2" color="textSecondary" component="div">
                         <ul
                             style={{

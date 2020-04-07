@@ -8,46 +8,14 @@ import MuiLink from '@material-ui/core/Link';
 import NextLink from 'next/link';
 import Box from '@material-ui/core/Box';
 import Head from 'next/head';
+import humanize from 'underscore.string/humanize';
 import Layout from '../components/Layout';
 import { H1, H2, Small } from '../components/Typography';
 import photoIndex from '../public/photos/index.json';
+import sitePhotos from '../utils/sitePhotos.json';
+import omap from '../utils/omap';
 
 export default function Index() {
-    const links = [
-        {
-            card: 'Parks',
-            href: 'parks',
-            image: 'https://live.staticflickr.com/65535/48834525112_d1e4807566_b.jpg',
-            license: 'CC BY-ND 2.0',
-            attr: 'Amitinder Cheema',
-            src: 'https://www.flickr.com/photos/163236208@N08/48834525112',
-        },
-        {
-            card: 'Campsites',
-            href: 'campsites',
-            image: 'https://live.staticflickr.com/4770/24937209447_534080ac2c_b.jpg',
-            license: 'CC BY-NC-SA 2.0',
-            attr: 'subaguso',
-            src: 'https://www.flickr.com/photos/162284319@N03/24937209447',
-        },
-        {
-            card: 'Routes',
-            href: 'routes',
-            image: 'https://live.staticflickr.com/7048/6900662391_540daa3667_b.jpg',
-            license: 'CC BY 2.0',
-            attr: 'Garden State Hiker',
-            src: 'https://www.flickr.com/photos/42693172@N05/6900662391',
-        },
-        {
-            card: 'Attractions',
-            href: 'attractions',
-            image: 'https://farm4.staticflickr.com/3934/14917023204_4901668606_b.jpg',
-            license: 'CC BY 2.0',
-            attr: 'Kiwi Tom',
-            src: 'https://www.flickr.com/photos/127665714@N08/14917023204',
-        },
-    ];
-
     return (
         <Layout>
             <Head>
@@ -62,21 +30,20 @@ export default function Index() {
                     alignItems="flex-start"
                     spacing={2}
                 >
-                    {links.map(({ card, href, image }) => (
-                        <Grid key={href} item xs={6} sm={6} md={3}>
-                            <NextLink href={`/${href}/all`}>
+                    {omap(sitePhotos).map(([category, { src }]) => (
+                        <Grid key={category} item xs={6} sm={6} md={3}>
+                            <NextLink href={`/${category}/all`}>
                                 <Card>
                                     <CardActionArea>
                                         <CardMedia
                                             style={{
                                                 height: '140px',
                                             }}
-                                            image={image}
-                                            image={`/photos/sm/${photoIndex[image].hash}.jpg`}
+                                            image={`/photos/sm/${photoIndex[src].hash}.jpg`}
                                         />
                                         <CardContent>
                                             <Typography variant="h2" component="span">
-                                                {card}
+                                                {humanize(category)}
                                             </Typography>
                                         </CardContent>
                                     </CardActionArea>
@@ -87,11 +54,11 @@ export default function Index() {
                 </Grid>
                 <br />
                 <small>
-                    <H2>Image Attribution</H2>
-                    {links.map(({ card, license, attr, src }) => (
-                        <Small key={src}>
-                            <MuiLink href={src}>
-                                {card} is by {attr} [{license}]
+                    <H2>Attribution</H2>
+                    {omap(sitePhotos).map(([category, { attr, license, href }]) => (
+                        <Small key={category}>
+                            <MuiLink href={href}>
+                                {humanize(category)} photo is by {attr} [{license}]
                             </MuiLink>
                         </Small>
                     ))}

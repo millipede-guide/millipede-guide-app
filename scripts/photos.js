@@ -9,8 +9,8 @@ const Path = require('path');
 const Sharp = require('sharp');
 const { ExifImage } = require('exif');
 const moment = require('moment');
-const { allPhotosInDocument } = require('../utils/allPhotosInDocument');
 const crypto = require('crypto');
+const { allPhotosInDocument } = require('../utils/allPhotosInDocument');
 
 const regenerate = process.argv.indexOf('-r') !== -1;
 
@@ -20,16 +20,16 @@ const index = FS.existsSync(indexFilePath) ? JSON.parse(FS.readFileSync(indexFil
 
 const addSrc = src => {
     if (index[src] === undefined) index[src] = {};
-    index[src].hash = crypto.createHash('md5').update(src).digest('hex');
+    index[src].hash = crypto
+        .createHash('md5')
+        .update(src)
+        .digest('hex');
     index[src].ext = Path.extname(src).toLowerCase();
 };
 
-[
-    'https://live.staticflickr.com/65535/48834525112_d1e4807566_b.jpg',
-    'https://live.staticflickr.com/4770/24937209447_534080ac2c_b.jpg',
-    'https://live.staticflickr.com/7048/6900662391_540daa3667_b.jpg',
-    'https://farm4.staticflickr.com/3934/14917023204_4901668606_b.jpg',
-].forEach(addSrc);
+const sitePhotos = JSON.parse(FS.readFileSync('utils/sitePhotos.json'));
+
+Object.values(sitePhotos).forEach(({ src }) => addSrc(src));
 
 console.log('Loading YAML:');
 
@@ -45,7 +45,7 @@ console.log('Loading YAML:');
 
 const cacheFilePath = url => Path.join('public/photos/orig', index[url].hash) + index[url].ext;
 
-const resizedFilePath = (url, dir) => Path.join('public/photos', dir, index[url].hash) + '.jpg';
+const resizedFilePath = (url, dir) => `${Path.join('public/photos', dir, index[url].hash)}.jpg`;
 
 const dmsToDecimal = ([d, m, s]) => (d + m / 60 + s / 3600).toFixed(6);
 

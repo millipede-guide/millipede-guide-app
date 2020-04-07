@@ -11,7 +11,12 @@ Chart.defaults.global.elements.line.backgroundColor = '#00000011';
 
 export default ({ lmap, geo }) => {
     useEffect(() => {
-        if (lmap !== null && geo !== null && typeof geo === 'object' && geo.type === 'FeatureCollection') {
+        if (
+            lmap !== null &&
+            geo !== null &&
+            typeof geo === 'object' &&
+            geo.type === 'FeatureCollection'
+        ) {
             const altitudeMarker = L.marker([0, 0], {
                 icon: L.divIcon({
                     className: 'mapicon-altitude',
@@ -29,21 +34,21 @@ export default ({ lmap, geo }) => {
                 let prev = null;
 
                 const altitudeProfile = lineString.geometry.coordinates
-                      .map(([lng, lat, alt]) => {
-                          const ll = L.latLng(lat, lng, alt);
-                          if (prev) {
-                              const step = prev.distanceTo(ll);
-                              if (step < 20) return null;
-                              dist = Math.round(dist + step);
-                          }
-                          prev = ll;
-                          return {
-                              x: dist,
-                              y: alt,
-                              latlng: ll,
-                          };
-                      })
-                      .filter(i => i);
+                    .map(([lng, lat, alt]) => {
+                        const ll = L.latLng(lat, lng, alt);
+                        if (prev) {
+                            const step = prev.distanceTo(ll);
+                            if (step < 20) return null;
+                            dist = Math.round(dist + step);
+                        }
+                        prev = ll;
+                        return {
+                            x: dist,
+                            y: alt,
+                            latlng: ll,
+                        };
+                    })
+                    .filter(i => i);
 
                 const altMax = altitudeProfile.reduce((val, obj) => (obj.y > val ? obj.y : val), 0);
                 const altMin = altitudeProfile.reduce(
@@ -51,7 +56,8 @@ export default ({ lmap, geo }) => {
                     altMax,
                 );
 
-                const median = ary => (ary.length === 0 ? -1 : ary[Math.floor((ary.length - 1) / 2)]);
+                const median = ary =>
+                    ary.length === 0 ? -1 : ary[Math.floor((ary.length - 1) / 2)];
 
                 const altMaxIndex = median(
                     altitudeProfile.map((obj, i) => (obj.y === altMax ? i : -1)).filter(i => i > 0),

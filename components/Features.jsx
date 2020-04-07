@@ -1,7 +1,7 @@
 import humanize from 'underscore.string/humanize';
 import truncate from 'underscore.string/truncate';
 import Chip from '@material-ui/core/Chip';
-import ClearIcon from '@material-ui/icons/Clear';
+import Badge from '@material-ui/core/Badge';
 import Bicycle from 'mdi-material-ui/Bicycle';
 import Walk from 'mdi-material-ui/Walk';
 import DogSide from 'mdi-material-ui/DogSide';
@@ -33,6 +33,7 @@ import Earth from 'mdi-material-ui/Earth';
 import Reload from 'mdi-material-ui/Reload';
 import Wave from 'mdi-material-ui/Wave';
 import Waves from 'mdi-material-ui/Waves';
+import GrillIcon from 'mdi-material-ui/Grill';
 import Binoculars from 'mdi-material-ui/Binoculars';
 // import TableFurniture from 'mdi-material-ui/TableFurniture';
 import Grid from '@material-ui/core/Grid';
@@ -41,14 +42,16 @@ import Motorbike from 'mdi-material-ui/Motorbike';
 import Caravan from 'mdi-material-ui/Caravan';
 import RvTruck from 'mdi-material-ui/RvTruck';
 import SailBoat from 'mdi-material-ui/Ferry';
+import BusStopIcon from 'mdi-material-ui/BusStop';
 import RoadVariant from 'mdi-material-ui/RoadVariant';
 import CarTractionControl from 'mdi-material-ui/CarTractionControl';
 import { H2, ContentBox, ContentInner } from './Typography';
 
 const iconMap = {
+    bbq: GrillIcon,
     '4x4': CarEstate,
     wheelchair: WheelchairAccessibility,
-    allocated_sites: Numeric,
+    allocated_campsites: Numeric,
     amplified_music: Speaker,
     beach: Beach,
     bicycles: Bicycle,
@@ -56,12 +59,13 @@ const iconMap = {
     booking_required: CalendarMultiselect,
     campfires: Campfire,
     canyon: Wave,
+    public_transport: BusStopIcon,
     car: CarHatchback,
     caravan: Caravan,
     causeway: Waves,
     cliff_edges: AlertIcon,
     dogs: DogSide,
-    drive_in: CarEstate,
+    drive_in_campsites: CarEstate,
     firearms: Pistol,
     flood_risk: Waves,
     generators: PowerPlug,
@@ -90,6 +94,7 @@ const iconMap = {
     tidal_water_crossing: Waves,
     toilet: Toilet,
     tree_fall_risk: Tree,
+    gathering_firewood: Tree,
     unesco_world_heritage: Earth,
     walk: Walk,
     short_walk: Walk,
@@ -103,27 +108,35 @@ const iconMap = {
 export default ({ heading, features }) => {
     const icon = i => {
         const Icon = i in iconMap ? iconMap[i] : Information;
-        return <Icon />;
+        if (features[i]) {
+            return <Icon />;
+        }
+        return (
+            <Badge badgeContent="&times;" overlap="circle">
+                <Icon />
+            </Badge>
+        );
     };
 
-    const chips = items => items.map(i => (
-        <Grid item key={`${i}${features[i]}`}>
-            <Chip
-                variant="outlined"
-                icon={features[i] ? icon(i) : <ClearIcon />}
-                label={truncate(humanize(i), 16)}
-                title={humanize(i)}
-                disabled={!features[i]}
-                style={features[i] ? null : { textDecoration: 'line-through' }}
-            />
-        </Grid>
-    ));
+    const chips = items =>
+        items.map(i => (
+            <Grid item key={`${i}${features[i]}`}>
+                <Chip
+                    variant="outlined"
+                    icon={icon(i)}
+                    label={truncate(humanize(i), 22)}
+                    title={humanize(i)}
+                    disabled={!features[i]}
+                    style={features[i] ? null : { textDecoration: 'line-through' }}
+                />
+            </Grid>
+        ));
 
     return (
         <>
             {features !== undefined && Object.keys(features).length > 0 && (
                 <ContentBox>
-                    <H2>{ heading }</H2>
+                    <H2>{heading}</H2>
                     <ContentInner>
                         <Grid
                             container

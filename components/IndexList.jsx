@@ -17,6 +17,7 @@ import LeafletMap from './LeafletMap';
 import BookmarkControls from './BookmarkControls';
 import Bookmarks from './Bookmarks';
 import { StorageContext } from './Storage';
+import sitePhotos from '../utils/sitePhotos.json';
 
 export default ({ category, index }) => {
     const [storage, setStorage] = useContext(StorageContext);
@@ -63,6 +64,13 @@ export default ({ category, index }) => {
         <Layout>
             <Head>
                 <title>{humanize(category)}</title>
+                <meta property="og:site_name" content="The Millipede Guide" />
+                <meta property="og:title" content={humanize(category)} />
+                <meta property="og:type" content="website" />
+                <meta
+                    property="og:image"
+                    content={`/photos/sm/${photoIndex[sitePhotos[category].src].hash}.jpg`}
+                />
             </Head>
             <Box mt={3} mb={2}>
                 <Grid
