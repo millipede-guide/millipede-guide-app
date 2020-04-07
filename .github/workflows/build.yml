@@ -23,6 +23,12 @@ jobs:
         with:
           repository: millipede-guide/millipede-guide-docs
           path: public/docs
+        
+      - name: Checkout build
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+          path: out
 
       - name: NPM Install
         run: npm ci
@@ -30,8 +36,8 @@ jobs:
       - name: Compile docs
         run: npm run docs
 
-      - name: Delete original photos
-        run: rm -rf public/photos/orig
+      # - name: Delete original photos
+      #   run: rm -rf public/photos/orig
         
       - name: Next.js build
         run: npm run build
