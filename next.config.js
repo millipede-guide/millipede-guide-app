@@ -9,8 +9,8 @@ module.exports = {
             '/about/': {
                 page: '/about',
             },
-            '/export/': {
-                page: '/export',
+            '/backup/': {
+                page: '/backup',
             },
         };
 

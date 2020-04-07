@@ -22,10 +22,10 @@ export default () => {
     return (
         <Layout>
             <Head>
-                <title>Export - Millipede Guide</title>
+                <title>Backup - Millipede Guide</title>
             </Head>
             <Box mt={3}>
-                <H1>Export / Backup</H1>
+                <H1>Backup / Export</H1>
             </Box>
             <Box mt={2}>
                 <P>

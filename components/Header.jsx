@@ -85,12 +85,12 @@ export default () => {
                                 <ListItemText primary="About" />
                             </ListItem>
                         </NextLink>
-                        <NextLink href="/export">
+                        <NextLink href="/backup">
                             <ListItem button>
                                 <ListItemIcon>
                                     <FileDownloadIcon />
                                 </ListItemIcon>
-                                <ListItemText primary="Export / Backup" />
+                                <ListItemText primary="Backup" />
                             </ListItem>
                         </NextLink>
                     </List>
