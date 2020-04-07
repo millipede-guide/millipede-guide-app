@@ -22,7 +22,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./nginx-gzip.conf:/etc/nginx/conf.d/gzip.conf:ro
-      - ./docs:/usr/share/nginx/html:ro
+      - ./out:/usr/share/nginx/html:ro
     networks:
       - default
       - www

@@ -40,9 +40,9 @@ export function reducer(state, action) {
 }
 
 export default ({ state, action }) => {
-    // const sm = i => `/photos/sm/${photoIndex[state.photos[i].src].cache}`;
+    // const sm = i => `/photos/sm/${photoIndex[state.photos[i].src].hash}.jpg`;
 
-    const lg = i => `/photos/lg/${photoIndex[state.photos[i].src].cache}`;
+    const lg = i => `/photos/lg/${photoIndex[state.photos[i].src].hash}.jpg`;
 
     const main = fn => fn(state.index);
 
