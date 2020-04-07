@@ -37,12 +37,6 @@ jobs:
       - name: Next.js export
         run: npm run export
         
-      - name: Set CNAME
-        run: echo 'www.millipede-guide.com' > out/CNAME
-
-      - name: Set No Jekyll
-        run: touch out/.nojekyll
-
       - name: Git Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
