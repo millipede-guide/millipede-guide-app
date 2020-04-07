@@ -11,7 +11,6 @@ import Photos from './Photos';
 import Attribution from './Attribution';
 import WebsiteLinks from './WebsiteLinks';
 import Features from './Features';
-import Access from './Access';
 import Parking from './Parking';
 import Water from './Water';
 import Toilets from './Toilets';
@@ -46,8 +45,10 @@ export default ({ dir, id, doc, jsonUrl }) => {
                     <MapToolbar dir={dir} id={id} doc={doc} />
                     <Map center={doc.location} geoJsonUrl={jsonUrl.replace('.json', '.geo.json')} />
                     <Photos doc={doc} />
-                    <Features doc={doc} />
-                    <Access doc={doc} />
+                    <Features heading='Features' features={doc.features} />
+                    <Features heading='Allowances and Restrictions' features={doc.restrictions} />
+                    <Features heading='Accessibility' features={doc.accessibility} />
+                    <Features heading='Getting There' features={doc.getting_there} />
                     <Parking doc={doc} />
                     <Water doc={doc} />
                     <Toilets doc={doc} />

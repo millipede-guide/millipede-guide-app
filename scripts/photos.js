@@ -62,13 +62,13 @@ const extractExif = url =>
                     if (error) {
                         index[url].exif = false;
                     } else {
-                        if ('DateTimeOriginal' in data.exif) {
+                        if ('exif' in data && 'DateTimeOriginal' in data.exif) {
                             index[url].year = moment(
                                 data.exif.DateTimeOriginal,
                                 'YYYY:MM:DD HH:mm:ss',
                             ).year();
                         }
-                        if ('GPSLatitude' in data.gps) {
+                        if ('gps' in data && 'GPSLatitude' in data.gps) {
                             index[url].location = [
                                 dmsToDecimal(data.gps.GPSLatitude) *
                                     (data.gps.GPSLatitudeRef === 'N' ? 1 : -1),

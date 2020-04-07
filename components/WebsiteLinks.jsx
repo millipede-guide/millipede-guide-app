@@ -28,7 +28,7 @@ export default ({ doc }) => {
                     startIcon={icon(i)}
                     style={{ marginRight: '1em' }}
                 >
-                    {humanize(i)}
+                    {i === 'official' ? 'Official Website' : humanize(i)}
                 </Button>
             );
         }
@@ -40,7 +40,7 @@ export default ({ doc }) => {
             {'links' in doc && (
                 <ContentBox>
                     <H2>Links</H2>
-                    {['official_website', 'wikipedia', 'wikivoyage'].map(link)}
+                    {['official', 'wikipedia', 'wikivoyage'].map(link)}
                 </ContentBox>
             )}
         </>

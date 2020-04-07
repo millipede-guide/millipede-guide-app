@@ -24,7 +24,7 @@ function makeObj(dirPath, filePath) {
         region: doc.region,
         park: doc.park,
         location: doc.location,
-        photos: doc.photos.slice(0, 1),
+        photos: (doc.photos || []).slice(0, 1),
     };
 }
 

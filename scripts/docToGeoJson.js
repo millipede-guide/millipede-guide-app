@@ -40,7 +40,7 @@ module.exports.docToGeoJson = (doc, geo) => {
                         type: 'photo',
                         name: 'Photo',
                         photo: {
-                            src: `/photos/sm/${photoIndex[src].cache}`,
+                            src: `/photos/sm/${photoIndex[src].hash}.jpg`,
                             href,
                             attr,
                             license,
