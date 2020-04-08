@@ -1,5 +1,8 @@
 # The Millipede Guide
 
+![Docs](https://github.com/millipede-guide/millipede-guide-docs/workflows/Test/badge.svg)
+![Build](https://github.com/millipede-guide/millipede-guide-web/workflows/Build/badge.svg)
+
 ## Project Goals
 
 - A guide to the natural wonders of the world

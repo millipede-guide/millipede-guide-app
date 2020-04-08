@@ -16,10 +16,12 @@ const regenerate = process.argv.indexOf('-r') !== -1;
 
 const indexFilePath = 'public/photos/index.json';
 
-const index = FS.existsSync(indexFilePath) ? JSON.parse(FS.readFileSync(indexFilePath)) : {};
+const index = {};
 
-const addSrc = src => {
+const addSrc = (src, page) => {
     if (index[src] === undefined) index[src] = {};
+    if (index[src].pages === undefined) index[src].pages = [];
+    index[src].pages.push(page);
     index[src].hash = crypto
         .createHash('md5')
         .update(src)
@@ -29,7 +31,7 @@ const addSrc = src => {
 
 const sitePhotos = JSON.parse(FS.readFileSync('utils/sitePhotos.json'));
 
-Object.values(sitePhotos).forEach(({ src }) => addSrc(src));
+Object.values(sitePhotos).forEach(({ src }) => addSrc(src, 'site'));
 
 console.log('Loading YAML:');
 
@@ -39,7 +41,7 @@ console.log('Loading YAML:');
         const doc = YAML.safeLoad(FS.readFileSync(fpath));
         const photos = allPhotosInDocument(doc);
         // console.log(photos);
-        photos.forEach(({ src }) => addSrc(src));
+        photos.forEach(({ src }) => addSrc(src, fpath.replace('public/docs', '')));
     });
 });
 
@@ -99,9 +101,10 @@ const resizeFile = (url, dir, options) =>
                 .toFormat('jpg')
                 .toFile(outFile, err => {
                     if (err) {
-                        console.log(`ERROR! (${dir})`);
+                        console.log(`RESIZE FAILED! (${dir}): ${url}`);
+                        console.log('  ', err);
                     } else {
-                        console.log(`RESIZED OK (${dir})`);
+                        console.log(`RESIZE OK (${dir}): ${url}`);
                     }
                     resolve();
                 });
@@ -115,39 +118,49 @@ const downloadFile = async url => {
     const path = cacheFilePath(url);
     if (regenerate || !FS.existsSync(path)) {
         console.log(`DOWNLOADING: ${url}`);
-        const res = await fetch(url);
-        const fileStream = FS.createWriteStream(path);
-        await new Promise((resolve, reject) => {
-            res.body.pipe(fileStream);
-            res.body.on('error', err => {
-                console.log(`ERROR: ${url}`);
-                reject(err);
+        const response = await fetch(url);
+        if (response.ok) {
+            let ok = false;
+            const fileStream = FS.createWriteStream(path);
+            await new Promise((resolve, reject) => {
+                response.body.pipe(fileStream);
+                response.body.on('error', err => {
+                    console.log(`DOWNLOAD FAILED! ${url}`);
+                    reject(err);
+                });
+                fileStream.on('finish', () => {
+                    console.log(`DOWNLOAD OK: ${url}`);
+                    ok = true;
+                    resolve();
+                });
             });
-            fileStream.on('finish', () => {
-                console.log(`OK: ${url}`);
-                resolve();
-            });
-        });
+            return ok;
+        } else {
+            console.log(`DOWNLOAD ERROR! (${response.status}) ${url}`);
+            return false;
+        }
     } else {
         console.log(`EXISTS: ${url}`);
+        return true;
     }
 };
 
 const processFile = async url => {
-    await downloadFile(url);
-    await Promise.all([
-        extractExif(url),
-        resizeFile(url, 'sm', {
-            width: 640,
-            height: 480,
-            fit: Sharp.fit.inside,
-        }),
-        resizeFile(url, 'lg', {
-            width: 1400,
-            height: 800,
-            fit: Sharp.fit.inside,
-        }),
-    ]);
+    if (await downloadFile(url)) {
+        await Promise.all([
+            extractExif(url),
+            resizeFile(url, 'sm', {
+                width: 640,
+                height: 480,
+                fit: Sharp.fit.inside,
+            }),
+            resizeFile(url, 'lg', {
+                width: 1400,
+                height: 800,
+                fit: Sharp.fit.inside,
+            }),
+        ]);
+    }
 };
 
 Promise.all(Object.keys(index).map(url => processFile(url))).then(() => {
