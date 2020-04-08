@@ -30,17 +30,14 @@ jobs:
           ref: gh-pages
           path: out
 
-      # - name: Reload original photo files
-      #   run: mv out/photos/orig/* public/photos/orig/
+      - name: Reload original photo files
+        run: mv out/photos/orig/* public/photos/orig/
 
       - name: NPM Install
         run: npm ci
         
       - name: Compile docs
         run: npm run docs
-
-      # - name: Delete original photos
-      #   run: rm -rf public/photos/orig
         
       - name: Next.js build
         run: npm run build
@@ -54,4 +51,3 @@ jobs:
           BRANCH: gh-pages
           FOLDER: out
           CLEAN: true
-          # SINGLE_COMMIT: true
