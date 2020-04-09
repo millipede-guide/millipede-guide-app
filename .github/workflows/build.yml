@@ -31,7 +31,11 @@ jobs:
           path: out
 
       - name: Reload original photo files
-        run: mv out/photos/orig/* public/photos/orig/
+        run: |
+          mv out/photos/index.json public/photos/
+          mv out/photos/orig/* public/photos/orig/
+          mv out/photos/lg/* public/photos/lg/
+          mv out/photos/sm/* public/photos/sm/
 
       - name: NPM Install
         run: npm ci
