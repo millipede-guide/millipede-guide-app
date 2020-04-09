@@ -17,15 +17,17 @@ function makeUrlId(filePath) {
 function makeObj(dirPath, filePath) {
     const doc = YAML.safeLoad(FS.readFileSync(Path.join(dirPath, filePath)));
 
-    return {
-        id: makeUrlId(filePath),
-        name: doc.name,
-        country: doc.country,
-        region: doc.region,
-        park: doc.park,
-        location: doc.location,
-        photos: (doc.photos || []).slice(0, 1),
-    };
+    return doc.draft === 't'
+        ? null
+        : {
+              id: makeUrlId(filePath),
+              name: doc.name,
+              country: doc.country,
+              region: doc.region,
+              park: doc.park,
+              location: doc.location,
+              photos: (doc.photos || []).slice(0, 1),
+          };
 }
 
 const photoObj = ({ src, href, attr, license }) => ({
@@ -41,7 +43,8 @@ const photoObj = ({ src, href, attr, license }) => ({
         cwd: dirPath,
     })
         .sort()
-        .map(i => makeObj(dirPath, i));
+        .map(i => makeObj(dirPath, i))
+        .filter(Boolean);
     console.log(index);
     FS.writeFileSync(`public/export/${category}/index.json`, JSON.stringify(index, null, 4));
 

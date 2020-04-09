@@ -158,9 +158,14 @@ const run = async index => {
     for (const category of ['attractions', 'campsites', 'parks', 'routes']) {
         for (const filePath of Glob.sync(`public/docs/${category}/**/*.yaml`)) {
             console.log(filePath);
-            const photos = allPhotosInDocument(YAML.safeLoad(FS.readFileSync(filePath)));
-            for (const { src } of photos) {
-                await addSrc(src, filePath.replace('public/docs', ''));
+            const doc = YAML.safeLoad(FS.readFileSync(filePath));
+            if (doc.draft === 't') {
+                console.log(' > DRAFT');
+            } else {
+                const photos = allPhotosInDocument(doc);
+                for (const { src } of photos) {
+                    await addSrc(src, filePath.replace('public/docs', ''));
+                }
             }
         }
     }

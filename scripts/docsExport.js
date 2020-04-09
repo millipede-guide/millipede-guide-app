@@ -26,28 +26,34 @@ const { docToGeoJson } = require('./docToGeoJson');
         FS.writeFileSync(Path.join(exportDir, `${fileName}.yaml`), yaml);
 
         const doc = YAML.safeLoad(yaml);
-        FS.writeFileSync(Path.join(exportDir, `${fileName}.json`), JSON.stringify(doc, null, 4));
 
-        // FS.writeFileSync(Path.join(exportDir, fileName + '.xml'), data2xml('document', doc));
+        if (doc.draft !== 't') {
+            FS.writeFileSync(
+                Path.join(exportDir, `${fileName}.json`),
+                JSON.stringify(doc, null, 4),
+            );
 
-        const geoBaseFilePath = filePath.replace('.yaml', '.geo.json');
-        let geo;
-        if (FS.existsSync(geoBaseFilePath)) {
-            geo = JSON.parse(FS.readFileSync(geoBaseFilePath));
-        } else {
-            geo = {
-                type: 'FeatureCollection',
-                features: [],
-            };
+            // FS.writeFileSync(Path.join(exportDir, fileName + '.xml'), data2xml('document', doc));
+
+            const geoBaseFilePath = filePath.replace('.yaml', '.geo.json');
+            let geo;
+            if (FS.existsSync(geoBaseFilePath)) {
+                geo = JSON.parse(FS.readFileSync(geoBaseFilePath));
+            } else {
+                geo = {
+                    type: 'FeatureCollection',
+                    features: [],
+                };
+            }
+            docToGeoJson(doc, geo);
+            FS.writeFileSync(
+                Path.join(exportDir, `${fileName}.geo.json`),
+                JSON.stringify(geo, null, 4),
+            );
+
+            FS.writeFileSync(Path.join(exportDir, `${fileName}.kml`), tokml(geo));
+
+            FS.writeFileSync(Path.join(exportDir, `${fileName}.gpx`), togpx(geo));
         }
-        docToGeoJson(doc, geo);
-        FS.writeFileSync(
-            Path.join(exportDir, `${fileName}.geo.json`),
-            JSON.stringify(geo, null, 4),
-        );
-
-        FS.writeFileSync(Path.join(exportDir, `${fileName}.kml`), tokml(geo));
-
-        FS.writeFileSync(Path.join(exportDir, `${fileName}.gpx`), togpx(geo));
     });
 });
