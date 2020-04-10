@@ -79,6 +79,7 @@ const iconMap = {
     motorhome: RvTruck,
     mountain_bike: Bicycle,
     mountainous: Terrain,
+    mountain_peak: Terrain,
     pets: DogSide,
     rainforest: Leaf,
     reload: Reload,
