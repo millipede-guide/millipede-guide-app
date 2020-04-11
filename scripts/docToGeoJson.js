@@ -1,10 +1,22 @@
 const humanize = require('underscore.string/humanize');
 const photoIndex = require('../public/photos/index.json');
 
+const type = (key, item) => {
+    switch (key) {
+        case 'toilets':
+            return item.gender === 'm' || item.gender === 'f' ? `toilets_${item.gender}` : key;
+        case 'transport':
+            return item.type;
+        default:
+            return key;
+    }
+};
+
 module.exports.docToGeoJson = (doc, geo) => {
-    ['parking', 'water', 'toilets'].forEach(k => {
-        if (doc[k]) {
-            doc[k].forEach(({ name, location, photos, gender }) => {
+    ['transport', 'parking', 'water', 'toilets', 'shelter'].forEach(key => {
+        if (doc[key] !== undefined) {
+            doc[key].forEach(item => {
+                const { name, location, photos } = item;
                 if (location) {
                     geo.features.push({
                         type: 'Feature',
@@ -13,12 +25,15 @@ module.exports.docToGeoJson = (doc, geo) => {
                             coordinates: [location[1], location[0]],
                         },
                         properties: {
-                            type:
-                                k === 'toilets' && (gender === 'm' || gender === 'f')
-                                    ? `toilets_${gender}`
-                                    : k,
-                            name: humanize(k) + (name ? ` - ${name}` : ''),
-                            photo: photos && photos.length >= 1 ? photos[0] : null,
+                            type: type(key, item),
+                            name: humanize(key) + (name ? ` - ${name}` : ''),
+                            photo:
+                                photos && photos.length >= 1
+                                    ? {
+                                          ...photos[0],
+                                          src: `/photos/sm/${photoIndex[photos[0].src].hash}.jpg`,
+                                      }
+                                    : null,
                         },
                     });
                 }

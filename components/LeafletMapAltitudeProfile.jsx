@@ -1,5 +1,5 @@
 import L from 'leaflet';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Chart from 'chart.js';
 import 'chartjs-plugin-datalabels';
 import prettyMetric from 'pretty-metric';
@@ -8,8 +8,11 @@ import AltitudeProfileContainer from './AltitudeProfileContainer';
 Chart.defaults.global.elements.line.borderColor = '#558b2f88';
 // Chart.defaults.global.elements.line.backgroundColor = '#558b2f55';
 Chart.defaults.global.elements.line.backgroundColor = '#00000011';
+Chart.defaults.global.animation.duration = 0;
 
 export default ({ lmap, geo }) => {
+    const [stats, setStats] = useState({});
+
     useEffect(() => {
         if (
             lmap !== null &&
@@ -31,24 +34,37 @@ export default ({ lmap, geo }) => {
 
             if (lineString !== undefined) {
                 let dist = 0;
-                let prev = null;
+                let prevPoint = null;
+                let prevAlt = null;
+                let asc = 0;
+                let desc = 0;
+                let gain = 0;
+                let loss = 0;
 
                 const altitudeProfile = lineString.geometry.coordinates
                     .map(([lng, lat, alt]) => {
                         const ll = L.latLng(lat, lng, alt);
-                        if (prev) {
-                            const step = prev.distanceTo(ll);
+                        if (prevPoint) {
+                            const step = prevPoint.distanceTo(ll);
                             if (step < 20) return null;
-                            dist = Math.round(dist + step);
+                            dist += step;
+                            if (alt > prevAlt) {
+                                gain += alt - prevAlt;
+                                asc += step;
+                            } else {
+                                loss += prevAlt - alt;
+                                desc += step;
+                            }
                         }
-                        prev = ll;
+                        prevAlt = alt;
+                        prevPoint = ll;
                         return {
-                            x: dist,
+                            x: Math.round(dist),
                             y: alt,
                             latlng: ll,
                         };
                     })
-                    .filter(i => i);
+                    .filter(i => i !== null);
 
                 const altMax = altitudeProfile.reduce((val, obj) => (obj.y > val ? obj.y : val), 0);
                 const altMin = altitudeProfile.reduce(
@@ -67,10 +83,27 @@ export default ({ lmap, geo }) => {
                 );
 
                 const rounder = val => {
-                    if (val > 1000) return Math.round(val / 1000) * 1000;
-                    if (val > 100) return Math.round(val / 100) * 100;
+                    if (val > 10000) return Math.round(val / 1000) * 1000;
+                    if (val > 1000) return Math.round(val / 100) * 100;
+                    if (val > 100) return Math.round(val / 10) * 10;
                     return val;
                 };
+
+                const stepSize = () => {
+                    if (dist > 15000) return 10000;
+                    if (dist > 1500) return 1000;
+                    if (dist > 150) return 100;
+                    if (dist > 15) return 10;
+                    return 1;
+                };
+
+                setStats({
+                    dist: prettyMetric(rounder(dist)).humanize(),
+                    asc: prettyMetric(rounder(asc)).humanize(),
+                    gain: prettyMetric(rounder(gain)).humanize(),
+                    desc: prettyMetric(rounder(desc)).humanize(),
+                    loss: prettyMetric(rounder(loss)).humanize(),
+                });
 
                 const altitudeProfileContainer = document.getElementById('altitudeProfile');
 
@@ -127,12 +160,18 @@ export default ({ lmap, geo }) => {
                             ],
                             xAxes: [
                                 {
+                                    gridLines: {
+                                        display: false,
+                                        drawTicks: false,
+                                    },
                                     ticks: {
+                                        display: false,
                                         beginAtZero: true,
                                         min: 0,
                                         max: dist,
-                                        stepSize: dist > 2000 ? 1000 : 100,
+                                        stepSize: stepSize(),
                                         callback: value => {
+                                            // return '';
                                             if (value === 0) return ''; // dist > 1000 ? '0km' : '0m';
                                             if (value === dist) return '';
                                             return prettyMetric(rounder(value)).humanize();
@@ -155,7 +194,8 @@ export default ({ lmap, geo }) => {
                                 },
                                 display: context =>
                                     context.dataIndex === altMinIndex ||
-                                    context.dataIndex === altMaxIndex,
+                                    (context.dataIndex === altMaxIndex &&
+                                        altMinIndex !== altMaxIndex),
                                 formatter: p => `${rounder(p.y)}m`,
                             },
                         },
@@ -174,5 +214,5 @@ export default ({ lmap, geo }) => {
         }
     }, [lmap, geo]);
 
-    return <AltitudeProfileContainer />;
+    return <AltitudeProfileContainer stats={stats} />;
 };

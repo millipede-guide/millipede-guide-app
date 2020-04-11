@@ -11,9 +11,7 @@ import Photos from './Photos';
 import Attribution from './Attribution';
 import WebsiteLinks from './WebsiteLinks';
 import Features from './Features';
-import Parking from './Parking';
-import Water from './Water';
-import Toilets from './Toilets';
+import Infrastructure from './Infrastructure';
 import Export from './Export';
 import OpenSource from './OpenSource';
 import { H1 } from './Typography';
@@ -49,9 +47,11 @@ export default ({ dir, id, doc, jsonUrl }) => {
                     <Features heading="Allowances and Restrictions" features={doc.restrictions} />
                     <Features heading="Accessibility" features={doc.accessibility} />
                     <Features heading="Getting There" features={doc.getting_there} />
-                    <Parking doc={doc} />
-                    <Water doc={doc} />
-                    <Toilets doc={doc} />
+                    <Infrastructure heading="Transport" items={doc.transport} />
+                    <Infrastructure heading="Parking" items={doc.parking} />
+                    <Infrastructure heading="Water" items={doc.water} />
+                    <Infrastructure heading="Toilets" items={doc.toilets} />
+                    <Infrastructure heading="Shelter" items={doc.shelter} />
                     <WebsiteLinks doc={doc} />
                     <Export doc={doc} jsonUrl={jsonUrl} />
                     <OpenSource jsonUrl={jsonUrl} />

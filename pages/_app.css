@@ -13,9 +13,9 @@
     background-color: black;
 }
 
-.mapicon-marker {
-    color: white;
-    background-color: red;
+.mapicon-bus {
+    color: #FFF;
+    background-color: #00F;
 }
 
 .mapicon-campsite {
@@ -23,9 +23,9 @@
     background-color: #0F0;
 }
 
-.mapicon-photo {
-    color: black;
-    background-color: #FFF;
+.mapicon-marker {
+    color: white;
+    background-color: red;
 }
 
 .mapicon-parking {
@@ -33,9 +33,24 @@
     background-color: #00F;
 }
 
+.mapicon-photo {
+    color: black;
+    background-color: #FFF;
+}
+
+.mapicon-shelter {
+    color: black;
+    background-color: #8F8;
+}
+
 .mapicon-toilets, .mapicon-toilets_f, .mapicon-toilets_m {
     color: black;
     background-color: #FFFF00;
+}
+
+.mapicon-train {
+    color: white;
+    background-color: #00F;
 }
 
 .mapicon-water {
@@ -49,3 +64,9 @@
     border-radius: 3px;
 }
 
+.diagonal-line {
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' preserveAspectRatio='none' viewBox='0 0 100 100'><path d='M0 99 L99 0 L100 2 L2 100' fill='grey' /></svg>");
+    background-repeat:no-repeat;
+    background-position:center center;
+    background-size: 100% 100%, auto;
+}

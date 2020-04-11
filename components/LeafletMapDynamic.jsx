@@ -57,13 +57,16 @@ export default ({ center, markers, category, geoJsonUrl, showAltitudeProfile }) 
     };
 
     const mdiIconMap = {
-        marker: 'map-marker',
+        bus: 'bus',
         campsite: 'tent',
-        photo: 'camera',
+        marker: 'map-marker',
         parking: 'parking',
+        photo: 'camera',
+        shelter: 'home-variant',
         toilets: 'human-male-female',
         toilets_f: 'human-female',
         toilets_m: 'human-male',
+        train: 'train',
         water: 'water-pump',
     };
 
@@ -118,11 +121,11 @@ export default ({ center, markers, category, geoJsonUrl, showAltitudeProfile }) 
                     bounds={bounds}
                     boundsOptions={boundsOptions}
                     style={{ height: expanded ? '75vh' : '25vh' }}
-                    scrollWheelZoom={false}
+                    // scrollWheelZoom={false}
                 >
                     <TileLayer
                         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        url="https://tile.millipede-guide.com/{z}/{x}/{y}.png"
                     />
                     <Control position="topleft">
                         <button

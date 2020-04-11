@@ -1,7 +1,6 @@
 import humanize from 'underscore.string/humanize';
 import truncate from 'underscore.string/truncate';
 import Chip from '@material-ui/core/Chip';
-import Badge from '@material-ui/core/Badge';
 import Bicycle from 'mdi-material-ui/Bicycle';
 import Walk from 'mdi-material-ui/Walk';
 import DogSide from 'mdi-material-ui/DogSide';
@@ -42,50 +41,60 @@ import Motorbike from 'mdi-material-ui/Motorbike';
 import Caravan from 'mdi-material-ui/Caravan';
 import RvTruck from 'mdi-material-ui/RvTruck';
 import SailBoat from 'mdi-material-ui/Ferry';
+import TentIcon from 'mdi-material-ui/Tent';
+import TrainIcon from 'mdi-material-ui/Train';
 import BusStopIcon from 'mdi-material-ui/BusStop';
 import RoadVariant from 'mdi-material-ui/RoadVariant';
 import CarTractionControl from 'mdi-material-ui/CarTractionControl';
 import { H2, ContentBox, ContentInner } from './Typography';
 
 const iconMap = {
-    bbq: GrillIcon,
     '4x4': CarEstate,
-    wheelchair: WheelchairAccessibility,
     allocated_campsites: Numeric,
     amplified_music: Speaker,
+    bbq: GrillIcon,
     beach: Beach,
     bicycles: Bicycle,
     boat: SailBoat,
     booking_required: CalendarMultiselect,
     campfires: Campfire,
+    camping: TentIcon,
     canyon: Wave,
-    public_transport: BusStopIcon,
     car: CarHatchback,
     caravan: Caravan,
     causeway: Waves,
     cliff_edges: AlertIcon,
+    cycling: Bicycle,
     dogs: DogSide,
+    dogs_off_leash: DogSide,
     drive_in_campsites: CarEstate,
     firearms: Pistol,
     flood_risk: Waves,
+    gathering_firewood: Tree,
     generators: PowerPlug,
+    gravel_track: CarTractionControl,
     hike_in: Walk,
     hikers_only: Walk,
     horses: Horseshoe,
     kayak: SailBoat,
     lookout: Binoculars,
     loop: Reload,
+    motorbikes: Motorbike,
     motorcycle: Motorbike,
     motorhome: RvTruck,
     mountain_bike: Bicycle,
-    mountainous: Terrain,
     mountain_peak: Terrain,
+    mountainous: Terrain,
     pets: DogSide,
+    public_transport: BusStopIcon,
+    rail_trail: TrainIcon,
     rainforest: Leaf,
     reload: Reload,
     road_bicycle: BicycleBasket,
     rubbish_bins: TrashCan,
     sealed_road: RoadVariant,
+    sealed_surface: RoadVariant,
+    short_walk: Walk,
     showers: ShowerHead,
     slippery: ShoePrint,
     smoking: Smoking,
@@ -95,28 +104,22 @@ const iconMap = {
     tidal_water_crossing: Waves,
     toilet: Toilet,
     tree_fall_risk: Tree,
-    gathering_firewood: Tree,
     unesco_world_heritage: Earth,
+    vehicles: CarHatchback,
     walk: Walk,
-    short_walk: Walk,
+    walking: Walk,
     water: WaterPump,
     water_crossing: Waves,
-    windy_road: CarTractionControl,
     waterfall: Binoculars,
+    wheelchair: WheelchairAccessibility,
+    windy_road: CarTractionControl,
     // tables: TableFurniture,
 };
 
 export default ({ heading, features }) => {
     const icon = i => {
         const Icon = i in iconMap ? iconMap[i] : Information;
-        if (features[i]) {
-            return <Icon />;
-        }
-        return (
-            <Badge badgeContent="&times;" overlap="circle">
-                <Icon />
-            </Badge>
-        );
+        return <Icon />;
     };
 
     const chips = items =>
@@ -128,7 +131,7 @@ export default ({ heading, features }) => {
                     label={truncate(humanize(i), 22)}
                     title={humanize(i)}
                     disabled={!features[i]}
-                    style={features[i] ? null : { textDecoration: 'line-through' }}
+                    className={features[i] ? null : 'diagonal-line'}
                 />
             </Grid>
         ));

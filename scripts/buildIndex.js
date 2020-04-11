@@ -26,7 +26,9 @@ function makeObj(dirPath, filePath) {
               region: doc.region,
               park: doc.park,
               location: doc.location,
-              photos: (doc.photos || []).slice(0, 1),
+              photos: (doc.photos || [])
+                  .sort((a, b) => (a.feature === b.feature ? 0 : a.feature ? -1 : 1))
+                  .slice(0, 1),
           };
 }
 
