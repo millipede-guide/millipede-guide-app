@@ -23,32 +23,32 @@ export default ({ stats }) => (
             </div>
             <Grid
                 container
-                wrap="npowrap"
+                wrap="nowrap"
                 direction="row"
                 justify="space-between"
                 alignItems="center"
             >
                 <Grid item>
                     <Button disabled startIcon={<GainIcon />} style={{ color: '#777' }}>
-                        {stats && stats.gain}
+                        {(stats && stats.gain) || '-'}
                     </Button>
                     <Button disabled startIcon={<LossIcon />} style={{ color: '#777' }}>
-                        {stats && stats.loss}
+                        {(stats && stats.loss) || '-'}
                     </Button>
                 </Grid>
                 <Hidden xsDown>
                     <Grid item>
                         <Button disabled startIcon={<AscendingIcon />} style={{ color: '#777' }}>
-                            {stats && stats.asc}
+                            {(stats && stats.asc) || '-'}
                         </Button>
                         <Button disabled startIcon={<DescendingIcon />} style={{ color: '#777' }}>
-                            {stats && stats.desc}
+                            {(stats && stats.desc) || '-'}
                         </Button>
                     </Grid>
                 </Hidden>
                 <Grid item>
                     <Button disabled endIcon={<DistanceIcon />} style={{ color: '#777' }}>
-                        {stats && stats.dist}
+                        {(stats && stats.dist) || '-'}
                     </Button>
                 </Grid>
             </Grid>

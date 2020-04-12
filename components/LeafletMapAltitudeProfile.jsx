@@ -10,23 +10,18 @@ Chart.defaults.global.elements.line.borderColor = '#558b2f88';
 Chart.defaults.global.elements.line.backgroundColor = '#00000011';
 Chart.defaults.global.animation.duration = 0;
 
-export default ({ lmap, geo }) => {
+export default ({ mapRef, geo }) => {
     const [stats, setStats] = useState({});
 
     useEffect(() => {
-        if (
-            lmap !== null &&
-            geo !== null &&
-            typeof geo === 'object' &&
-            geo.type === 'FeatureCollection'
-        ) {
+        if (geo !== null && typeof geo === 'object' && geo.type === 'FeatureCollection') {
             const altitudeMarker = L.marker([0, 0], {
                 icon: L.divIcon({
                     className: 'mapicon-altitude',
                     iconSize: [6, 6],
                     iconAnchor: [3, 3],
                 }),
-            }).addTo(lmap);
+            });
 
             const lineString = geo.features.filter(
                 f => f.type === 'Feature' && f.geometry && f.geometry.type === 'LineString',
@@ -76,10 +71,14 @@ export default ({ lmap, geo }) => {
                     ary.length === 0 ? -1 : ary[Math.floor((ary.length - 1) / 2)];
 
                 const altMaxIndex = median(
-                    altitudeProfile.map((obj, i) => (obj.y === altMax ? i : -1)).filter(i => i > 0),
+                    altitudeProfile
+                        .map((obj, i) => (obj.y === altMax ? i : null))
+                        .filter(i => i !== null),
                 );
                 const altMinIndex = median(
-                    altitudeProfile.map((obj, i) => (obj.y === altMin ? i : -1)).filter(i => i > 0),
+                    altitudeProfile
+                        .map((obj, i) => (obj.y === altMin ? i : null))
+                        .filter(i => i !== null),
                 );
 
                 const rounder = val => {
@@ -87,14 +86,6 @@ export default ({ lmap, geo }) => {
                     if (val > 1000) return Math.round(val / 100) * 100;
                     if (val > 100) return Math.round(val / 10) * 10;
                     return val;
-                };
-
-                const stepSize = () => {
-                    if (dist > 15000) return 10000;
-                    if (dist > 1500) return 1000;
-                    if (dist > 150) return 100;
-                    if (dist > 15) return 10;
-                    return 1;
                 };
 
                 setStats({
@@ -134,16 +125,19 @@ export default ({ lmap, geo }) => {
                                 label: item => {
                                     const { x, y, latlng } = altitudeProfile[item.index];
                                     const label = `${prettyMetric(x).humanize()} (altitude ${y}m)`;
-                                    lmap.panTo(latlng, {
-                                        animate: true,
-                                        duration: 1,
-                                    });
-                                    altitudeMarker.unbindTooltip();
-                                    altitudeMarker.setLatLng(latlng);
-                                    altitudeMarker.bindTooltip(label, {
-                                        permanent: true,
-                                        offset: [0, 0],
-                                    });
+                                    if (mapRef.current && mapRef.current.leafletElement) {
+                                        mapRef.current.leafletElement.panTo(latlng, {
+                                            animate: true,
+                                            duration: 1,
+                                        });
+                                        altitudeMarker.addTo(mapRef.current.leafletElement);
+                                        altitudeMarker.unbindTooltip();
+                                        altitudeMarker.setLatLng(latlng);
+                                        altitudeMarker.bindTooltip(label, {
+                                            permanent: true,
+                                            offset: [0, 0],
+                                        });
+                                    }
                                     return label;
                                 },
                             },
@@ -153,7 +147,7 @@ export default ({ lmap, geo }) => {
                                 {
                                     display: false,
                                     ticks: {
-                                        min: altMin < 100 ? 0 : altMin - 100,
+                                        min: altMin - 20,
                                         max: altMax + 10,
                                     },
                                 },
@@ -169,13 +163,6 @@ export default ({ lmap, geo }) => {
                                         beginAtZero: true,
                                         min: 0,
                                         max: dist,
-                                        stepSize: stepSize(),
-                                        callback: value => {
-                                            // return '';
-                                            if (value === 0) return ''; // dist > 1000 ? '0km' : '0m';
-                                            if (value === dist) return '';
-                                            return prettyMetric(rounder(value)).humanize();
-                                        },
                                     },
                                 },
                             ],
@@ -183,19 +170,25 @@ export default ({ lmap, geo }) => {
                         plugins: {
                             datalabels: {
                                 clip: false,
-                                offset: 0,
+                                clamp: true,
+                                offset: context => {
+                                    return context.dataIndex === altMaxIndex ? 0 : 5;
+                                },
                                 align: context => {
                                     const i = context.dataIndex;
-                                    const p = context.dataset.data[i];
-                                    return p.y === altMax ? 'end' : 'start';
+                                    const l = context.dataset.data.length;
+                                    const a = 270;
+                                    if (i >= l * 0.8) return a - 45;
+                                    if (i <= l * 0.2) return a + 45;
+                                    return a;
                                 },
                                 font: {
                                     weight: 600,
                                 },
                                 display: context =>
-                                    context.dataIndex === altMinIndex ||
-                                    (context.dataIndex === altMaxIndex &&
-                                        altMinIndex !== altMaxIndex),
+                                    (context.dataIndex === altMinIndex ||
+                                        context.dataIndex === altMaxIndex) &&
+                                    altMinIndex !== altMaxIndex,
                                 formatter: p => `${rounder(p.y)}m`,
                             },
                         },
@@ -212,7 +205,7 @@ export default ({ lmap, geo }) => {
                 /* eslint-enable no-new */
             }
         }
-    }, [lmap, geo]);
+    }, [geo]);
 
     return <AltitudeProfileContainer stats={stats} />;
 };

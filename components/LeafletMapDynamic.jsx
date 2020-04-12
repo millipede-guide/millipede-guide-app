@@ -12,19 +12,19 @@ import photoIndex from '../public/photos/index.json';
 export default ({ center, markers, category, geoJsonUrl, showAltitudeProfile }) => {
     const mapRef = useRef(null);
 
-    const [lmap, setLmap] = useState(null); // TODO: Is useState actually needed here?
     const [geo, setGeo] = useState(null);
-    const [bounds, setBounds] = useState(null);
-    const boundsOptions = { animate: true, padding: [10, 10] };
     const [expanded, setExpanded] = useState(false);
 
-    useEffect(() => {
-        setLmap(mapRef.current.leafletElement);
-    }, [mapRef]); // TODO: Is useEffect actually needed here?
+    const boundsOptions = { animate: true, padding: [10, 10] };
+    const setBounds = bounds => {
+        if (bounds && mapRef.current && mapRef.current.leafletElement) {
+            mapRef.current.leafletElement.fitBounds(bounds, boundsOptions);
+        }
+    };
 
     useEffect(() => {
         setBounds(
-            markers && markers.length >= 2 ? L.latLngBounds(markers.map(i => i.location)) : null,
+            markers && markers.length !== 0 ? L.latLngBounds(markers.map(i => i.location)) : null,
         );
     }, [markers]);
 
@@ -37,11 +37,7 @@ export default ({ center, markers, category, geoJsonUrl, showAltitudeProfile }) 
     }, []);
 
     useEffect(() => {
-        if (lmap) {
-            lmap.invalidateSize();
-            if (bounds) {
-                lmap.fitBounds(bounds, boundsOptions);
-            }
+        if (mapRef.current && mapRef.current.leafletElement) {
             if (expanded) {
                 mapRef.current.container.scrollIntoView({
                     behavior: 'smooth',
@@ -49,8 +45,20 @@ export default ({ center, markers, category, geoJsonUrl, showAltitudeProfile }) 
                     inline: 'center',
                 });
             }
+            mapRef.current.leafletElement.invalidateSize();
         }
     }, [expanded]);
+
+    const setZoom = () => {
+        if (mapRef.current && mapRef.current.leafletElement) {
+            const zoom = mapRef.current.leafletElement.getZoom();
+            let scale = zoom / 18;
+            if (scale < 0.7) scale = 0.7;
+            document.getElementById('mapIconStyle').innerHTML = `.mapicon { transform: scale(${
+                scale > 1 ? 1 : scale
+            }); }`;
+        }
+    };
 
     const toggleExpand = () => {
         setExpanded(!expanded);
@@ -72,7 +80,8 @@ export default ({ center, markers, category, geoJsonUrl, showAltitudeProfile }) 
 
     const mapIcon = type =>
         L.divIcon({
-            className: `mapicon mapicon-${type} mdi mdi-${mdiIconMap[type]}`,
+            className: 'mapicon-parent',
+            html: `<div class="mapicon mapicon-${type} mdi mdi-${mdiIconMap[type]}"></div>`,
             iconSize: [20, 20],
             iconAnchor: [10, 10],
         });
@@ -118,10 +127,8 @@ export default ({ center, markers, category, geoJsonUrl, showAltitudeProfile }) 
                     center={center}
                     zoom={4}
                     animate
-                    bounds={bounds}
-                    boundsOptions={boundsOptions}
                     style={{ height: expanded ? '75vh' : '25vh' }}
-                    // scrollWheelZoom={false}
+                    onZoomEnd={() => setZoom()}
                 >
                     <TileLayer
                         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -182,7 +189,8 @@ export default ({ center, markers, category, geoJsonUrl, showAltitudeProfile }) 
                     )}
                 </Map>
             </LeafletMapContainer>
-            {showAltitudeProfile && <AltitudeProfile lmap={lmap} geo={geo} />}
+            {showAltitudeProfile && <AltitudeProfile mapRef={mapRef} geo={geo} />}
+            <style id="mapIconStyle" />
         </>
     );
 };
