@@ -16,6 +16,7 @@ import Export from './Export';
 import OpenSource from './OpenSource';
 import { H1 } from './Typography';
 import Link from './Link';
+import photoIndex from '../public/photos/index.json';
 
 export default ({ dir, id, doc, jsonUrl }) => {
     const Map = dir === 'routes' ? LeafletMapWithAltitudeProfile : LeafletMap;
@@ -23,11 +24,24 @@ export default ({ dir, id, doc, jsonUrl }) => {
         <>
             <Head>
                 <title>{`${doc.name}, ${doc.region}, ${doc.country}`}</title>
-                <meta property="og:site_name" content="The Millipede Guide" />
-                <meta property="og:title" content={`${doc.name}, ${doc.region}, ${doc.country}`} />
                 <meta property="og:type" content="website" />
-                {'photos' in doc && doc.photos.length > 0 && (
-                    <meta property="og:image" content={doc.photos[0].src} />
+                <meta property="og:url" content={`https://www.millipede-guide.com/${dir}/${id}`} />
+                <meta property="og:site_name" content="The Millipede Guide" />
+                <meta name="twitter:site" content="@millipedeguide" />
+                <meta property="og:title" content={doc.name} />
+                <meta
+                    property="og:description"
+                    content={['park' in doc ? doc.park : null, doc.region, doc.country]
+                        .filter(Boolean)
+                        .join(', ')}
+                />
+                {doc.photos && doc.photos.length > 0 && doc.photos[0].src in photoIndex && (
+                    <meta
+                        property="og:image"
+                        content={`https://www.millipede-guide.com/photos/sm/${
+                            photoIndex[doc.photos[0].src].hash
+                        }.jpg`}
+                    />
                 )}
             </Head>
             <LightboxContainer>
