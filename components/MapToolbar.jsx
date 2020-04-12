@@ -10,7 +10,7 @@ export default ({ dir, id, doc }) => (
     <Box>
         <Grid container direction="row" justify="space-between" alignItems="center">
             <Grid item>
-                <BookmarkControls dir={dir} id={id} />
+                <BookmarkControls dir={dir} id={id} userUpdate />
             </Grid>
             <Grid item>
                 <IconButton

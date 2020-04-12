@@ -19,7 +19,9 @@ import RoutesIcon from 'mdi-material-ui/Walk';
 import AttractionsIcon from 'mdi-material-ui/Binoculars';
 import AboutIcon from 'mdi-material-ui/Information';
 import FileDownloadIcon from 'mdi-material-ui/FileDownload';
+import Badge from '@material-ui/core/Badge';
 import MuiLink from './Link';
+import { StorageContext } from './Storage';
 
 export default () => {
     const [drawerIsOpen, openDrawer] = useState(false);
@@ -50,7 +52,22 @@ export default () => {
             <AppBar position="fixed">
                 <Toolbar variant="dense">
                     <IconButton edge="start" color="inherit" onClick={() => openDrawer(true)}>
-                        <MenuIcon />
+                        <StorageContext.Consumer>
+                            {([storage]) => (
+                                <Badge
+                                    color="error"
+                                    badgeContent={
+                                        (storage &&
+                                            storage.pageData &&
+                                            storage.pageData.updates &&
+                                            1) ||
+                                        null
+                                    }
+                                >
+                                    <MenuIcon />
+                                </Badge>
+                            )}
+                        </StorageContext.Consumer>
                     </IconButton>
                     <MuiLink href="/" variant="h6" style={{ color: 'white' }}>
                         <Box ml={1}>Millipede Guide</Box>
@@ -88,9 +105,24 @@ export default () => {
                         <NextLink href="/backup">
                             <ListItem button>
                                 <ListItemIcon>
-                                    <FileDownloadIcon />
+                                    <StorageContext.Consumer>
+                                        {([storage]) => (
+                                            <Badge
+                                                color="error"
+                                                badgeContent={
+                                                    (storage &&
+                                                        storage.pageData &&
+                                                        storage.pageData.updates &&
+                                                        1) ||
+                                                    null
+                                                }
+                                            >
+                                                <FileDownloadIcon />
+                                            </Badge>
+                                        )}
+                                    </StorageContext.Consumer>
                                 </ListItemIcon>
-                                <ListItemText primary="Backup" />
+                                <ListItemText primary="Data Backup" />
                             </ListItem>
                         </NextLink>
                     </List>

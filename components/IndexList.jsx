@@ -37,12 +37,12 @@ export default ({ category, index }) => {
                         let filter;
                         let current;
                         try {
-                            filter = storage.pageData[category].index[flag];
+                            filter = storage.pageData[category].index[flag].v;
                         } catch (e) {
                             filter = false;
                         }
                         try {
-                            current = storage.pageData[category][item.id][flag];
+                            current = storage.pageData[category][item.id][flag].v;
                         } catch (e) {
                             current = false;
                         }

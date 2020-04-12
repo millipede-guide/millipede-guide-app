@@ -54,16 +54,21 @@ const deepSet = (obj, path, val) => {
 };
 
 const actions = (storage, action) => {
-    switch (action.type) {
+    const updated = { ...storage };
+    switch (action.action || action.type) {
         case 'load':
             return { ...action.data, available: true };
         case 'error':
             return { ...storage, available: false };
         case 'pageData':
-            deepSet(storage, ['pageData', action.dir, action.id, action.key], action.val);
-            return { ...storage };
+            deepSet(updated, ['pageData', action.dir, action.id, action.key], action.val);
+            if (action.userUpdate) updated.pageData.updates = (updated.pageData.updates || 0) + 1;
+            return updated;
+        case 'resetPageDataUpdates':
+            if (typeof updated.pageData === 'object') updated.pageData.updates = 0;
+            return updated;
         default:
-            throw new Error('Invalid action!');
+            return updated;
     }
 };
 

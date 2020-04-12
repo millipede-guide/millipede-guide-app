@@ -11,7 +11,8 @@ export default ({ dir, id, size = 'small' }) => {
 
     const get = (storage, i) => {
         try {
-            return storage.pageData[dir][id][i];
+            const prop = storage.pageData[dir][id][i];
+            return typeof prop === 'boolean' ? prop : prop.v;
         } catch (e) {
             return false;
         }

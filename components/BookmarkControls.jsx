@@ -5,29 +5,59 @@ import CompletedOnIcon from 'mdi-material-ui/CheckCircle';
 import CompletedOffIcon from 'mdi-material-ui/CheckCircleOutline';
 import FavouriteOnIcon from 'mdi-material-ui/Heart';
 import FavouriteOffIcon from 'mdi-material-ui/HeartOutline';
+import Moment from 'moment';
 import { StorageContext } from './Storage';
 
-const Control = ({ dir, id, size = 'medium', storage, setStorage }) => {
+const Control = ({ dir, id, userUpdate = false, size = 'medium', storage, setStorage }) => {
     const bookmark = 'mark';
     const completed = 'done';
     const favourite = 'favt';
 
     const get = i => {
         try {
-            return storage.pageData[dir][id][i];
+            const prop = storage.pageData[dir][id][i];
+            return typeof prop === 'boolean' ? prop : prop.v;
         } catch (e) {
             return false;
         }
     };
 
-    const set = i => setStorage({ type: 'pageData', dir, id, key: i, val: !get(i) });
+    const getTime = i => {
+        try {
+            const prop = storage.pageData[dir][id][i];
+            if (typeof prop === 'boolean' || !prop.v) {
+                return '';
+            }
+            return Moment()
+                .utc(prop.t)
+                .local()
+                .format(' (Do MMM YYYY)');
+        } catch (e) {
+            return '';
+        }
+    };
+
+    const set = i =>
+        setStorage({
+            type: 'pageData',
+            dir,
+            id,
+            userUpdate,
+            key: i,
+            val: {
+                v: !get(i),
+                t: Moment()
+                    .utc()
+                    .format('X'),
+            },
+        });
 
     return (
         <>
             <IconButton
                 disabled={!storage.available}
                 size={size}
-                title="Bookmark"
+                title={`Bookmark${getTime(bookmark)}`}
                 onClick={() => set(bookmark)}
                 color="primary"
                 style={{ color: get(bookmark) ? 'gold' : '' }}
@@ -37,7 +67,7 @@ const Control = ({ dir, id, size = 'medium', storage, setStorage }) => {
             <IconButton
                 disabled={!storage.available}
                 size={size}
-                title="Completed"
+                title={`Completed${getTime(completed)}`}
                 onClick={() => set(completed)}
                 color="primary"
                 style={{ color: get(completed) ? 'green' : '' }}
@@ -47,7 +77,7 @@ const Control = ({ dir, id, size = 'medium', storage, setStorage }) => {
             <IconButton
                 disabled={!storage.available}
                 size={size}
-                title="Favourite"
+                title={`Favourite${getTime(favourite)}`}
                 onClick={() => set(favourite)}
                 color="primary"
                 style={{ color: get(favourite) ? 'red' : '' }}
