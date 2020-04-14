@@ -17,11 +17,11 @@ module.exports = {
         ['parks', 'campsites', 'routes', 'attractions'].forEach(category => {
             paths[`/${category}/all`] = { page: `/${category}/all` };
 
-            JSON.parse(fs.readFileSync(`public/export/${category}/index.json`)).forEach(item => {
-                paths[`/${category}/${item.id}`] = {
+            JSON.parse(fs.readFileSync(`public/export/${category}/index.geo.json`)).features.forEach(item => {
+                paths[`/${category}/${item.properties.id}`] = {
                     page: `/${category}/[id]`,
                     query: {
-                        id: item.id,
+                        id: item.properties.id,
                     },
                 };
             });
