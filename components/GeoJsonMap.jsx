@@ -149,6 +149,14 @@ export default ({ center, geoJsonUrl, showAltitudeProfile }) => {
                     layers: [osmBaseLayer, ...Object.values(markerLayers)],
                 });
 
+                lMap.on('enterFullscreen', () => {
+                    window.setTimeout(() => lMap.invalidateSize(), 100);
+                });
+                
+                lMap.on('exitFullscreen', () => {
+                    window.setTimeout(() => lMap.invalidateSize(), 100);
+                });
+
                 setDynamicStyle(4);
 
                 window.L.control
