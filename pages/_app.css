@@ -14,19 +14,19 @@
     border: 0px;
     border-radius: 5px;
     overflow: hidden;
-    color: white;
-    background-color: black;
+    color: black;
+    background-color: white;
     transform-origin: center center;
 }
 
-.mapicon-bus {
-    color: #FFF;
-    background-color: #00F;
+.mapicon-key {
+    display: inline-block;
+    margin: 5px 2px 0 2px;
 }
 
-.mapicon-campsite {
-    color: black;
-    background-color: #0F0;
+.mapicon-transport {
+    color: #FFF;
+    background-color: #FF7F00;
 }
 
 .mapicon-marker {
@@ -40,8 +40,8 @@
 }
 
 .mapicon-photo {
-    color: black;
-    background-color: #FFF;
+    color: #FFF;
+    background-color: #B0B;
 }
 
 .mapicon-shelter {
@@ -49,14 +49,9 @@
     background-color: #8F8;
 }
 
-.mapicon-toilets, .mapicon-toilets_f, .mapicon-toilets_m {
+.mapicon-toilets {
     color: black;
     background-color: #FFFF00;
-}
-
-.mapicon-train {
-    color: white;
-    background-color: #00F;
 }
 
 .mapicon-water {

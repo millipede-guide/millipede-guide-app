@@ -5,8 +5,7 @@ import Head from 'next/head';
 import LightboxContainer from './LightboxContainer';
 import Layout from './Layout';
 import MapToolbar from './MapToolbar';
-import LeafletMap from './LeafletMap';
-import LeafletMapWithAltitudeProfile from './LeafletMapWithAltitudeProfile';
+import GeoJsonMap from './GeoJsonMap';
 import Photos from './Photos';
 import Attribution from './Attribution';
 import WebsiteLinks from './WebsiteLinks';
@@ -17,9 +16,9 @@ import OpenSource from './OpenSource';
 import { H1 } from './Typography';
 import Link from './Link';
 import photoIndex from '../public/photos/index.json';
+import { getFeaturePhoto } from '../utils/getFeaturePhoto';
 
 export default ({ dir, id, doc, jsonUrl }) => {
-    const Map = dir === 'routes' ? LeafletMapWithAltitudeProfile : LeafletMap;
     return (
         <>
             <Head>
@@ -35,11 +34,11 @@ export default ({ dir, id, doc, jsonUrl }) => {
                         .filter(Boolean)
                         .join(', ')}
                 />
-                {doc.photos && doc.photos.length > 0 && doc.photos[0].src in photoIndex && (
+                {doc.photos && doc.photos.length > 0 && (
                     <meta
                         property="og:image"
                         content={`https://www.millipede-guide.com/photos/sm/${
-                            photoIndex[doc.photos[0].src].hash
+                            photoIndex[getFeaturePhoto(doc.photos).src].hash
                         }.jpg`}
                     />
                 )}
@@ -55,7 +54,11 @@ export default ({ dir, id, doc, jsonUrl }) => {
                     </Breadcrumbs>
                     <H1>{doc.name}</H1>
                     <MapToolbar dir={dir} id={id} doc={doc} />
-                    <Map center={doc.location} geoJsonUrl={jsonUrl.replace('.json', '.geo.json')} />
+                    <GeoJsonMap
+                        center={doc.location}
+                        geoJsonUrl={jsonUrl.replace('.json', '.geo.json')}
+                        showAltitudeProfile={dir === 'routes'}
+                    />
                     <Photos doc={doc} />
                     <Features heading="Features" features={doc.features} />
                     <Features heading="Allowances and Restrictions" features={doc.restrictions} />

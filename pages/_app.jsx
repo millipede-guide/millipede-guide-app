@@ -1,7 +1,5 @@
 import 'normalize.css/normalize.css';
 import '@mdi/font/css/materialdesignicons.min.css';
-import 'leaflet/dist/leaflet.css';
-// import 'leaflet.fullscreen/Control.FullScreen.css';
 import 'react-image-lightbox/style.css';
 import 'typeface-roboto/index.css';
 import './_app.css';

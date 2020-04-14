@@ -1,4 +1,4 @@
 import List from '../../components/IndexList';
-import index from '../../public/export/routes/index.json';
+import geo from '../../public/export/routes/index.geo.json';
 
-export default () => <List category="routes" index={index} />;
+export default () => <List category="routes" geo={geo} />;

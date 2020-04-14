@@ -12,21 +12,19 @@ import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
 import Head from 'next/head';
 import Layout from './Layout';
-import photoIndex from '../public/photos/index.json';
-import LeafletMap from './LeafletMap';
 import BookmarkControls from './BookmarkControls';
 import Bookmarks from './Bookmarks';
 import { StorageContext } from './Storage';
-import sitePhotos from '../utils/sitePhotos.json';
+import MarkerMap from './MarkerMap';
 
-export default ({ category, index }) => {
+export default ({ category, geo }) => {
     const [storage, setStorage] = useContext(StorageContext);
 
     const flags = ['mark', 'done', 'favt'];
 
-    const indexFiltered = useMemo(
+    const geoFeatures = useMemo(
         () =>
-            index.filter(item => {
+            geo.features.filter(feature => {
                 if (
                     storage &&
                     storage.pageData &&
@@ -42,7 +40,7 @@ export default ({ category, index }) => {
                             filter = false;
                         }
                         try {
-                            current = storage.pageData[category][item.id][flag].v;
+                            current = storage.pageData[category][feature.properties.id][flag].v;
                         } catch (e) {
                             current = false;
                         }
@@ -51,7 +49,7 @@ export default ({ category, index }) => {
                 }
                 return true;
             }),
-        [storage, index],
+        [storage, geo],
     );
 
     const reset = () => {
@@ -67,10 +65,6 @@ export default ({ category, index }) => {
                 <meta property="og:site_name" content="The Millipede Guide" />
                 <meta property="og:title" content={humanize(category)} />
                 <meta property="og:type" content="website" />
-                <meta
-                    property="og:image"
-                    content={`/photos/sm/${photoIndex[sitePhotos[category].src].hash}.jpg`}
-                />
             </Head>
             <Box mt={3} mb={2}>
                 <Grid
@@ -89,13 +83,17 @@ export default ({ category, index }) => {
                 </Grid>
             </Box>
             <Box mt={1}>
-                <LeafletMap
-                    center={index.length > 0 ? index[0].location : [0, 0]}
-                    markers={indexFiltered}
+                <MarkerMap
+                    center={
+                        geo.features.length > 0
+                            ? [...geo.features[0].geometry.coordinates].reverse()
+                            : [0, 0]
+                    }
+                    features={geoFeatures}
                     category={category}
                 />
             </Box>
-            {indexFiltered.length === 0 && (
+            {geoFeatures.length === 0 && (
                 <Box mt={3}>
                     <Alert
                         elevation={0}
@@ -119,12 +117,12 @@ export default ({ category, index }) => {
                     alignItems="flex-start"
                     spacing={2}
                 >
-                    {indexFiltered.map(item => (
-                        <Grid key={item.id} item xs={6} sm={6} md={3}>
+                    {geoFeatures.map(feature => (
+                        <Grid key={feature.id} item xs={6} sm={6} md={3}>
                             <Card>
                                 <NextLink
                                     href={`/${category}/[id]`}
-                                    as={`/${category}/${item.id}/`}
+                                    as={`/${category}/${feature.properties.id}/`}
                                 >
                                     <CardActionArea>
                                         <CardMedia
@@ -133,15 +131,12 @@ export default ({ category, index }) => {
                                                 textAlign: 'right',
                                             }}
                                             image={
-                                                item.photos.length > 0 &&
-                                                item.photos[0].src in photoIndex
-                                                    ? `/photos/sm/${
-                                                          photoIndex[item.photos[0].src].hash
-                                                      }.jpg`
+                                                feature.properties.photo
+                                                    ? feature.properties.photo.src
                                                     : null
                                             }
                                         >
-                                            <Bookmarks dir={category} id={item.id} />
+                                            <Bookmarks dir={category} id={feature.properties.id} />
                                         </CardMedia>
                                         <CardContent>
                                             <Typography
@@ -149,14 +144,15 @@ export default ({ category, index }) => {
                                                 component="div"
                                                 style={{ margin: 0 }}
                                             >
-                                                {item.region}, {item.country}
+                                                {feature.properties.region},{' '}
+                                                {feature.properties.country}
                                             </Typography>
                                             <Typography
                                                 variant="h2"
                                                 component="div"
                                                 style={{ marginTop: 0 }}
                                             >
-                                                {item.name}
+                                                {feature.properties.name}
                                             </Typography>
                                         </CardContent>
                                     </CardActionArea>

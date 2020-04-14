@@ -1,4 +1,4 @@
 import List from '../../components/IndexList';
-import index from '../../public/export/parks/index.json';
+import geo from '../../public/export/parks/index.geo.json';
 
-export default () => <List category="parks" index={index} />;
+export default () => <List category="parks" geo={geo} />;

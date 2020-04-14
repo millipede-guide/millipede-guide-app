@@ -1,4 +1,4 @@
 import List from '../../components/IndexList';
-import index from '../../public/export/campsites/index.json';
+import geo from '../../public/export/campsites/index.geo.json';
 
-export default () => <List category="campsites" index={index} />;
+export default () => <List category="campsites" geo={geo} />;

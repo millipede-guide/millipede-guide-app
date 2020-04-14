@@ -1,17 +1,6 @@
 const humanize = require('underscore.string/humanize');
 const photoIndex = require('../public/photos/index.json');
 
-const type = (key, item) => {
-    switch (key) {
-        case 'toilets':
-            return item.gender === 'm' || item.gender === 'f' ? `toilets_${item.gender}` : key;
-        case 'transport':
-            return item.type;
-        default:
-            return key;
-    }
-};
-
 module.exports.docToGeoJson = (doc, geo) => {
     ['transport', 'parking', 'water', 'toilets', 'shelter'].forEach(key => {
         if (doc[key] !== undefined) {
@@ -25,7 +14,7 @@ module.exports.docToGeoJson = (doc, geo) => {
                             coordinates: [location[1], location[0]],
                         },
                         properties: {
-                            type: type(key, item),
+                            type: key,
                             name: humanize(key) + (name ? ` - ${name}` : ''),
                             photo:
                                 photos && photos.length >= 1
