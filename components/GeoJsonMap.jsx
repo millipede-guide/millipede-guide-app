@@ -145,6 +145,8 @@ export default ({ center, geoJsonUrl, showAltitudeProfile }) => {
                     fullscreenControl: true,
                     fullscreenControlOptions: {
                         position: 'topleft',
+                        forceSeparateButton: true,
+                        forcePseudoFullscreen: true,
                     },
                     layers: [osmBaseLayer, ...Object.values(markerLayers)],
                 });

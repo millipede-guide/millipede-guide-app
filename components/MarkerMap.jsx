@@ -79,8 +79,18 @@ export default ({ center, features, category }) => {
                         fullscreenControl: true,
                         fullscreenControlOptions: {
                             position: 'topleft',
+                            forceSeparateButton: true,
+                            forcePseudoFullscreen: true,
                         },
                         layers: [osmBaseLayer, lGeo],
+                    });
+
+                    lMap.on('enterFullscreen', () => {
+                        window.setTimeout(() => lMap.invalidateSize(), 100);
+                    });
+                    
+                    lMap.on('exitFullscreen', () => {
+                        window.setTimeout(() => lMap.invalidateSize(), 100);
                     });
 
                     setDynamicStyle(4);
