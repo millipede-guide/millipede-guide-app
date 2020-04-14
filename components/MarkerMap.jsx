@@ -6,12 +6,12 @@ export default ({ center, features, category }) => {
     const mapRef = useRef(null);
 
     const mapIcon = type =>
-        window.L.divIcon({
-            className: 'mapicon-parent',
-            html: `<div class="mapicon mapicon-${type} mdi mdi-map-marker"></div>`,
-            iconSize: [20, 20],
-            iconAnchor: [10, 10],
-        });
+          window.L.divIcon({
+              className: 'mapicon-parent',
+              html: `<div class="mapicon mapicon-${type} mdi mdi-map-marker"></div>`,
+              iconSize: [20, 20],
+              iconAnchor: [10, 10],
+          });
 
     const pointToLayer = (feature, latlng) => {
         const t = feature.properties.type;
@@ -66,7 +66,7 @@ export default ({ center, features, category }) => {
                         'https://tile.millipede-guide.com/{z}/{x}/{y}.png',
                         {
                             attribution:
-                                'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+                            'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
                         },
                     );
 
@@ -92,21 +92,23 @@ export default ({ center, features, category }) => {
 
                 mapRef.current.lGeo.clearLayers();
 
-                const geo = window.L.geoJSON(
-                    {
-                        type: 'FeatureCollection',
-                        features,
-                    },
-                    {
-                        pointToLayer,
-                        onEachFeature,
-                    },
-                ).addTo(mapRef.current.lGeo);
+                if (features.length > 0) {
+                    const geo = window.L.geoJSON(
+                        {
+                            type: 'FeatureCollection',
+                            features,
+                        },
+                        {
+                            pointToLayer,
+                            onEachFeature,
+                        },
+                    ).addTo(mapRef.current.lGeo);
 
-                mapRef.current.lMap.fitBounds(geo.getBounds(), {
-                    animate: false,
-                    padding: [10, 10],
-                });
+                    mapRef.current.lMap.fitBounds(geo.getBounds(), {
+                        animate: false,
+                        padding: [10, 10],
+                    });
+                }
             }
         }
     }, [features]);

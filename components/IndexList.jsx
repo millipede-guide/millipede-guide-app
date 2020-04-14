@@ -118,7 +118,7 @@ export default ({ category, geo }) => {
                     spacing={2}
                 >
                     {geoFeatures.map(feature => (
-                        <Grid key={feature.id} item xs={6} sm={6} md={3}>
+                        <Grid key={feature.properties.id} item xs={6} sm={4} md={3}>
                             <Card>
                                 <NextLink
                                     href={`/${category}/[id]`}
