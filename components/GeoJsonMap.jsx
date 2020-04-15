@@ -21,24 +21,22 @@ export default ({ center, geoJsonUrl, showAltitudeProfile }) => {
     };
 
     const mapIcon = type =>
-        window.L.divIcon({
-            className: 'mapicon-parent',
-            html: `<div class="mapicon mapicon-${type} mdi mdi-${markerIcons[type]}"></div>`,
-            iconSize: [20, 20],
-            iconAnchor: [10, 10],
-        });
+          window.L.divIcon({
+              className: 'mapicon-parent',
+              html: `<div class="mapicon mapicon-${type} mdi mdi-${markerIcons[type]}"></div>`,
+              iconSize: [20, 20],
+              iconAnchor: [10, 10],
+          });
 
     const pointToLayer = (feature, latlng) => {
         const t = feature.properties.type;
-        return window.L.featureGroup([
-            window.L.marker(latlng, {
-                icon: mapIcon(t),
-                title: t,
-                alt: t,
-                zIndexOffset: 1000 + (markerTypes.length - markerTypes.indexOf(t)) * 10,
-                riseOnHover: true,
-            }),
-        ]);
+        return window.L.marker(latlng, {
+            icon: mapIcon(t),
+            title: humanize(t),
+            alt: humanize(t),
+            zIndexOffset: 1000 + (markerTypes.length - markerTypes.indexOf(t)) * 10,
+            riseOnHover: true,
+        });
     };
 
     const onEachFeature = (feature, featureLayer) => {
@@ -90,7 +88,7 @@ export default ({ center, geoJsonUrl, showAltitudeProfile }) => {
                     'https://tile.millipede-guide.com/{z}/{x}/{y}.png',
                     {
                         attribution:
-                            'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+                        'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
                     },
                 );
 

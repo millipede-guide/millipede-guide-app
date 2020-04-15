@@ -15,14 +15,12 @@ export default ({ center, features, category }) => {
 
     const pointToLayer = (feature, latlng) => {
         const t = feature.properties.type;
-        return window.L.featureGroup([
-            window.L.marker(latlng, {
-                icon: mapIcon(t),
-                title: t,
-                alt: t,
-                riseOnHover: true,
-            }),
-        ]);
+        return window.L.marker(latlng, {
+            icon: mapIcon(t),
+            title: feature.properties.name,
+            alt: feature.properties.name,
+            riseOnHover: true,
+        });
     };
 
     const onEachFeature = (feature, featureLayer) => {
@@ -70,7 +68,7 @@ export default ({ center, features, category }) => {
                         },
                     );
 
-                    const lGeo = window.L.layerGroup();
+                    var lGeo = window.L.markerClusterGroup();
 
                     const lMap = window.L.map('mapContainer', {
                         center,
@@ -116,7 +114,7 @@ export default ({ center, features, category }) => {
 
                     mapRef.current.lMap.fitBounds(geo.getBounds(), {
                         animate: false,
-                        padding: [10, 10],
+                        padding: [20, 20],
                     });
                 }
             }

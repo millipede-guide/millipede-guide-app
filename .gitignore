@@ -13,3 +13,4 @@
 !/public/photos/lg/.keep
 /.env
 /public/docs
+/public/leaflet.js

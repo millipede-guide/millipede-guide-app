@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "dev": "next",
-        "build": "next build",
+        "build": "webpack --config leaflet.webpack.config.js && next build",
         "export": "next export",
         "prod": "next start",
         "routes": "node -e 'require(\"./next.config.js\").exportPathMap()'",
@@ -30,6 +30,9 @@
         "isomorphic-unfetch": "^3.0.0",
         "js-yaml": "^3.13.1",
         "jsonschema": "^1.2.6",
+        "leaflet": "^1.6.0",
+        "leaflet.fullscreen": "^1.6.0",
+        "leaflet.markercluster": "^1.4.1",
         "mdi-material-ui": "^6.13.2",
         "mkdirp": "^1.0.3",
         "moment": "^2.24.0",
@@ -46,7 +49,8 @@
         "togpx": "^0.5.4",
         "tokml": "^0.4.0",
         "typeface-roboto": "0.0.75",
-        "underscore.string": "^3.3.5"
+        "underscore.string": "^3.3.5",
+        "webpack-cli": "^3.3.11"
     },
     "devDependencies": {
         "babel-eslint": "^10.1.0",

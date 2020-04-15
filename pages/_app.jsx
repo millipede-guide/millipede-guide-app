@@ -3,6 +3,10 @@ import '@mdi/font/css/materialdesignicons.min.css';
 import 'react-image-lightbox/style.css';
 import 'typeface-roboto/index.css';
 import './_app.css';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet.fullscreen/Control.FullScreen.css';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
 import App from 'next/app';
 import { ThemeProvider } from '@material-ui/core/styles';

@@ -57,14 +57,12 @@ export default class MyDocument extends Document {
                         sizes="180x180"
                         href="/assets/icons/apple-touch-icon-180x180.png"
                     />
-                    <link rel="stylesheet" href="/leaflet/leaflet.css" />
-                    <script src="/leaflet/leaflet.js" />
-                    <link rel="stylesheet" href="/leaflet/fullscreen/Control.FullScreen.css" />
-                    <script src="/leaflet/fullscreen/Control.FullScreen.js" />
                 </Head>
                 <body>
                     <Main />
                     <NextScript />
+                    {/* See leaflet.webpack.config.js */}
+                    <script src="/leaflet.js" />
                 </body>
             </Html>
         );
