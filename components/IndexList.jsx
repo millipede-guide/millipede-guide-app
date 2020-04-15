@@ -7,7 +7,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import NextLink from 'next/link';
 import humanize from 'underscore.string/humanize';
 import Box from '@material-ui/core/Box';
-import { useContext, useMemo } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
 import Head from 'next/head';
@@ -16,15 +16,53 @@ import BookmarkControls from './BookmarkControls';
 import Bookmarks from './Bookmarks';
 import { StorageContext } from './Storage';
 import MarkerMap from './MarkerMap';
+import IndexFilterDialog from './IndexFilterDialog';
 
 export default ({ category, geo }) => {
-    const [storage, setStorage] = useContext(StorageContext);
-
     const flags = ['mark', 'done', 'favt'];
+    const [storage, setStorage] = useContext(StorageContext);
+    const [dialog, showDialog] = useState(false);
+
+    const geoLocations = useMemo(() => {
+        const locations = {};
+
+        geo.features.forEach(feature => {
+            const { country, region, park } = feature.properties;
+            if (country) {
+                if (locations[country] === undefined) locations[country] = {};
+                if (region) {
+                    if (locations[country][region] === undefined) locations[country][region] = [];
+                    if (
+                        category !== 'parks' &&
+                        park &&
+                        locations[country][region].indexOf(park) === -1
+                    )
+                        locations[country][region].push(park);
+                }
+            }
+        });
+
+        return locations;
+    }, [geo]);
 
     const geoFeatures = useMemo(
         () =>
             geo.features.filter(feature => {
+                const prop = feature.properties;
+
+                if (storage.indexFilter !== undefined) {
+                    const f = storage.indexFilter;
+                    if (f.country) {
+                        if (f.country !== prop.country) return false;
+                        if (f.region) {
+                            if (f.region !== prop.region) return false;
+                            if (category !== 'parks' && f.park) {
+                                if (f.park !== prop.park) return false;
+                            }
+                        }
+                    }
+                }
+
                 if (
                     storage &&
                     storage.pageData &&
@@ -47,14 +85,16 @@ export default ({ category, geo }) => {
                         return bool && (filter !== true || current === true);
                     }, true);
                 }
+
                 return true;
             }),
         [storage, geo],
     );
 
     const reset = () => {
+        setStorage({ action: 'indexFilter', data: {} });
         flags.forEach(k =>
-            setStorage({ type: 'pageData', dir: category, id: 'index', key: k, val: false }),
+            setStorage({ action: 'pageData', dir: category, id: 'index', key: k, val: false }),
         );
     };
 
@@ -66,7 +106,7 @@ export default ({ category, geo }) => {
                 <meta property="og:title" content={humanize(category)} />
                 <meta property="og:type" content="website" />
             </Head>
-            <Box mt={3} mb={2}>
+            <Box mt={2}>
                 <Grid
                     container
                     direction="row"
@@ -82,6 +122,22 @@ export default ({ category, geo }) => {
                     </Grid>
                 </Grid>
             </Box>
+            <Box mt={1}>
+                <Button onClick={() => showDialog(true)}>
+                    {(storage.indexFilter &&
+                        [
+                            storage.indexFilter.park,
+                            storage.indexFilter.region,
+                            storage.indexFilter.country,
+                        ]
+                            .filter(Boolean)
+                            .join(', ')) ||
+                        'All Countries'}
+                </Button>
+            </Box>
+            <IndexFilterDialog
+                {...{ dialog, showDialog, category, geoLocations, storage, setStorage }}
+            />
             <Box mt={1}>
                 <MarkerMap
                     center={

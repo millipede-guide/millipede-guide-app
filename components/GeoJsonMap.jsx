@@ -21,12 +21,12 @@ export default ({ center, geoJsonUrl, showAltitudeProfile }) => {
     };
 
     const mapIcon = type =>
-          window.L.divIcon({
-              className: 'mapicon-parent',
-              html: `<div class="mapicon mapicon-${type} mdi mdi-${markerIcons[type]}"></div>`,
-              iconSize: [20, 20],
-              iconAnchor: [10, 10],
-          });
+        window.L.divIcon({
+            className: 'mapicon-parent',
+            html: `<div class="mapicon mapicon-${type} mdi mdi-${markerIcons[type]}"></div>`,
+            iconSize: [20, 20],
+            iconAnchor: [10, 10],
+        });
 
     const pointToLayer = (feature, latlng) => {
         const t = feature.properties.type;
@@ -88,7 +88,7 @@ export default ({ center, geoJsonUrl, showAltitudeProfile }) => {
                     'https://tile.millipede-guide.com/{z}/{x}/{y}.png',
                     {
                         attribution:
-                        'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
+                            'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
                     },
                 );
 
@@ -141,7 +141,7 @@ export default ({ center, geoJsonUrl, showAltitudeProfile }) => {
                     zoom: 4,
                     scrollWheelZoom: true,
                     fullscreenControl: {
-                        pseudoFullscreen: true
+                        pseudoFullscreen: true,
                     },
                     layers: [osmBaseLayer, ...Object.values(markerLayers)],
                 });

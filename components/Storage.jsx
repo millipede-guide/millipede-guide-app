@@ -64,6 +64,9 @@ const actions = (storage, action) => {
             deepSet(updated, ['pageData', action.dir, action.id, action.key], action.val);
             if (action.userUpdate) updated.pageData.updates = (updated.pageData.updates || 0) + 1;
             return updated;
+        case 'indexFilter':
+            updated.indexFilter = action.data;
+            return updated;
         case 'resetPageDataUpdates':
             if (typeof updated.pageData === 'object') updated.pageData.updates = 0;
             return updated;
