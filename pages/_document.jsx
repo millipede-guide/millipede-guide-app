@@ -60,9 +60,9 @@ export default class MyDocument extends Document {
                 </Head>
                 <body>
                     <Main />
-                    <NextScript />
                     {/* See leaflet.webpack.config.js */}
                     <script src="/leaflet.js" />
+                    <NextScript />
                 </body>
             </Html>
         );

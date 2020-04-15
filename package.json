@@ -31,7 +31,7 @@
         "js-yaml": "^3.13.1",
         "jsonschema": "^1.2.6",
         "leaflet": "^1.6.0",
-        "leaflet.fullscreen": "^1.6.0",
+        "leaflet-fullscreen": "^1.0.2",
         "leaflet.markercluster": "^1.4.1",
         "mdi-material-ui": "^6.13.2",
         "mkdirp": "^1.0.3",

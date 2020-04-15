@@ -74,21 +74,10 @@ export default ({ center, features, category }) => {
                         center,
                         zoom: 4,
                         scrollWheelZoom: true,
-                        fullscreenControl: true,
-                        fullscreenControlOptions: {
-                            position: 'topleft',
-                            forceSeparateButton: true,
-                            forcePseudoFullscreen: true,
+                        fullscreenControl: {
+                            pseudoFullscreen: true
                         },
                         layers: [osmBaseLayer, lGeo],
-                    });
-
-                    lMap.on('enterFullscreen', () => {
-                        window.setTimeout(() => lMap.invalidateSize(), 100);
-                    });
-                    
-                    lMap.on('exitFullscreen', () => {
-                        window.setTimeout(() => lMap.invalidateSize(), 100);
                     });
 
                     setDynamicStyle(4);
