@@ -3,65 +3,11 @@ import { useRef, useState, useEffect } from 'react';
 import humanize from 'underscore.string/humanize';
 import { ContentBox } from './Typography';
 import GeoJsonAltitudeProfile from './GeoJsonAltitudeProfile';
+import { markerTypes, markerIcons, pointToLayer, onEachFeature } from '../utils/mapMarkers';
 
 export default ({ center, geoJsonUrl, showAltitudeProfile }) => {
     const mapRef = useRef(null);
     const [geo, setGeo] = useState(null);
-
-    const markerTypes = ['marker', 'toilets', 'water', 'shelter', 'transport', 'parking', 'photo'];
-
-    const markerIcons = {
-        marker: 'map-marker',
-        parking: 'parking',
-        photo: 'camera',
-        shelter: 'home-variant',
-        toilets: 'human-male-female',
-        transport: 'bus',
-        water: 'water-pump',
-    };
-
-    const mapIcon = type =>
-        window.L.divIcon({
-            className: 'mapicon-parent',
-            html: `<div class="mapicon mapicon-${type} mdi mdi-${markerIcons[type]}"></div>`,
-            iconSize: [20, 20],
-            iconAnchor: [10, 10],
-        });
-
-    const pointToLayer = (feature, latlng) => {
-        const t = feature.properties.type;
-        return window.L.marker(latlng, {
-            icon: mapIcon(t),
-            title: humanize(t),
-            alt: humanize(t),
-            zIndexOffset: 1000 + (markerTypes.length - markerTypes.indexOf(t)) * 10,
-            riseOnHover: true,
-        });
-    };
-
-    const onEachFeature = (feature, featureLayer) => {
-        featureLayer.bindPopup(
-            () => {
-                const props = feature.properties;
-                const html = [];
-                if ('name' in props && props.name) {
-                    html.push(`<div><strong>${props.name}</strong></div>`);
-                }
-                if ('photo' in props && props.photo) {
-                    html.push(
-                        `<div class='MuiCardMedia-root' style='width: 216px; height: 140px; background-image: url("${props.photo.src}")'></div>`,
-                    );
-                }
-                return html.join('');
-            },
-            {
-                autoPan: true,
-                closeButton: true,
-                closeOnEscapeKey: true,
-                closeOnClick: true,
-            },
-        );
-    };
 
     const setDynamicStyle = zoom => {
         let scale = zoom / 18;
@@ -96,24 +42,15 @@ export default ({ center, geoJsonUrl, showAltitudeProfile }) => {
                     'Street Map': osmBaseLayer,
                 };
 
+                const featuresLayer = window.L.geoJSON(geo, {
+                    pointToLayer,
+                    onEachFeature,
+                    filter: f =>
+                        f.geometry.type !== 'Point' ||
+                        markerTypes.indexOf(f.properties.type) === -1,
+                });
+
                 const markerLayers = {};
-
-                const lines = geo.features.filter(f => f.geometry.type === 'LineString');
-
-                if (lines.length > 0) {
-                    markerLayers[
-                        `<span class="mdi mdi-vector-polyline"><span/> Track`
-                    ] = window.L.geoJSON(
-                        {
-                            type: 'FeatureCollection',
-                            features: lines,
-                        },
-                        {
-                            pointToLayer,
-                            onEachFeature,
-                        },
-                    );
-                }
 
                 markerTypes.forEach(t => {
                     const points = geo.features.filter(
@@ -143,7 +80,7 @@ export default ({ center, geoJsonUrl, showAltitudeProfile }) => {
                     fullscreenControl: {
                         pseudoFullscreen: true,
                     },
-                    layers: [osmBaseLayer, ...Object.values(markerLayers)],
+                    layers: [osmBaseLayer, featuresLayer, ...Object.values(markerLayers)],
                 });
 
                 setDynamicStyle(4);
@@ -167,7 +104,7 @@ export default ({ center, geoJsonUrl, showAltitudeProfile }) => {
     return (
         <ContentBox>
             <Paper elevation={1}>
-                <div id="mapContainer" style={{ height: '25vh' }} />
+                <div id="mapContainer" style={{ height: '25vh', minHeight: '240px' }} />
             </Paper>
             <style id="mapDynamicStyle" />
             {showAltitudeProfile && <GeoJsonAltitudeProfile mapRef={mapRef} geo={geo} />}

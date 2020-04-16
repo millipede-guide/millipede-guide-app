@@ -9,6 +9,8 @@ export default class MyDocument extends Document {
             <Html>
                 <Head>
                     <title>Millipede Guide</title>
+                    <meta property="og:site_name" content="The Millipede Guide" />
+                    <meta name="twitter:site" content="@millipedeguide" />
                     <meta
                         name="viewport"
                         content="minimum-scale=1, initial-scale=1, width=device-width"

@@ -57,15 +57,21 @@ const actions = (storage, action) => {
     const updated = { ...storage };
     switch (action.action || action.type) {
         case 'load':
-            return { ...action.data, available: true };
+            return { ...action.data, available: true, error: false };
         case 'error':
-            return { ...storage, available: false };
+            return { ...storage, available: false, error: true };
         case 'pageData':
             deepSet(updated, ['pageData', action.dir, action.id, action.key], action.val);
             if (action.userUpdate) updated.pageData.updates = (updated.pageData.updates || 0) + 1;
             return updated;
-        case 'indexFilter':
-            updated.indexFilter = action.data;
+        case 'indexLocationFilter':
+            updated.indexLocationFilter = action.data;
+            return updated;
+        case 'indexBooleanFilter':
+            updated.indexBooleanFilter = {
+                ...storage.indexBooleanFilter,
+                [action.category]: action.data,
+            };
             return updated;
         case 'resetPageDataUpdates':
             if (typeof updated.pageData === 'object') updated.pageData.updates = 0;

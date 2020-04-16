@@ -29,7 +29,7 @@
     background-color: #FF7F00;
 }
 
-.mapicon-marker {
+.mapicon-parks, .mapicon-campsites, .mapicon-routes, .mapicon-attractions  {
     color: white;
     background-color: red;
 }

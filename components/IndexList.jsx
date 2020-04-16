@@ -7,137 +7,161 @@ import CardMedia from '@material-ui/core/CardMedia';
 import NextLink from 'next/link';
 import humanize from 'underscore.string/humanize';
 import Box from '@material-ui/core/Box';
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useMemo, useState, useEffect } from 'react';
 import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
 import Head from 'next/head';
+import FilterOptionsActiveIcon from 'mdi-material-ui/TextBoxCheck';
+import FilterOptionsInactiveIcon from 'mdi-material-ui/TextBoxCheckOutline';
+import IconButton from '@material-ui/core/IconButton';
+import Badge from '@material-ui/core/Badge';
 import Layout from './Layout';
 import BookmarkControls from './BookmarkControls';
 import Bookmarks from './Bookmarks';
 import { StorageContext } from './Storage';
 import MarkerMap from './MarkerMap';
-import IndexFilterDialog from './IndexFilterDialog';
+import LocationFilterDialog from './LocationFilterDialog';
+import BooleanFilterDialog from './BooleanFilterDialog';
+import { H1 } from './Typography';
 
 export default ({ category, geo }) => {
     const flags = ['mark', 'done', 'favt'];
-    const [storage, setStorage] = useContext(StorageContext);
-    const [dialog, showDialog] = useState(false);
 
-    const geoLocations = useMemo(() => {
-        const locations = {};
+    const [storage] = useContext(StorageContext);
+    const [geoFeatures, setGeoFeatures] = useState([]);
+    const [showLocationFilterDialog, setLocationFilterDialog] = useState(false);
+    const [showBooleanFilterDialog, setBooleanFilterDialog] = useState(false);
 
-        geo.features.forEach(feature => {
-            const { country, region, park } = feature.properties;
-            if (country) {
-                if (locations[country] === undefined) locations[country] = {};
-                if (region) {
-                    if (locations[country][region] === undefined) locations[country][region] = [];
-                    if (
-                        category !== 'parks' &&
-                        park &&
-                        locations[country][region].indexOf(park) === -1
-                    )
-                        locations[country][region].push(park);
-                }
-            }
-        });
-
-        return locations;
-    }, [geo]);
-
-    const geoFeatures = useMemo(
+    useEffect(
         () =>
-            geo.features.filter(feature => {
-                const prop = feature.properties;
+            setGeoFeatures(
+                geo.features.filter(feature => {
+                    const props = feature.properties;
 
-                if (storage.indexFilter !== undefined) {
-                    const f = storage.indexFilter;
-                    if (f.country) {
-                        if (f.country !== prop.country) return false;
-                        if (f.region) {
-                            if (f.region !== prop.region) return false;
-                            if (category !== 'parks' && f.park) {
-                                if (f.park !== prop.park) return false;
+                    if (storage.indexLocationFilter !== undefined) {
+                        const f = storage.indexLocationFilter;
+                        if (f.country) {
+                            if (f.country !== props.country) return false;
+                            if (f.region) {
+                                if (f.region !== props.region) return false;
+                                if (category !== 'parks' && f.park) {
+                                    if (f.park !== props.park) return false;
+                                }
                             }
                         }
                     }
-                }
 
-                if (
-                    storage &&
-                    storage.pageData &&
-                    storage.pageData[category] &&
-                    storage.pageData[category].index
-                ) {
-                    return flags.reduce((bool, flag) => {
-                        let filter;
-                        let current;
-                        try {
-                            filter = storage.pageData[category].index[flag].v;
-                        } catch (e) {
-                            filter = false;
-                        }
-                        try {
-                            current = storage.pageData[category][feature.properties.id][flag].v;
-                        } catch (e) {
-                            current = false;
-                        }
-                        return bool && (filter !== true || current === true);
-                    }, true);
-                }
+                    if (
+                        storage &&
+                        storage.pageData &&
+                        storage.pageData[category] &&
+                        storage.pageData[category].index
+                    ) {
+                        if (
+                            !flags.reduce((bool, flag) => {
+                                let filter;
+                                let current;
+                                try {
+                                    filter = storage.pageData[category].index[flag].v;
+                                } catch (e) {
+                                    filter = false;
+                                }
+                                try {
+                                    current = storage.pageData[category][props.id][flag].v;
+                                } catch (e) {
+                                    current = false;
+                                }
+                                return bool && (filter !== true || current === true);
+                            }, true)
+                        )
+                            return false;
+                    }
 
-                return true;
-            }),
+                    if (storage.indexBooleanFilter && storage.indexBooleanFilter[category]) {
+                        const boolfilter = storage.indexBooleanFilter[category];
+                        return Object.keys(boolfilter).reduce((b1, sup) => {
+                            if (b1) {
+                                return Object.keys(boolfilter[sup]).reduce((b2, sub) => {
+                                    if (b2 && boolfilter[sup][sub] !== null) {
+                                        return (
+                                            props[sup] !== undefined &&
+                                            props[sup][sub] === boolfilter[sup][sub]
+                                        );
+                                    }
+                                    return b2;
+                                }, b1);
+                            }
+                            return b1;
+                        }, true);
+                    }
+
+                    return true;
+                }),
+            ),
         [storage, geo],
     );
 
-    const reset = () => {
-        setStorage({ action: 'indexFilter', data: {} });
-        flags.forEach(k =>
-            setStorage({ action: 'pageData', dir: category, id: 'index', key: k, val: false }),
-        );
-    };
+    const boolFilterCount = useMemo(() => {
+        if (storage.indexBooleanFilter && storage.indexBooleanFilter[category]) {
+            return Object.values(storage.indexBooleanFilter[category]).reduce(
+                (count, obj) => count + Object.values(obj).filter(i => i !== null).length,
+                0,
+            );
+        }
+        return 0;
+    }, [storage]);
 
     return (
         <Layout>
             <Head>
                 <title>{humanize(category)}</title>
-                <meta property="og:site_name" content="The Millipede Guide" />
                 <meta property="og:title" content={humanize(category)} />
                 <meta property="og:type" content="website" />
             </Head>
-            <Box mt={2}>
+            <H1>{humanize(category)}</H1>
+            <Box mt={1}>
                 <Grid
                     container
                     direction="row"
                     justify="space-between"
                     alignItems="center"
-                    spacing={2}
+                    spacing={1}
                 >
                     <Grid item>
-                        <Typography variant="h1">{humanize(category)}</Typography>
+                        <Button color="primary" onClick={() => setLocationFilterDialog(true)}>
+                            {(storage.indexLocationFilter &&
+                                [
+                                    storage.indexLocationFilter.park,
+                                    storage.indexLocationFilter.region,
+                                    storage.indexLocationFilter.country,
+                                ]
+                                    .filter(Boolean)
+                                    .join(', ')) ||
+                                'All Countries'}
+                        </Button>
                     </Grid>
                     <Grid item>
+                        <Badge
+                            badgeContent={boolFilterCount}
+                            showZero={false}
+                            overlap="circle"
+                            color="error"
+                        >
+                            <IconButton
+                                color="primary"
+                                onClick={() => setBooleanFilterDialog(true)}
+                            >
+                                {boolFilterCount === 0 ? (
+                                    <FilterOptionsInactiveIcon />
+                                ) : (
+                                    <FilterOptionsActiveIcon />
+                                )}
+                            </IconButton>
+                        </Badge>
                         <BookmarkControls dir={category} id="index" />
                     </Grid>
                 </Grid>
             </Box>
-            <Box mt={1}>
-                <Button onClick={() => showDialog(true)}>
-                    {(storage.indexFilter &&
-                        [
-                            storage.indexFilter.park,
-                            storage.indexFilter.region,
-                            storage.indexFilter.country,
-                        ]
-                            .filter(Boolean)
-                            .join(', ')) ||
-                        'All Countries'}
-                </Button>
-            </Box>
-            <IndexFilterDialog
-                {...{ dialog, showDialog, category, geoLocations, storage, setStorage }}
-            />
             <Box mt={1}>
                 <MarkerMap
                     center={
@@ -151,17 +175,8 @@ export default ({ category, geo }) => {
             </Box>
             {geoFeatures.length === 0 && (
                 <Box mt={3}>
-                    <Alert
-                        elevation={0}
-                        severity="warning"
-                        variant="filled"
-                        action={
-                            <Button onClick={reset} style={{ color: '#FFF' }}>
-                                Reset
-                            </Button>
-                        }
-                    >
-                        No results for current filter.
+                    <Alert elevation={0} severity="warning" variant="outlined">
+                        No results for selected filters.
                     </Alert>
                 </Box>
             )}
@@ -176,10 +191,7 @@ export default ({ category, geo }) => {
                     {geoFeatures.map(feature => (
                         <Grid key={feature.properties.id} item xs={6} sm={4} md={3}>
                             <Card>
-                                <NextLink
-                                    href={`/${category}/[id]`}
-                                    as={`/${category}/${feature.properties.id}/`}
-                                >
+                                <NextLink href={`/${category}/[id]`} as={feature.properties.href}>
                                     <CardActionArea>
                                         <CardMedia
                                             style={{
@@ -200,8 +212,22 @@ export default ({ category, geo }) => {
                                                 component="div"
                                                 style={{ margin: 0 }}
                                             >
-                                                {feature.properties.region},{' '}
-                                                {feature.properties.country}
+                                                {[
+                                                    storage.indexLocationFilter &&
+                                                    storage.indexLocationFilter.park
+                                                        ? null
+                                                        : feature.properties.park,
+                                                    storage.indexLocationFilter &&
+                                                    storage.indexLocationFilter.region
+                                                        ? null
+                                                        : feature.properties.region,
+                                                    storage.indexLocationFilter &&
+                                                    storage.indexLocationFilter.country
+                                                        ? null
+                                                        : feature.properties.country,
+                                                ]
+                                                    .filter(Boolean)
+                                                    .join(', ')}
                                             </Typography>
                                             <Typography
                                                 variant="h2"
@@ -218,6 +244,22 @@ export default ({ category, geo }) => {
                     ))}
                 </Grid>
             </Box>
+            <LocationFilterDialog
+                {...{
+                    open: showLocationFilterDialog,
+                    setOpen: setLocationFilterDialog,
+                    category,
+                    geo,
+                }}
+            />
+            <BooleanFilterDialog
+                {...{
+                    open: showBooleanFilterDialog,
+                    setOpen: setBooleanFilterDialog,
+                    category,
+                    geo,
+                }}
+            />
         </Layout>
     );
 };

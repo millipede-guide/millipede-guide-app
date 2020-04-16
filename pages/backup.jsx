@@ -31,10 +31,12 @@ export default () => {
             </Box>
             <Box mt={2}>
                 <P>
-                    All data for this web site app is privately stored on your device. It is never
-                    sent to a server or shared with any other service.
+                    All data for this app is privately stored on your device. It is never sent to a
+                    server or shared with any other service.
                 </P>
-                <P>This includes bookmarks (stars), done (check) and favourite (heart) items.</P>
+                <P>
+                    This includes bookmarked (star), completed (check) and favourite (heart) items.
+                </P>
                 <P>You may backup your data or import it to another device as a JSON file.</P>
                 <Box mt={2}>
                     <StorageContext.Consumer>

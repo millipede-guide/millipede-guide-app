@@ -25,8 +25,6 @@ export default ({ dir, id, doc, jsonUrl }) => {
                 <title>{`${doc.name}, ${doc.region}, ${doc.country}`}</title>
                 <meta property="og:type" content="website" />
                 <meta property="og:url" content={`https://www.millipede-guide.com/${dir}/${id}`} />
-                <meta property="og:site_name" content="The Millipede Guide" />
-                <meta name="twitter:site" content="@millipedeguide" />
                 <meta property="og:title" content={doc.name} />
                 <meta
                     property="og:description"

@@ -24,8 +24,8 @@ const photoObj = photo => {
     return null;
 };
 
-function makeGeoFeature(dirPath, filePath) {
-    const doc = YAML.safeLoad(FS.readFileSync(Path.join(dirPath, filePath)));
+function makeGeoFeature(category, fileName) {
+    const doc = YAML.safeLoad(FS.readFileSync(Path.join('public', 'docs', category, fileName)));
 
     return doc.draft === 't'
         ? null
@@ -36,27 +36,30 @@ function makeGeoFeature(dirPath, filePath) {
                   coordinates: [doc.location[1], doc.location[0]],
               },
               properties: {
-                  id: makeUrlId(filePath),
-                  type: 'marker',
+                  id: makeUrlId(fileName),
+                  href: `/${category}/${makeUrlId(fileName)}`,
+                  type: category,
                   name: doc.name,
                   country: doc.country,
                   region: doc.region,
                   park: doc.park,
                   photo: photoObj(getFeaturePhoto(doc.photos)),
+                  features: doc.features,
+                  restrictions: doc.restrictions,
+                  accessibility: doc.accessibility,
+                  getting_there: doc.getting_there,
               },
           };
 }
 
 ['routes', 'attractions', 'campsites', 'parks'].forEach(category => {
-    const dirPath = `public/docs/${category}`;
-
     const geo = {
         type: 'FeatureCollection',
         features: Glob.sync('**/*.yaml', {
-            cwd: dirPath,
+            cwd: Path.join('public', 'docs', category),
         })
             .sort()
-            .map(i => makeGeoFeature(dirPath, i))
+            .map(f => makeGeoFeature(category, f))
             .filter(Boolean),
     };
 

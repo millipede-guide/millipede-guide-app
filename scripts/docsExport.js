@@ -45,7 +45,7 @@ const { docToGeoJson } = require('./docToGeoJson');
                     features: [],
                 };
             }
-            docToGeoJson(doc, geo);
+            docToGeoJson(category, doc, geo);
             FS.writeFileSync(
                 Path.join(exportDir, `${fileName}.geo.json`),
                 JSON.stringify(geo, null, 4),

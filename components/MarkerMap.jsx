@@ -1,60 +1,10 @@
 import Paper from '@material-ui/core/Paper';
 import { useRef, useEffect } from 'react';
 import { ContentBox } from './Typography';
+import { pointToLayer, onEachFeature } from '../utils/mapMarkers';
 
-export default ({ center, features, category }) => {
+export default ({ center, features }) => {
     const mapRef = useRef(null);
-
-    const mapIcon = type =>
-        window.L.divIcon({
-            className: 'mapicon-parent',
-            html: `<div class="mapicon mapicon-${type} mdi mdi-map-marker"></div>`,
-            iconSize: [20, 20],
-            iconAnchor: [10, 10],
-        });
-
-    const pointToLayer = (feature, latlng) => {
-        const t = feature.properties.type;
-        return window.L.marker(latlng, {
-            icon: mapIcon(t),
-            title: feature.properties.name,
-            alt: feature.properties.name,
-            riseOnHover: true,
-        });
-    };
-
-    const onEachFeature = (feature, featureLayer) => {
-        featureLayer.bindPopup(
-            () => {
-                const props = feature.properties;
-                const html = [];
-                if ('name' in props && props.name) {
-                    html.push(`<div><strong>${props.name}</strong></div>`);
-                }
-                if ('photo' in props && props.photo) {
-                    html.push(
-                        `<div class='MuiCardMedia-root' style='width: 216px; height: 140px; background-image: url("${props.photo.src}")'></div>`,
-                    );
-                }
-                // TODO: This is not a Nextjs link:
-                return `<a href="/${category}/${feature.properties.id}">${html.join('')}</a>`;
-            },
-            {
-                autoPan: true,
-                closeButton: true,
-                closeOnEscapeKey: true,
-                closeOnClick: true,
-            },
-        );
-    };
-
-    const setDynamicStyle = zoom => {
-        let scale = zoom / 18;
-        if (scale < 0.6) scale = 0.6;
-        document.getElementById('mapDynamicStyle').innerHTML = `.mapicon { transform: scale(${
-            scale > 1 ? 1 : scale
-        }); }`;
-    };
 
     useEffect(() => {
         if (features) {
@@ -68,7 +18,19 @@ export default ({ center, features, category }) => {
                         },
                     );
 
-                    const lGeo = window.L.markerClusterGroup();
+                    // https://github.com/Leaflet/Leaflet.markercluster
+                    const lGeo = window.L.markerClusterGroup({
+                        showCoverageOnHover: false,
+                        removeOutsideVisibleBounds: true,
+                        animate: false,
+                        animateAddingMarkers: false,
+                        chunkedLoading: true,
+                        zoomToBoundsOnClick: false,
+                    });
+
+                    lGeo.on('clusterclick', e => {
+                        e.layer.zoomToBounds({ padding: [20, 20] });
+                    });
 
                     const lMap = window.L.map('mapContainer', {
                         center,
@@ -79,10 +41,6 @@ export default ({ center, features, category }) => {
                         },
                         layers: [osmBaseLayer, lGeo],
                     });
-
-                    setDynamicStyle(4);
-
-                    lMap.on('zoomend', () => setDynamicStyle(lMap.getZoom()));
 
                     mapRef.current = { lMap, lGeo };
                 }
@@ -113,9 +71,8 @@ export default ({ center, features, category }) => {
     return (
         <ContentBox>
             <Paper elevation={1}>
-                <div id="mapContainer" style={{ height: '25vh' }} />
+                <div id="mapContainer" style={{ height: '25vh', minHeight: '240px' }} />
             </Paper>
-            <style id="mapDynamicStyle" />
         </ContentBox>
     );
 };

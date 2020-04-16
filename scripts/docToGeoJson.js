@@ -1,7 +1,7 @@
 const humanize = require('underscore.string/humanize');
 const photoIndex = require('../public/photos/index.json');
 
-module.exports.docToGeoJson = (doc, geo) => {
+module.exports.docToGeoJson = (category, doc, geo) => {
     ['transport', 'parking', 'water', 'toilets', 'shelter'].forEach(key => {
         if (doc[key] !== undefined) {
             doc[key].forEach(item => {
@@ -64,7 +64,7 @@ module.exports.docToGeoJson = (doc, geo) => {
                 coordinates: [doc.location[1], doc.location[0]],
             },
             properties: {
-                type: 'marker',
+                type: category,
                 name: doc.name,
                 icon: 'map-marker',
             },

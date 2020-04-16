@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect, useMemo } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default ({ dialog, showDialog, category, geoLocations }) => {
+export default ({ open, setOpen, category, geo }) => {
     const classes = useStyles();
 
     const [storage, setStorage] = useContext(StorageContext);
@@ -31,22 +31,42 @@ export default ({ dialog, showDialog, category, geoLocations }) => {
     const [region, setRegion] = useState('');
     const [park, setPark] = useState('');
 
-    const setFilter = filter => setStorage({ action: 'indexFilter', data: filter });
+    const setFilter = filter => setStorage({ action: 'indexLocationFilter', data: filter });
 
     useEffect(() => {
-        setCountry((storage.indexFilter && storage.indexFilter.country) || '');
-        setRegion((storage.indexFilter && storage.indexFilter.region) || '');
-        setPark((storage.indexFilter && storage.indexFilter.park) || '');
+        setCountry((storage.indexLocationFilter && storage.indexLocationFilter.country) || '');
+        setRegion((storage.indexLocationFilter && storage.indexLocationFilter.region) || '');
+        setPark((storage.indexLocationFilter && storage.indexLocationFilter.park) || '');
     }, [storage]);
+
+    const geoLocations = useMemo(() => {
+        const locations = {};
+
+        if (geo) {
+            geo.features.forEach(feature => {
+                const { country: c, region: r, park: p } = feature.properties;
+                if (c) {
+                    if (locations[c] === undefined) locations[c] = {};
+                    if (r) {
+                        if (locations[c][r] === undefined) locations[c][r] = [];
+                        if (category !== 'parks' && p && locations[c][r].indexOf(p) === -1)
+                            locations[c][r].push(p);
+                    }
+                }
+            });
+        }
+
+        return locations;
+    }, [geo]);
 
     return (
         <Dialog
             disableBackdropClick
             disableEscapeKeyDown
-            open={dialog}
-            onClose={() => showDialog(false)}
+            open={open}
+            onClose={() => setOpen(false)}
         >
-            <DialogTitle>Filter Options</DialogTitle>
+            <DialogTitle>Select Location</DialogTitle>
             <DialogContent>
                 <form className={classes.container}>
                     <div>
@@ -132,15 +152,16 @@ export default ({ dialog, showDialog, category, geoLocations }) => {
             <DialogActions>
                 <Button
                     onClick={() => {
-                        showDialog(false);
-                        setFilter({});
+                        setPark('');
+                        setRegion('');
+                        setCountry('');
                     }}
                 >
                     Reset
                 </Button>
                 <Button
                     onClick={() => {
-                        showDialog(false);
+                        setOpen(false);
                         setFilter({ country, region, park });
                     }}
                     color="primary"
