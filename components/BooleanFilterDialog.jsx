@@ -11,6 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import humanize from 'underscore.string/humanize';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import truncate from 'underscore.string/truncate';
 import icon from '../utils/FeatureIcons';
 import { StorageContext } from './Storage';
 
@@ -62,8 +63,12 @@ export default ({ open, setOpen, category, geo }) => {
         return null;
     };
 
-    const toggle = (sup, sub) =>
-        setFilters({ ...filters, [sup]: { ...filters[sup], [sub]: cycle(filters[sup][sub]) } });
+    const toggle = (sup, sub) => {
+        const obj = { ...filters };
+        obj[sup][sub] = cycle(filters[sup][sub]);
+        setFilters(obj);
+        return obj[sup][sub];
+    };
 
     const reset = () => {
         const obj = { ...filters };
@@ -88,7 +93,7 @@ export default ({ open, setOpen, category, geo }) => {
             onClose={() => setOpen(false)}
         >
             <DialogContent>
-                {Object.keys(filters).map(sup => (
+                {Object.keys(defaultFilters).map(sup => (
                     <Box key={sup}>
                         <Box mt={3} mb={2}>
                             <Typography variant="h2">{humanize(sup)}</Typography>
@@ -100,25 +105,40 @@ export default ({ open, setOpen, category, geo }) => {
                             alignItems="flex-start"
                             spacing={1}
                         >
-                            {Object.keys(filters[sup]).map(sub => (
-                                <Grid item key={sup + sub}>
-                                    <Chip
-                                        variant="outlined"
-                                        label={humanize(sub)}
-                                        icon={icon(sub)}
-                                        onClick={() => toggle(sup, sub)}
-                                        onDelete={() => toggle(sup, sub)}
-                                        deleteIcon={
-                                            (filters[sup][sub] === true && (
-                                                <TrueIcon style={{ color: 'green' }} />
-                                            )) ||
-                                            (filters[sup][sub] === false && (
-                                                <FalseIcon style={{ color: 'red' }} />
-                                            )) || <NullIcon />
-                                        }
-                                    />
-                                </Grid>
-                            ))}
+                            {Object.keys(filters[sup])
+                                .sort()
+                                .map(sub => (
+                                    <Grid item key={sup + sub}>
+                                        <Chip
+                                            size={
+                                                window && window.innerWidth < 400
+                                                    ? 'small'
+                                                    : 'medium'
+                                            }
+                                            variant="outlined"
+                                            label={truncate(humanize(sub), 22)}
+                                            title={humanize(sub)}
+                                            icon={icon(sub)}
+                                            onClick={() => toggle(sup, sub)}
+                                            onDoubleClick={() => null}
+                                            onDelete={() => toggle(sup, sub)}
+                                            style={{
+                                                backgroundColor:
+                                                    (filters[sup][sub] === true && '#0801') ||
+                                                    (filters[sup][sub] === false && '#8001') ||
+                                                    null,
+                                            }}
+                                            deleteIcon={
+                                                (filters[sup][sub] === true && (
+                                                    <TrueIcon style={{ color: '#080' }} />
+                                                )) ||
+                                                (filters[sup][sub] === false && (
+                                                    <FalseIcon style={{ color: '#800' }} />
+                                                )) || <NullIcon />
+                                            }
+                                        />
+                                    </Grid>
+                                ))}
                         </Grid>
                     </Box>
                 ))}

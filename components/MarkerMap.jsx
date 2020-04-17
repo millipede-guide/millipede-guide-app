@@ -26,10 +26,21 @@ export default ({ center, features }) => {
                         animateAddingMarkers: false,
                         chunkedLoading: true,
                         zoomToBoundsOnClick: false,
+                        iconCreateFunction: cluster => {
+                            const n = cluster.getChildCount();
+                            let w = n.toString().length * 10 + 12;
+                            if (w < 24) w = 24;
+                            return window.L.divIcon({
+                                className: 'mapicon-parent',
+                                html: `<div class="mapicon mapicon-cluster">${n}</div>`,
+                                iconSize: [w, 24],
+                                iconAnchor: [w / 2, 12],
+                            });
+                        },
                     });
 
                     lGeo.on('clusterclick', e => {
-                        e.layer.zoomToBounds({ padding: [20, 20] });
+                        e.layer.zoomToBounds({ padding: [20, 20], animate: true });
                     });
 
                     const lMap = window.L.map('mapContainer', {

@@ -14,9 +14,17 @@
     border: 0px;
     border-radius: 5px;
     overflow: hidden;
-    color: black;
-    background-color: white;
+    color: #000;
+    background-color: #FFF;
     transform-origin: center center;
+}
+
+.mapicon-cluster {
+    color: #FFF;
+    background-color: #F00;
+    width: auto;
+    height: 24px;
+    line-height: 22px;
 }
 
 .mapicon-key {
@@ -30,12 +38,12 @@
 }
 
 .mapicon-parks, .mapicon-campsites, .mapicon-routes, .mapicon-attractions  {
-    color: white;
-    background-color: red;
+    color: #FFF;
+    background-color: #F00;
 }
 
 .mapicon-parking {
-    color: white;
+    color: #FFF;
     background-color: #00F;
 }
 
@@ -45,22 +53,22 @@
 }
 
 .mapicon-shelter {
-    color: black;
+    color: #000;
     background-color: #8F8;
 }
 
 .mapicon-toilets {
-    color: black;
+    color: #000;
     background-color: #FFFF00;
 }
 
 .mapicon-water {
-    color: black;
+    color: #000;
     background-color: #0FF;
 }
 
 .mapicon-altitude {
-    background-color: black;
+    background-color: #000;
     border: 0px;
     border-radius: 3px;
 }
