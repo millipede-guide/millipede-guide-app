@@ -1,33 +1,79 @@
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import FileDownloadIcon from 'mdi-material-ui/FileDownload';
+import FileDownloadIcon from 'mdi-material-ui/Download';
 import Typography from '@material-ui/core/Typography';
 import Head from 'next/head';
 import Badge from '@material-ui/core/Badge';
-import { H1, H2, P } from '../components/Typography';
+import { useContext, useState } from 'react';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import humanize from 'underscore.string/humanize';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import BookmarkIcon from 'mdi-material-ui/StarOutline';
+import CompletedIcon from 'mdi-material-ui/CheckCircleOutline';
+import FavouriteIcon from 'mdi-material-ui/HeartOutline';
+import { StorageContext, storageKey, storageVersion } from '../components/Storage';
 import Layout from '../components/Layout';
-import { StorageContext, storageKey } from '../components/Storage';
+import { H1, H2, P } from '../components/Typography';
 
 export default () => {
-    const download = (storage, setStorage) => {
+    const [storage, setStorage] = useContext(StorageContext);
+    const [loadedStorage, setLoadedStorage] = useState(null);
+
+    const save = () => {
         if (document) {
             setStorage({ action: 'resetPageDataUpdates' });
             const format = 'application/json';
             const a = document.createElement('a');
-            const data = JSON.stringify({ [storageKey]: storage }, null, 4);
+            const data = JSON.stringify({ [storageKey]: { [storageVersion]: storage } }, null, 4);
             a.href = encodeURI(`data:${format};charset=utf-8,${data}`);
             a.download = 'millipede-guide.json';
             a.click();
         }
     };
 
+    const load = e => {
+        if (e.target.files.length !== 0) {
+            const reader = new window.FileReader();
+            reader.onload = f => {
+                try {
+                    const obj = JSON.parse(f.target.result);
+                    const valid =
+                        obj !== null &&
+                        typeof obj === 'object' &&
+                        typeof obj[storageKey] === 'object' &&
+                        typeof obj[storageKey][storageVersion] === 'object';
+                    setLoadedStorage(valid ? obj[storageKey][storageVersion] : 'invalid');
+                } catch (err) {
+                    setLoadedStorage('error');
+                }
+            };
+            reader.readAsText(e.target.files[0]);
+        }
+    };
+
+    const restore = () => {
+        setLoadedStorage(null);
+        setStorage({ action: 'load', data: loadedStorage });
+    };
+
+    const validObject = obj => obj !== null && typeof obj === 'object';
+
     return (
-        <Layout>
+        <Layout title="Backup" href="/backup/">
             <Head>
                 <title>Backup - Millipede Guide</title>
             </Head>
             <Box mt={3}>
-                <H1>Backup / Export</H1>
+                <H1>Data Backup</H1>
             </Box>
             <Box mt={2}>
                 <P>
@@ -35,34 +81,115 @@ export default () => {
                     server or shared with any other service.
                 </P>
                 <P>
-                    This includes bookmarked (star), completed (check) and favourite (heart) items.
+                    This includes <BookmarkIcon fontSize="small" /> bookmarked,{' '}
+                    <CompletedIcon fontSize="small" /> completed and{' '}
+                    <FavouriteIcon fontSize="small" /> favourite items.
                 </P>
                 <P>You may backup your data or import it to another device as a JSON file.</P>
+                <H2>Export</H2>
                 <Box mt={2}>
-                    <StorageContext.Consumer>
-                        {([storage, setStorage]) => (
-                            <Badge
-                                color="error"
-                                badgeContent={
-                                    (storage &&
-                                        storage.pageData &&
-                                        storage.pageData.updates &&
-                                        1) ||
-                                    null
-                                }
-                            >
-                                <Button
-                                    onClick={() => download(storage, setStorage)}
-                                    variant="contained"
-                                    color="primary"
-                                    startIcon={<FileDownloadIcon />}
-                                >
-                                    Download
-                                </Button>
-                            </Badge>
-                        )}
-                    </StorageContext.Consumer>
+                    <Badge
+                        color="error"
+                        badgeContent={
+                            (storage && storage.pageData && storage.pageData.updates && 1) || null
+                        }
+                    >
+                        <Button
+                            onClick={() => save()}
+                            variant="contained"
+                            color="primary"
+                            startIcon={<FileDownloadIcon />}
+                        >
+                            Download
+                        </Button>
+                    </Badge>
                 </Box>
+                <H2>Restore</H2>
+                <Box mt={2}>
+                    <input type="file" accept="application/json" onChange={load} />
+                </Box>
+                {loadedStorage !== null && (
+                    <Dialog disableBackdropClick disableEscapeKeyDown open>
+                        <DialogTitle>Restore</DialogTitle>
+                        <DialogContent>
+                            {loadedStorage === 'error' && <p>Error reading file.</p>}
+                            {loadedStorage === 'invalid' && <p>Data seems to be invalid.</p>}
+                            {validObject(loadedStorage) && (
+                                <>
+                                    <TableContainer component={Paper}>
+                                        <Table>
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell />
+                                                    <TableCell align="center">
+                                                        <BookmarkIcon fontSize="small" />
+                                                    </TableCell>
+                                                    <TableCell align="center">
+                                                        <CompletedIcon fontSize="small" />
+                                                    </TableCell>
+                                                    <TableCell align="center">
+                                                        <FavouriteIcon fontSize="small" />
+                                                    </TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                {[
+                                                    'parks',
+                                                    'campsites',
+                                                    'routes',
+                                                    'attractions',
+                                                ].map(sup => (
+                                                    <TableRow key={sup}>
+                                                        <TableCell component="th" scope="row">
+                                                            {humanize(sup)}
+                                                        </TableCell>
+                                                        {['mark', 'done', 'favt'].map(sub => (
+                                                            <TableCell
+                                                                key={sup + sub}
+                                                                align="center"
+                                                            >
+                                                                {(storage.pageData &&
+                                                                    Object.values(
+                                                                        storage.pageData[sup],
+                                                                    ).filter(
+                                                                        i => i[sub] && i[sub].v,
+                                                                    ).length) ||
+                                                                    0}
+                                                                &nbsp;&rsaquo;&nbsp;
+                                                                <strong>
+                                                                    {(loadedStorage.pageData &&
+                                                                        Object.values(
+                                                                            loadedStorage.pageData[
+                                                                                sup
+                                                                            ],
+                                                                        ).filter(
+                                                                            i => i[sub] && i[sub].v,
+                                                                        ).length) ||
+                                                                        0}
+                                                                </strong>
+                                                            </TableCell>
+                                                        ))}
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+                                    <p>Please note, all existing data will be overwritten.</p>
+                                </>
+                            )}
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={() => setLoadedStorage(null)}>Cancel</Button>
+                            <Button
+                                onClick={() => restore()}
+                                color="primary"
+                                disabled={!validObject(loadedStorage)}
+                            >
+                                Restore
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                )}
                 <H2>Note for iPhone</H2>
                 <P>
                     Please note, as a privacy measure, Apple has decided that Safari web browser on
