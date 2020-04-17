@@ -3,7 +3,7 @@ import Layout from '../components/Layout';
 import { H1, H2, ContentBox, P } from '../components/Typography';
 
 export default () => (
-    <Layout>
+    <Layout title="About" href="/about/">
         <Head>
             <title>About - Millipede Guide</title>
         </Head>

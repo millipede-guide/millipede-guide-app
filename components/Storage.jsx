@@ -1,6 +1,8 @@
 import { createContext, useState, useReducer, useEffect } from 'react';
 
-export const storageKey = 'v1';
+export const storageKey = 'millipede';
+
+export const storageVersion = 1;
 
 const initialObject = {};
 
@@ -61,7 +63,7 @@ const actions = (storage, action) => {
         case 'error':
             return { ...storage, available: false, error: true };
         case 'pageData':
-            deepSet(updated, ['pageData', action.dir, action.id, action.key], action.val);
+            deepSet(updated, ['pageData', action.category, action.id, action.key], action.val);
             if (action.userUpdate) updated.pageData.updates = (updated.pageData.updates || 0) + 1;
             return updated;
         case 'indexLocationFilter':
@@ -88,7 +90,7 @@ export const StorageProvider = ({ children }) => {
     useEffect(() => {
         if (storageAvailable()) {
             let data = {};
-            const local = window.localStorage.getItem(storageKey);
+            const local = window.localStorage.getItem(`v${storageVersion}`);
             if (local !== null) {
                 try {
                     data = JSON.parse(local);
@@ -106,7 +108,7 @@ export const StorageProvider = ({ children }) => {
                 setFirstLoad(false); // TODO Must be a better way
             } else {
                 try {
-                    window.localStorage.setItem(storageKey, JSON.stringify(storage));
+                    window.localStorage.setItem(`v${storageVersion}`, JSON.stringify(storage));
                 } catch (e) {
                     setStorage({ type: 'error' });
                 }

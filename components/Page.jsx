@@ -1,7 +1,8 @@
+import Grid from '@material-ui/core/Grid';
 import humanize from 'underscore.string/humanize';
-import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Head from 'next/head';
+import { StorageContext } from './Storage';
 import LightboxContainer from './LightboxContainer';
 import Layout from './Layout';
 import MapToolbar from './MapToolbar';
@@ -18,13 +19,19 @@ import Link from './Link';
 import photoIndex from '../public/photos/index.json';
 import { getFeaturePhoto } from '../utils/getFeaturePhoto';
 
-export default ({ dir, id, doc, jsonUrl }) => {
+export default ({ category, id, doc, jsonUrl }) => {
     return (
         <>
             <Head>
-                <title>{`${doc.name}, ${doc.region}, ${doc.country}`}</title>
+                <title>
+                    {[doc.name, doc.park, doc.region, doc.country].filter(Boolean).join(', ')} -{' '}
+                    {humanize(category)} - Millipede Guide
+                </title>
                 <meta property="og:type" content="website" />
-                <meta property="og:url" content={`https://www.millipede-guide.com/${dir}/${id}`} />
+                <meta
+                    property="og:url"
+                    content={`https://www.millipede-guide.com/${category}/${id}`}
+                />
                 <meta property="og:title" content={doc.name} />
                 <meta
                     property="og:description"
@@ -42,20 +49,79 @@ export default ({ dir, id, doc, jsonUrl }) => {
                 )}
             </Head>
             <LightboxContainer>
-                <Layout>
-                    <br />
-                    <Breadcrumbs>
-                        <Link href={`/${dir}/all`}>{humanize(dir)}</Link>
-                        <Typography color="secondary">{doc.country}</Typography>
-                        <Typography color="secondary">{doc.region}</Typography>
-                        {'park' in doc && <Typography color="secondary">{doc.park}</Typography>}
-                    </Breadcrumbs>
-                    <H1>{doc.name}</H1>
-                    <MapToolbar dir={dir} id={id} doc={doc} />
+                <Layout title={humanize(category)} href={`/${category}/all/`}>
+                    <Grid
+                        container
+                        direction="row"
+                        justify="space-between"
+                        alignItems="center"
+                        spacing={1}
+                        wrap="wrap-reverse"
+                    >
+                        <Grid item>
+                            <H1>{doc.name}</H1>
+                        </Grid>
+                        <Grid item>
+                            <StorageContext.Consumer>
+                                {([, setStorage]) => (
+                                    <Breadcrumbs separator="&rsaquo;">
+                                        {doc.park && (
+                                            <Link
+                                                href={`/${category}/all/`}
+                                                onClick={() =>
+                                                    setStorage({
+                                                        action: 'indexLocationFilter',
+                                                        data: {
+                                                            country: doc.country,
+                                                            region: doc.region,
+                                                            park: doc.park,
+                                                        },
+                                                    })
+                                                }
+                                            >
+                                                {doc.park}
+                                            </Link>
+                                        )}
+                                        <Link
+                                            href={`/${category}/all/`}
+                                            onClick={() =>
+                                                setStorage({
+                                                    action: 'indexLocationFilter',
+                                                    data: {
+                                                        country: doc.country,
+                                                        region: doc.region,
+                                                        park: '',
+                                                    },
+                                                })
+                                            }
+                                        >
+                                            {doc.region}
+                                        </Link>
+                                        <Link
+                                            href={`/${category}/all/`}
+                                            onClick={() =>
+                                                setStorage({
+                                                    action: 'indexLocationFilter',
+                                                    data: {
+                                                        country: doc.country,
+                                                        region: '',
+                                                        park: '',
+                                                    },
+                                                })
+                                            }
+                                        >
+                                            {doc.country}
+                                        </Link>
+                                    </Breadcrumbs>
+                                )}
+                            </StorageContext.Consumer>
+                        </Grid>
+                    </Grid>
+                    <MapToolbar category={category} id={id} doc={doc} />
                     <GeoJsonMap
                         center={doc.location}
                         geoJsonUrl={jsonUrl.replace('.json', '.geo.json')}
-                        showAltitudeProfile={dir === 'routes'}
+                        showAltitudeProfile={category === 'routes'}
                     />
                     <Photos doc={doc} />
                     <Features heading="Features" features={doc.features} />

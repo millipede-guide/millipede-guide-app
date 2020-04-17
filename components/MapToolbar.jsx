@@ -6,11 +6,11 @@ import MapIcon from 'mdi-material-ui/Map';
 import Box from '@material-ui/core/Box';
 import BookmarkControls from './BookmarkControls';
 
-export default ({ dir, id, doc }) => (
+export default ({ category, id, doc }) => (
     <Box>
         <Grid container direction="row" justify="space-between" alignItems="center">
             <Grid item>
-                <BookmarkControls dir={dir} id={id} userUpdate />
+                <BookmarkControls category={category} id={id} userUpdate />
             </Grid>
             <Grid item>
                 <IconButton

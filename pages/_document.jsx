@@ -8,14 +8,15 @@ export default class MyDocument extends Document {
         return (
             <Html>
                 <Head>
-                    <title>Millipede Guide</title>
                     <meta property="og:site_name" content="The Millipede Guide" />
                     <meta name="twitter:site" content="@millipedeguide" />
                     <meta
                         name="viewport"
-                        content="minimum-scale=1, initial-scale=1, width=device-width"
+                        content="width=device-width, initial-scale=1, user-scalable=no"
                     />
                     <meta name="theme-color" content={theme.palette.primary.main} />
+                    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+                    <meta name="format-detection" content="telephone=no" />
                     <link rel="manifest" href="/manifest.json" />
                     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
                     <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />

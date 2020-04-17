@@ -22,13 +22,12 @@ import { StorageContext } from './Storage';
 import MarkerMap from './MarkerMap';
 import LocationFilterDialog from './LocationFilterDialog';
 import BooleanFilterDialog from './BooleanFilterDialog';
-import { H1 } from './Typography';
 
 export default ({ category, geo }) => {
     const flags = ['mark', 'done', 'favt'];
 
     const [storage] = useContext(StorageContext);
-    const [geoFeatures, setGeoFeatures] = useState([]);
+    const [geoFeatures, setGeoFeatures] = useState((geo && geo.features) || []);
     const [showLocationFilterDialog, setLocationFilterDialog] = useState(false);
     const [showBooleanFilterDialog, setBooleanFilterDialog] = useState(false);
 
@@ -112,13 +111,12 @@ export default ({ category, geo }) => {
     }, [storage]);
 
     return (
-        <Layout>
+        <Layout title={humanize(category)} href={`/${category}/all/`}>
             <Head>
-                <title>{humanize(category)}</title>
+                <title>{humanize(category)} - Millipede Guide</title>
                 <meta property="og:title" content={humanize(category)} />
                 <meta property="og:type" content="website" />
             </Head>
-            <H1>{humanize(category)}</H1>
             <Box mt={1}>
                 <Grid
                     container
@@ -158,7 +156,7 @@ export default ({ category, geo }) => {
                                 )}
                             </IconButton>
                         </Badge>
-                        <BookmarkControls dir={category} id="index" />
+                        <BookmarkControls category={category} id="index" />
                     </Grid>
                 </Grid>
             </Box>
@@ -204,7 +202,10 @@ export default ({ category, geo }) => {
                                                     : null
                                             }
                                         >
-                                            <Bookmarks dir={category} id={feature.properties.id} />
+                                            <Bookmarks
+                                                category={category}
+                                                id={feature.properties.id}
+                                            />
                                         </CardMedia>
                                         <CardContent>
                                             <Typography

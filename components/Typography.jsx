@@ -6,7 +6,7 @@ const debug = false;
 const c = s => (debug ? s : undefined);
 
 export const H1 = ({ children }) => (
-    <Box mt={2} mb={1} style={{ backgroundColor: c('#F00') }}>
+    <Box mt={0} mb={0} style={{ backgroundColor: c('#F00') }}>
         <Typography variant="h1">{children}</Typography>
     </Box>
 );

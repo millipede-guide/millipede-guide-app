@@ -19,11 +19,13 @@ import RoutesIcon from 'mdi-material-ui/Walk';
 import AttractionsIcon from 'mdi-material-ui/Binoculars';
 import AboutIcon from 'mdi-material-ui/Information';
 import FileDownloadIcon from 'mdi-material-ui/FileDownload';
+import ChevronRightIcon from 'mdi-material-ui/ChevronRight';
 import Badge from '@material-ui/core/Badge';
+import Hidden from '@material-ui/core/Hidden';
 import MuiLink from './Link';
 import { StorageContext } from './Storage';
 
-export default () => {
+export default ({ title, href }) => {
     const [drawerIsOpen, openDrawer] = useState(false);
 
     const icons = {
@@ -69,9 +71,39 @@ export default () => {
                             )}
                         </StorageContext.Consumer>
                     </IconButton>
-                    <MuiLink href="/" variant="h6" style={{ color: 'white' }}>
-                        <Box ml={1}>Millipede Guide</Box>
-                    </MuiLink>
+                    <Box ml={1}>
+                        <MuiLink
+                            href="/"
+                            style={{
+                                color: 'white',
+                                fontSize: '20px',
+                                lineHeight: '20px',
+                                fontWeight: 500,
+                            }}
+                        >
+                            <Hidden xsDown={Boolean(title)}>Millipede</Hidden> Guide
+                        </MuiLink>
+                    </Box>
+                    {title && (
+                        <>
+                            <Box ml={0.5} mt="3px">
+                                <ChevronRightIcon />
+                            </Box>
+                            <Box ml={0.5}>
+                                <MuiLink
+                                    href={href}
+                                    style={{
+                                        color: 'white',
+                                        fontSize: '20px',
+                                        lineHeight: '20px',
+                                        fontWeight: 500,
+                                    }}
+                                >
+                                    {title}
+                                </MuiLink>
+                            </Box>
+                        </>
+                    )}
                 </Toolbar>
             </AppBar>
             <Toolbar variant="dense" />

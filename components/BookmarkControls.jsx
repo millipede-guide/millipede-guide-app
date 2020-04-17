@@ -1,21 +1,16 @@
 import IconButton from '@material-ui/core/IconButton';
-import BookmarkOnIcon from 'mdi-material-ui/Star';
-import BookmarkOffIcon from 'mdi-material-ui/StarOutline';
-import CompletedOnIcon from 'mdi-material-ui/CheckCircle';
-import CompletedOffIcon from 'mdi-material-ui/CheckCircleOutline';
-import FavouriteOnIcon from 'mdi-material-ui/Heart';
-import FavouriteOffIcon from 'mdi-material-ui/HeartOutline';
 import Moment from 'moment';
 import { StorageContext } from './Storage';
+import { BookmarkIcon } from './Bookmarks';
 
-const Control = ({ dir, id, userUpdate = false, size = 'medium', storage, setStorage }) => {
+const Control = ({ category, id, userUpdate = false, size = 'medium', storage, setStorage }) => {
     const bookmark = 'mark';
     const completed = 'done';
     const favourite = 'favt';
 
     const get = i => {
         try {
-            const prop = storage.pageData[dir][id][i];
+            const prop = storage.pageData[category][id][i];
             return typeof prop === 'boolean' ? prop : prop.v;
         } catch (e) {
             return false;
@@ -24,7 +19,7 @@ const Control = ({ dir, id, userUpdate = false, size = 'medium', storage, setSto
 
     const getTime = i => {
         try {
-            const prop = storage.pageData[dir][id][i];
+            const prop = storage.pageData[category][id][i];
             if (typeof prop === 'boolean' || !prop.v) {
                 return '';
             }
@@ -40,15 +35,17 @@ const Control = ({ dir, id, userUpdate = false, size = 'medium', storage, setSto
     const set = i =>
         setStorage({
             type: 'pageData',
-            dir,
+            category,
             id,
             userUpdate,
             key: i,
             val: {
                 v: !get(i),
-                t: Moment()
-                    .utc()
-                    .format('X'),
+                t: [
+                    Moment()
+                        .utc()
+                        .format('X'),
+                ],
             },
         });
 
@@ -60,9 +57,8 @@ const Control = ({ dir, id, userUpdate = false, size = 'medium', storage, setSto
                 title={`Bookmark${getTime(bookmark)}`}
                 onClick={() => set(bookmark)}
                 color="primary"
-                style={{ color: get(bookmark) ? 'gold' : '' }}
             >
-                {get(bookmark) ? <BookmarkOnIcon /> : <BookmarkOffIcon />}
+                <BookmarkIcon type={bookmark} color="inherit" active={get(bookmark)} />
             </IconButton>
             <IconButton
                 disabled={!storage.available}
@@ -70,9 +66,8 @@ const Control = ({ dir, id, userUpdate = false, size = 'medium', storage, setSto
                 title={`Completed${getTime(completed)}`}
                 onClick={() => set(completed)}
                 color="primary"
-                style={{ color: get(completed) ? 'green' : '' }}
             >
-                {get(completed) ? <CompletedOnIcon /> : <CompletedOffIcon />}
+                <BookmarkIcon type={completed} color="inherit" active={get(completed)} />
             </IconButton>
             <IconButton
                 disabled={!storage.available}
@@ -80,9 +75,8 @@ const Control = ({ dir, id, userUpdate = false, size = 'medium', storage, setSto
                 title={`Favourite${getTime(favourite)}`}
                 onClick={() => set(favourite)}
                 color="primary"
-                style={{ color: get(favourite) ? 'red' : '' }}
             >
-                {get(favourite) ? <FavouriteOnIcon /> : <FavouriteOffIcon />}
+                <BookmarkIcon type={favourite} color="inherit" active={get(favourite)} />
             </IconButton>
         </>
     );

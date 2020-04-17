@@ -10,7 +10,7 @@ import Box from '@material-ui/core/Box';
 import Head from 'next/head';
 import humanize from 'underscore.string/humanize';
 import Layout from '../components/Layout';
-import { H1, H2, Small } from '../components/Typography';
+import { H2, Small } from '../components/Typography';
 import photoIndex from '../public/photos/index.json';
 import sitePhotos from '../utils/sitePhotos.json';
 import omap from '../utils/omap';
@@ -21,7 +21,6 @@ export default function Index() {
             <Head>
                 <title>The Millipede Guide</title>
             </Head>
-            <H1>The Millipede Guide</H1>
             <Box mt={3} mb={1}>
                 <Grid
                     container
