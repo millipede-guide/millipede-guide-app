@@ -1,3 +1,4 @@
+import Moment from 'moment';
 import { createContext, useState, useReducer, useEffect } from 'react';
 
 export const storageKey = 'millipede';
@@ -56,7 +57,10 @@ const deepSet = (obj, path, val) => {
 };
 
 const actions = (storage, action) => {
-    const updated = { ...storage };
+    const updated = {
+        ...storage,
+        lastModifiedDate: Moment().utc().format('X'),
+    };
     switch (action.action || action.type) {
         case 'load':
             return { ...action.data, available: true, error: false };

@@ -1,3 +1,4 @@
+import Moment from 'moment';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import FileDownloadIcon from 'mdi-material-ui/Download';
@@ -27,6 +28,7 @@ import { H1, H2, P } from '../components/Typography';
 export default () => {
     const [storage, setStorage] = useContext(StorageContext);
     const [loadedStorage, setLoadedStorage] = useState(null);
+    const [restoreSuccessful, setRestoreSuccessful] = useState(null);
 
     const save = () => {
         if (document) {
@@ -35,7 +37,7 @@ export default () => {
             const a = document.createElement('a');
             const data = JSON.stringify({ [storageKey]: { [storageVersion]: storage } }, null, 4);
             a.href = encodeURI(`data:${format};charset=utf-8,${data}`);
-            a.download = 'millipede-guide.json';
+            a.download = `millipede-guide-${Moment().format('YYYY-MM-DD')}.json`;
             a.click();
         }
     };
@@ -47,10 +49,10 @@ export default () => {
                 try {
                     const obj = JSON.parse(f.target.result);
                     const valid =
-                        obj !== null &&
-                        typeof obj === 'object' &&
-                        typeof obj[storageKey] === 'object' &&
-                        typeof obj[storageKey][storageVersion] === 'object';
+                          obj !== null &&
+                          typeof obj === 'object' &&
+                          typeof obj[storageKey] === 'object' &&
+                          typeof obj[storageKey][storageVersion] === 'object';
                     setLoadedStorage(valid ? obj[storageKey][storageVersion] : 'invalid');
                 } catch (err) {
                     setLoadedStorage('error');
@@ -61,8 +63,9 @@ export default () => {
     };
 
     const restore = () => {
-        setLoadedStorage(null);
         setStorage({ action: 'load', data: loadedStorage });
+        setLoadedStorage(null);
+        setRestoreSuccessful(true);
     };
 
     const validObject = obj => obj !== null && typeof obj === 'object';
@@ -116,6 +119,13 @@ export default () => {
                             {loadedStorage === 'invalid' && <p>Data seems to be invalid.</p>}
                             {validObject(loadedStorage) && (
                                 <>
+                                    {loadedStorage.lastModifiedDate &&
+                                     <p>Exported: {Moment()
+                                                   .utc(loadedStorage.lastModifiedDate)
+                                                   .local()
+                                                   .format('Do MMM YYYY')}
+                                     </p>
+                                    }
                                     <TableContainer component={Paper}>
                                         <Table>
                                             <TableHead>
@@ -148,24 +158,24 @@ export default () => {
                                                                 key={sup + sub}
                                                                 align="center"
                                                             >
-                                                                {(storage.pageData &&
-                                                                    Object.values(
-                                                                        storage.pageData[sup],
-                                                                    ).filter(
-                                                                        i => i[sub] && i[sub].v,
-                                                                    ).length) ||
-                                                                    0}
+                                                                {(storage.pageData && storage.pageData[sup] &&
+                                                                  Object.values(
+                                                                      storage.pageData[sup],
+                                                                  ).filter(
+                                                                      i => i[sub] && i[sub].v,
+                                                                  ).length) ||
+                                                                 0}
                                                                 &nbsp;&rsaquo;&nbsp;
                                                                 <strong>
-                                                                    {(loadedStorage.pageData &&
-                                                                        Object.values(
-                                                                            loadedStorage.pageData[
-                                                                                sup
-                                                                            ],
-                                                                        ).filter(
-                                                                            i => i[sub] && i[sub].v,
-                                                                        ).length) ||
-                                                                        0}
+                                                                    {(loadedStorage.pageData && loadedStorage.pageData[sup] &&
+                                                                      Object.values(
+                                                                          loadedStorage.pageData[
+                                                                              sup
+                                                                          ],
+                                                                      ).filter(
+                                                                          i => i[sub] && i[sub].v,
+                                                                      ).length) ||
+                                                                     0}
                                                                 </strong>
                                                             </TableCell>
                                                         ))}
@@ -186,6 +196,19 @@ export default () => {
                                 disabled={!validObject(loadedStorage)}
                             >
                                 Restore
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                )}
+                {restoreSuccessful === true && (
+                    <Dialog disableBackdropClick disableEscapeKeyDown open>
+                        <DialogTitle>Restore Successful</DialogTitle>
+                        <DialogActions>
+                            <Button
+                                onClick={() => setRestoreSuccessful(null)}
+                                color="primary"
+                            >
+                                Ok
                             </Button>
                         </DialogActions>
                     </Dialog>
