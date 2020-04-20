@@ -1,0 +1,10 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "com.millipede_guide.twa",
+    "sha256_cert_fingerprints": [
+      "F6:2A:2E:96:85:3A:F1:E4:EA:46:FB:51:A6:73:C8:75:B3:3D:F9:69:98:29:19:2F:2B:58:12:87:81:7C:0A:32"
+    ]
+  }
+}]
