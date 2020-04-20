@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 const fs = require('fs');
+const withOffline = require('next-offline')
 
-module.exports = {
+const nextConfig = {
     exportTrailingSlash: true,
     exportPathMap() {
         const paths = {
@@ -34,3 +35,5 @@ module.exports = {
         return paths;
     },
 };
+
+module.exports = withOffline(nextConfig)

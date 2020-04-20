@@ -126,7 +126,7 @@ export default ({ category, geo }) => {
                     spacing={1}
                 >
                     <Grid item>
-                        <Button color="primary" onClick={() => setLocationFilterDialog(true)}>
+                        <Button variant="outlined" color="primary" onClick={() => setLocationFilterDialog(true)}>
                             {(storage.indexLocationFilter &&
                                 [
                                     storage.indexLocationFilter.park,
