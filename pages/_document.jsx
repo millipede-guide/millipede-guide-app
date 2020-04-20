@@ -8,16 +8,22 @@ export default class MyDocument extends Document {
         return (
             <Html>
                 <Head>
-                    <meta property="og:site_name" content="The Millipede Guide" />
-                    <meta name="twitter:site" content="@millipedeguide" />
-                    <meta
-                        name="viewport"
-                        content="width=device-width, initial-scale=1, user-scalable=no"
-                    />
-                    <meta name="theme-color" content={theme.palette.primary.main} />
-                    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-                    <meta name="format-detection" content="telephone=no" />
                     <link rel="manifest" href="/manifest.json" />
+                    
+                    <meta property='og:type' content='website' />
+                    <meta property="og:site_name" content="Millipede Guide" />
+                    <meta name="twitter:site" content="@millipedeguide" />
+                    
+                    <meta name='application-name' content='Millipede Guide' />
+                    <meta name='apple-mobile-web-app-capable' content='yes' />
+                    <meta name='apple-mobile-web-app-status-bar-style' content='black' />
+                    <meta name='apple-mobile-web-app-title' content='Millipede Guide' />
+                    <meta name='description' content='Free and open-source guide to the natural world.' />
+                    <meta name='format-detection' content='telephone=no' />
+                    <meta name='mobile-web-app-capable' content='yes' />
+                    <meta name='viewport' content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover' />
+                    <meta name="theme-color" content={theme.palette.primary.main} />
+                    
                     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
                     <link rel="apple-touch-icon" href="/assets/icons/apple-touch-icon.png" />
                     <link
