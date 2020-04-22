@@ -42,21 +42,21 @@ export function reducer(state, action) {
 export default ({ state, action }) => {
     // const sm = i => `/photos/sm/${photoIndex[state.photos[i].src].hash}.jpg`;
 
-    const lg = i => `/photos/lg/${photoIndex[state.photos[i].src].hash}.jpg`;
+    const lg = (i) => `/photos/lg/${photoIndex[state.photos[i].src].hash}.jpg`;
 
-    const main = fn => fn(state.index);
+    const main = (fn) => fn(state.index);
 
-    const next = fn =>
+    const next = (fn) =>
         state.photos.length > 1 && state.index + 1 < state.photos.length
             ? fn((state.index + 1) % state.photos.length)
             : null;
 
-    const prev = fn =>
+    const prev = (fn) =>
         state.photos.length > 1 && state.index > 0
             ? fn((state.index + state.photos.length - 1) % state.photos.length)
             : null;
 
-    const caption = i => {
+    const caption = (i) => {
         const { src, href, attr, license, year } = state.photos[i];
         return (
             <Link href={href}>

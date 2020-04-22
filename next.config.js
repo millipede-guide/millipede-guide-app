@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 const fs = require('fs');
-const withOffline = require('next-offline')
+const withOffline = require('next-offline');
 
 const nextConfig = {
     exportTrailingSlash: true,
@@ -15,12 +15,12 @@ const nextConfig = {
             },
         };
 
-        ['parks', 'campsites', 'routes', 'attractions'].forEach(category => {
+        ['parks', 'campsites', 'routes', 'attractions'].forEach((category) => {
             paths[`/${category}/all`] = { page: `/${category}/all` };
 
             JSON.parse(
                 fs.readFileSync(`public/export/${category}/index.geo.json`),
-            ).features.forEach(item => {
+            ).features.forEach((item) => {
                 paths[`/${category}/${item.properties.id}`] = {
                     page: `/${category}/[id]`,
                     query: {
@@ -36,4 +36,4 @@ const nextConfig = {
     },
 };
 
-module.exports = withOffline(nextConfig)
+module.exports = withOffline(nextConfig);

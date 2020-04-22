@@ -6,8 +6,8 @@ import { H2, ContentBox, ContentInner } from './Typography';
 import icon from '../utils/FeatureIcons';
 
 export default ({ heading, features }) => {
-    const chips = items =>
-        items.map(i => (
+    const chips = (items) =>
+        items.map((i) => (
             <Grid item key={`${i}${features[i]}`}>
                 <Chip
                     variant="outlined"
@@ -33,8 +33,8 @@ export default ({ heading, features }) => {
                             alignItems="flex-start"
                             spacing={1}
                         >
-                            {chips(Object.keys(features).filter(i => features[i]))}
-                            {chips(Object.keys(features).filter(i => !features[i]))}
+                            {chips(Object.keys(features).filter((i) => features[i]))}
+                            {chips(Object.keys(features).filter((i) => !features[i]))}
                         </Grid>
                     </ContentInner>
                 </ContentBox>

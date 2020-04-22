@@ -61,29 +61,32 @@ export default ({ category, id, fontSize = 'small' }) => {
         <StorageContext.Consumer>
             {([storage]) => (
                 <>
-                    {storage.available && (
-                        <Box
-                            m={0}
-                            pt={0.3}
-                            pr={0.3}
-                            pl={0.3}
-                            style={{
-                                display: 'inline-block',
-                                borderBottomLeftRadius: '5px',
-                                backgroundColor: '#FFF',
-                            }}
-                        >
-                            {get(storage, bookmark) && (
-                                <BookmarkIcon active type={bookmark} fontSize={fontSize} />
-                            )}
-                            {get(storage, completed) && (
-                                <BookmarkIcon active type={completed} fontSize={fontSize} />
-                            )}
-                            {get(storage, favourite) && (
-                                <BookmarkIcon active type={favourite} fontSize={fontSize} />
-                            )}
-                        </Box>
-                    )}
+                    {storage.available &&
+                        (get(storage, bookmark) ||
+                            get(storage, completed) ||
+                            get(storage, favourite)) && (
+                            <Box
+                                m={0}
+                                pt={0.3}
+                                pr={0.3}
+                                pl={0.3}
+                                style={{
+                                    display: 'inline-block',
+                                    borderBottomLeftRadius: '5px',
+                                    backgroundColor: '#FFF',
+                                }}
+                            >
+                                {get(storage, bookmark) && (
+                                    <BookmarkIcon active type={bookmark} fontSize={fontSize} />
+                                )}
+                                {get(storage, completed) && (
+                                    <BookmarkIcon active type={completed} fontSize={fontSize} />
+                                )}
+                                {get(storage, favourite) && (
+                                    <BookmarkIcon active type={favourite} fontSize={fontSize} />
+                                )}
+                            </Box>
+                        )}
                 </>
             )}
         </StorageContext.Consumer>

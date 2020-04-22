@@ -9,7 +9,7 @@ export default ({ center, geoJsonUrl, showAltitudeProfile }) => {
     const mapRef = useRef(null);
     const [geo, setGeo] = useState(null);
 
-    const setDynamicStyle = zoom => {
+    const setDynamicStyle = (zoom) => {
         let scale = zoom / 18;
         if (scale < 0.6) scale = 0.6;
         document.getElementById('mapDynamicStyle').innerHTML = `.mapicon { transform: scale(${
@@ -20,8 +20,8 @@ export default ({ center, geoJsonUrl, showAltitudeProfile }) => {
     useEffect(() => {
         if (typeof window === 'object' && typeof window.L === 'object') {
             if (geoJsonUrl) {
-                window.fetch(geoJsonUrl).then(response => {
-                    response.json().then(data => setGeo(data));
+                window.fetch(geoJsonUrl).then((response) => {
+                    response.json().then((data) => setGeo(data));
                 });
             }
         }
@@ -45,16 +45,17 @@ export default ({ center, geoJsonUrl, showAltitudeProfile }) => {
                 const featuresLayer = window.L.geoJSON(geo, {
                     pointToLayer,
                     onEachFeature,
-                    filter: f =>
+                    filter: (f) =>
                         f.geometry.type !== 'Point' ||
                         markerTypes.indexOf(f.properties.type) === -1,
                 });
 
                 const markerLayers = {};
 
-                markerTypes.forEach(t => {
+                markerTypes.forEach((t) => {
                     const points = geo.features.filter(
-                        f => f.geometry.type === 'Point' && f.properties && f.properties.type === t,
+                        (f) =>
+                            f.geometry.type === 'Point' && f.properties && f.properties.type === t,
                     );
 
                     if (points.length > 0) {

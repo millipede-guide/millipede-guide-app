@@ -36,7 +36,7 @@ export default ({ doc }) => {
         <ContentBox>
             <H2>Attribution</H2>
             <ContentInner>
-                {Object.keys(photos).map(attr => (
+                {Object.keys(photos).map((attr) => (
                     <P key={attr}>
                         Photo{Object.keys(photos[attr]).length === 1 ? ' ' : 's '}
                         {Object.keys(photos[attr]).map((id, i2) => (

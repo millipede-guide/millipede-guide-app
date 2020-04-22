@@ -11,7 +11,7 @@ export default ({ doc }) => (
     <>
         {'photos' in doc && doc.photos.length > 0 && (
             <LightboxContext.Consumer>
-                {lightbox => (
+                {(lightbox) => (
                     <ContentBox>
                         <Box mt={2} mb={1}>
                             <Grid

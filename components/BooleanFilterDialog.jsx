@@ -40,10 +40,10 @@ export default ({ open, setOpen, category, geo }) => {
             };
 
             if (geo && geo.features) {
-                geo.features.forEach(geoFeature => {
-                    Object.keys(defaultFilters).forEach(sup => {
+                geo.features.forEach((geoFeature) => {
+                    Object.keys(defaultFilters).forEach((sup) => {
                         if (geoFeature.properties[sup]) {
-                            Object.keys(geoFeature.properties[sup]).forEach(sub => {
+                            Object.keys(geoFeature.properties[sup]).forEach((sub) => {
                                 if (!(sub in obj[sup])) {
                                     obj[sup][sub] = null;
                                 }
@@ -57,7 +57,7 @@ export default ({ open, setOpen, category, geo }) => {
         }
     };
 
-    const cycle = v => {
+    const cycle = (v) => {
         if (v === null) return true;
         if (v === true) return false;
         return null;
@@ -72,8 +72,8 @@ export default ({ open, setOpen, category, geo }) => {
 
     const reset = () => {
         const obj = { ...filters };
-        Object.keys(obj).forEach(sup => {
-            Object.keys(obj[sup]).forEach(sub => {
+        Object.keys(obj).forEach((sup) => {
+            Object.keys(obj[sup]).forEach((sub) => {
                 obj[sup][sub] = null;
                 return null;
             });
@@ -93,7 +93,7 @@ export default ({ open, setOpen, category, geo }) => {
             onClose={() => setOpen(false)}
         >
             <DialogContent>
-                {Object.keys(defaultFilters).map(sup => (
+                {Object.keys(defaultFilters).map((sup) => (
                     <Box key={sup}>
                         <Box mt={3} mb={2}>
                             <Typography variant="h2">{humanize(sup)}</Typography>
@@ -107,7 +107,7 @@ export default ({ open, setOpen, category, geo }) => {
                         >
                             {Object.keys(filters[sup])
                                 .sort()
-                                .map(sub => (
+                                .map((sub) => (
                                     <Grid item key={sup + sub}>
                                         <Chip
                                             size={

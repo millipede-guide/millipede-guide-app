@@ -2,11 +2,7 @@ import fetch from 'isomorphic-unfetch';
 
 const FS = typeof window === 'undefined' ? require('fs') : null;
 
-const getPath = (dir, id, ext) =>
-    `${dir}/${id
-        .split('~')
-        .reverse()
-        .join('/')}.${ext}`;
+const getPath = (dir, id, ext) => `${dir}/${id.split('~').reverse().join('/')}.${ext}`;
 
 export default async (dir, id, ext) => {
     const filePath = getPath(dir, id, ext);

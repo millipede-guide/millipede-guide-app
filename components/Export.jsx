@@ -15,7 +15,7 @@ const iconMap = {
     yaml: FileDocument,
 };
 
-const icon = i => {
+const icon = (i) => {
     const Icon = iconMap[i];
     return <Icon />;
 };
@@ -23,7 +23,7 @@ const icon = i => {
 export default ({ jsonUrl }) => (
     <ContentBox>
         <H2>File Downloads</H2>
-        {Object.keys(iconMap).map(ext => (
+        {Object.keys(iconMap).map((ext) => (
             <Button
                 key={ext}
                 color="primary"

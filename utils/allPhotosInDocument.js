@@ -1,4 +1,4 @@
-module.exports.allPhotosInDocument = doc => {
+module.exports.allPhotosInDocument = (doc) => {
     return [].concat(
         doc.photos || [],
         ...[]
@@ -12,7 +12,7 @@ module.exports.allPhotosInDocument = doc => {
                     doc.visitor_centre,
                 ].filter(Boolean),
             )
-            .map(i => i.photos)
+            .map((i) => i.photos)
             .filter(Boolean),
     );
 };

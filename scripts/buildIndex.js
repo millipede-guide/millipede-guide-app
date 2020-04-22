@@ -7,14 +7,9 @@ const Path = require('path');
 const photoIndex = require('../public/photos/index.json');
 const { getFeaturePhoto } = require('../utils/getFeaturePhoto');
 
-const makeUrlId = filePath =>
-    filePath
-        .replace('.yaml', '')
-        .split('/')
-        .reverse()
-        .join('~');
+const makeUrlId = (filePath) => filePath.replace('.yaml', '').split('/').reverse().join('~');
 
-const photoObj = photo => {
+const photoObj = (photo) => {
     if (photo) {
         return {
             ...photo,
@@ -52,14 +47,14 @@ function makeGeoFeature(category, fileName) {
           };
 }
 
-['routes', 'attractions', 'campsites', 'parks'].forEach(category => {
+['routes', 'attractions', 'campsites', 'parks'].forEach((category) => {
     const geo = {
         type: 'FeatureCollection',
         features: Glob.sync('**/*.yaml', {
             cwd: Path.join('public', 'docs', category),
         })
             .sort()
-            .map(f => makeGeoFeature(category, f))
+            .map((f) => makeGeoFeature(category, f))
             .filter(Boolean),
     };
 

@@ -8,7 +8,7 @@ const Control = ({ category, id, userUpdate = false, size = 'medium', storage, s
     const completed = 'done';
     const favourite = 'favt';
 
-    const get = i => {
+    const get = (i) => {
         try {
             const prop = storage.pageData[category][id][i];
             return typeof prop === 'boolean' ? prop : prop.v;
@@ -17,22 +17,19 @@ const Control = ({ category, id, userUpdate = false, size = 'medium', storage, s
         }
     };
 
-    const getTime = i => {
+    const getTime = (i) => {
         try {
             const prop = storage.pageData[category][id][i];
             if (typeof prop === 'boolean' || !prop.v) {
                 return '';
             }
-            return Moment()
-                .utc(prop.t)
-                .local()
-                .format(' (Do MMM YYYY)');
+            return Moment().utc(prop.t).local().format(' (Do MMM YYYY)');
         } catch (e) {
             return '';
         }
     };
 
-    const set = i =>
+    const set = (i) =>
         setStorage({
             type: 'pageData',
             category,
@@ -41,11 +38,7 @@ const Control = ({ category, id, userUpdate = false, size = 'medium', storage, s
             key: i,
             val: {
                 v: !get(i),
-                t: [
-                    Moment()
-                        .utc()
-                        .format('X'),
-                ],
+                t: [Moment().utc().format('X')],
             },
         });
 
@@ -82,7 +75,7 @@ const Control = ({ category, id, userUpdate = false, size = 'medium', storage, s
     );
 };
 
-export default props => (
+export default (props) => (
     <StorageContext.Consumer>
         {([storage, setStorage]) => (
             <Control storage={storage} setStorage={setStorage} {...props} />

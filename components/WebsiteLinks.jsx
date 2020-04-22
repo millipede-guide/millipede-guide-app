@@ -12,13 +12,13 @@ const iconMap = {
     wikivoyage: Compass,
 };
 
-const icon = i => {
+const icon = (i) => {
     const Icon = i in iconMap ? iconMap[i] : LinkBoxVariant;
     return <Icon />;
 };
 
 export default ({ doc }) => {
-    const link = i => {
+    const link = (i) => {
         if (i in doc.links) {
             return (
                 <Button

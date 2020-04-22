@@ -11,8 +11,8 @@ const togpx = require('togpx');
 const { docToGeoJson } = require('./docToGeoJson');
 // const data2xml = require('data2xml')();
 
-['attractions', 'campsites', 'parks', 'routes'].forEach(category => {
-    Glob.sync(`public/docs/${category}/**/*.yaml`).forEach(filePath => {
+['attractions', 'campsites', 'parks', 'routes'].forEach((category) => {
+    Glob.sync(`public/docs/${category}/**/*.yaml`).forEach((filePath) => {
         console.log(' ', filePath);
 
         const exportDir = Path.dirname(filePath).replace('/docs/', '/export/');

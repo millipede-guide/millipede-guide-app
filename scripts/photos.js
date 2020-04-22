@@ -21,7 +21,7 @@ const indexFilePath = Path.join(photosDirPath, 'index.json');
 
 // https://stackoverflow.com/a/51302466/5165
 const download = (src, filePath) =>
-    new Promise(resolve => {
+    new Promise((resolve) => {
         console.log('Fetch...');
         if (FS.existsSync(filePath) && !regenerate) {
             console.log(' > EXISTS');
@@ -29,7 +29,7 @@ const download = (src, filePath) =>
         } else {
             console.log('DOWNLOADING...');
             fetch(src)
-                .then(response => {
+                .then((response) => {
                     if (!response.ok) {
                         console.log(` > ERROR ${response.status}`);
                         resolve(false);
@@ -58,7 +58,7 @@ const download = (src, filePath) =>
     });
 
 const resize = (inFilePath, outFilePath, width, height) =>
-    new Promise(resolve => {
+    new Promise((resolve) => {
         console.log(`Resize ${width}x${height}...`);
         if (FS.existsSync(outFilePath) && !regenerate) {
             console.log(' > EXISTS');
@@ -72,7 +72,7 @@ const resize = (inFilePath, outFilePath, width, height) =>
                     fit: Sharp.fit.inside,
                 })
                 .toFormat('jpg')
-                .toFile(outFilePath, err => {
+                .toFile(outFilePath, (err) => {
                     console.log(` > ${err ? 'ERROR' : 'OK'}`);
                     resolve();
                 });
@@ -82,7 +82,7 @@ const resize = (inFilePath, outFilePath, width, height) =>
 const dmsToDecimal = ([d, m, s]) => (d + m / 60 + s / 3600).toFixed(6);
 
 const extractExif = (filePath, obj) =>
-    new Promise(resolve => {
+    new Promise((resolve) => {
         console.log('EXIF...');
         if (obj.exif !== undefined && !regenerate) {
             console.log(` > ${obj.exif}`);
@@ -123,7 +123,7 @@ const extractExif = (filePath, obj) =>
         }
     });
 
-const run = async index => {
+const run = async (index) => {
     const addSrc = async (src, page) => {
         console.log(src);
         const obj = index[src] === undefined ? {} : index[src];
@@ -131,10 +131,7 @@ const run = async index => {
         if (obj.pages.indexOf(page) === -1) {
             obj.pages.push(page);
         }
-        obj.hash = crypto
-            .createHash('md5')
-            .update(src)
-            .digest('hex');
+        obj.hash = crypto.createHash('md5').update(src).digest('hex');
         obj.ext = Path.extname(src).toLowerCase();
         const filePath = Path.join(photosDirPath, 'orig', obj.hash) + obj.ext;
         obj.ok = await download(src, filePath);
@@ -173,6 +170,8 @@ const run = async index => {
     return index;
 };
 
-run(FS.existsSync(indexFilePath) ? JSON.parse(FS.readFileSync(indexFilePath)) : {}).then(index => {
-    FS.writeFileSync(indexFilePath, JSON.stringify(index, null, 4));
-});
+run(FS.existsSync(indexFilePath) ? JSON.parse(FS.readFileSync(indexFilePath)) : {}).then(
+    (index) => {
+        FS.writeFileSync(indexFilePath, JSON.stringify(index, null, 4));
+    },
+);

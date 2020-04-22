@@ -1,6 +1,6 @@
-module.exports.getFeaturePhoto = photos => {
+module.exports.getFeaturePhoto = (photos) => {
     if (photos && photos.length > 0) {
-        const featured = photos.filter(i => i.feature);
+        const featured = photos.filter((i) => i.feature);
         if (featured.length > 0) {
             return featured[0];
         }

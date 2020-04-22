@@ -34,7 +34,7 @@ export default ({ category, geo }) => {
     useEffect(
         () =>
             setGeoFeatures(
-                geo.features.filter(feature => {
+                geo.features.filter((feature) => {
                     const props = feature.properties;
 
                     if (storage.indexLocationFilter !== undefined) {
@@ -103,7 +103,7 @@ export default ({ category, geo }) => {
     const boolFilterCount = useMemo(() => {
         if (storage.indexBooleanFilter && storage.indexBooleanFilter[category]) {
             return Object.values(storage.indexBooleanFilter[category]).reduce(
-                (count, obj) => count + Object.values(obj).filter(i => i !== null).length,
+                (count, obj) => count + Object.values(obj).filter((i) => i !== null).length,
                 0,
             );
         }
@@ -126,7 +126,11 @@ export default ({ category, geo }) => {
                     spacing={1}
                 >
                     <Grid item>
-                        <Button variant="outlined" color="primary" onClick={() => setLocationFilterDialog(true)}>
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => setLocationFilterDialog(true)}
+                        >
                             {(storage.indexLocationFilter &&
                                 [
                                     storage.indexLocationFilter.park,
@@ -186,7 +190,7 @@ export default ({ category, geo }) => {
                     alignItems="flex-start"
                     spacing={2}
                 >
-                    {geoFeatures.map(feature => (
+                    {geoFeatures.map((feature) => (
                         <Grid key={feature.properties.id} item xs={6} sm={4} md={3}>
                             <Card>
                                 <NextLink href={`/${category}/[id]`} as={feature.properties.href}>

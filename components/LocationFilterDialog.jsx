@@ -11,7 +11,7 @@ import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import { StorageContext } from './Storage';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     container: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -31,7 +31,7 @@ export default ({ open, setOpen, category, geo }) => {
     const [region, setRegion] = useState('');
     const [park, setPark] = useState('');
 
-    const setFilter = filter => setStorage({ action: 'indexLocationFilter', data: filter });
+    const setFilter = (filter) => setStorage({ action: 'indexLocationFilter', data: filter });
 
     useEffect(() => {
         setCountry((storage.indexLocationFilter && storage.indexLocationFilter.country) || '');
@@ -43,7 +43,7 @@ export default ({ open, setOpen, category, geo }) => {
         const locations = {};
 
         if (geo) {
-            geo.features.forEach(feature => {
+            geo.features.forEach((feature) => {
                 const { country: c, region: r, park: p } = feature.properties;
                 if (c) {
                     if (locations[c] === undefined) locations[c] = {};
@@ -76,7 +76,7 @@ export default ({ open, setOpen, category, geo }) => {
                                 labelId="country-label"
                                 id="country-select"
                                 value={country}
-                                onChange={e => {
+                                onChange={(e) => {
                                     setPark('');
                                     setRegion('');
                                     setCountry(e.target.value);
@@ -86,7 +86,7 @@ export default ({ open, setOpen, category, geo }) => {
                                 <MenuItem aria-label="None" value="">
                                     <em>All</em>
                                 </MenuItem>
-                                {Object.keys(geoLocations).map(i => (
+                                {Object.keys(geoLocations).map((i) => (
                                     <MenuItem key={i} value={i}>
                                         {i}
                                     </MenuItem>
@@ -102,7 +102,7 @@ export default ({ open, setOpen, category, geo }) => {
                                     labelId="region-label"
                                     id="region-select"
                                     value={region}
-                                    onChange={e => {
+                                    onChange={(e) => {
                                         setPark('');
                                         setRegion(e.target.value);
                                     }}
@@ -111,7 +111,7 @@ export default ({ open, setOpen, category, geo }) => {
                                     <MenuItem aria-label="None" value="">
                                         <em>All</em>
                                     </MenuItem>
-                                    {Object.keys(geoLocations[country]).map(i => (
+                                    {Object.keys(geoLocations[country]).map((i) => (
                                         <MenuItem key={i} value={i}>
                                             {i}
                                         </MenuItem>
@@ -132,13 +132,13 @@ export default ({ open, setOpen, category, geo }) => {
                                         labelId="park-label"
                                         id="park-select"
                                         value={park}
-                                        onChange={e => setPark(e.target.value)}
+                                        onChange={(e) => setPark(e.target.value)}
                                         label="Park"
                                     >
                                         <MenuItem aria-label="None" value="">
                                             <em>All</em>
                                         </MenuItem>
-                                        {geoLocations[country][region].map(i => (
+                                        {geoLocations[country][region].map((i) => (
                                             <MenuItem key={i} value={i}>
                                                 {i}
                                             </MenuItem>

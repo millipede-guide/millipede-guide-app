@@ -15,7 +15,7 @@ export const markerIcons = {
     water: 'water-pump',
 };
 
-export const mapIcon = type =>
+export const mapIcon = (type) =>
     window.L.divIcon({
         className: 'mapicon-parent',
         html: `<div class="mapicon mapicon-${type} mdi mdi-${markerIcons[type]}"></div>`,

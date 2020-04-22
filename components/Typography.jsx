@@ -3,7 +3,7 @@ import Box from '@material-ui/core/Box';
 // see /css/theme.js
 
 const debug = false;
-const c = s => (debug ? s : undefined);
+const c = (s) => (debug ? s : undefined);
 
 export const H1 = ({ children }) => (
     <Box mt={0} mb={0} style={{ backgroundColor: c('#F00') }}>

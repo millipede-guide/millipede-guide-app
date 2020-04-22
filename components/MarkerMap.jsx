@@ -26,7 +26,7 @@ export default ({ center, features }) => {
                         animateAddingMarkers: false,
                         chunkedLoading: true,
                         zoomToBoundsOnClick: false,
-                        iconCreateFunction: cluster => {
+                        iconCreateFunction: (cluster) => {
                             const n = cluster.getChildCount();
                             let w = n.toString().length * 10 + 12;
                             if (w < 24) w = 24;
@@ -39,7 +39,7 @@ export default ({ center, features }) => {
                         },
                     });
 
-                    lGeo.on('clusterclick', e => {
+                    lGeo.on('clusterclick', (e) => {
                         e.layer.zoomToBounds({ padding: [20, 20], animate: true });
                     });
 

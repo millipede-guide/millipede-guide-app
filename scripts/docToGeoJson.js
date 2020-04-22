@@ -2,9 +2,9 @@ const humanize = require('underscore.string/humanize');
 const photoIndex = require('../public/photos/index.json');
 
 module.exports.docToGeoJson = (category, doc, geo) => {
-    ['transport', 'parking', 'water', 'toilets', 'shelter'].forEach(key => {
+    ['transport', 'parking', 'water', 'toilets', 'shelter'].forEach((key) => {
         if (doc[key] !== undefined) {
-            doc[key].forEach(item => {
+            doc[key].forEach((item) => {
                 const { name, location, photos } = item;
                 if (location) {
                     geo.features.push({

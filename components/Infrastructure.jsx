@@ -34,7 +34,7 @@ export default ({ heading, items }) => (
     <>
         {items !== undefined && items.length > 0 && (
             <LightboxContext.Consumer>
-                {lightbox => (
+                {(lightbox) => (
                     <ContentBox>
                         <H2>{heading}</H2>
                         <ContentInner>
@@ -46,7 +46,7 @@ export default ({ heading, items }) => (
                                 spacing={2}
                                 m={1}
                             >
-                                {items.map(item => (
+                                {items.map((item) => (
                                     <Grid
                                         item
                                         xs={6}
@@ -129,7 +129,7 @@ export default ({ heading, items }) => (
                                                     >
                                                         {Object.keys(item)
                                                             .filter(
-                                                                k =>
+                                                                (k) =>
                                                                     [
                                                                         'name',
                                                                         'location',
@@ -137,7 +137,7 @@ export default ({ heading, items }) => (
                                                                         'photos',
                                                                     ].indexOf(k) === -1,
                                                             )
-                                                            .map(k => (
+                                                            .map((k) => (
                                                                 <li key={k}>
                                                                     <strong>{humanize(k)}:</strong>{' '}
                                                                     {typeof item[k] === 'boolean' &&

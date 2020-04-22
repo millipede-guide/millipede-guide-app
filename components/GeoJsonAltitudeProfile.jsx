@@ -24,7 +24,7 @@ export default ({ mapRef, geo }) => {
                 });
 
                 const lineString = geo.features.filter(
-                    f => f.type === 'Feature' && f.geometry && f.geometry.type === 'LineString',
+                    (f) => f.type === 'Feature' && f.geometry && f.geometry.type === 'LineString',
                 )[0];
 
                 if (lineString !== undefined) {
@@ -59,7 +59,7 @@ export default ({ mapRef, geo }) => {
                                 latlng: ll,
                             };
                         })
-                        .filter(i => i !== null);
+                        .filter((i) => i !== null);
 
                     const altMax = altitudeProfile.reduce(
                         (val, obj) => (obj.y > val ? obj.y : val),
@@ -70,21 +70,21 @@ export default ({ mapRef, geo }) => {
                         altMax,
                     );
 
-                    const median = ary =>
+                    const median = (ary) =>
                         ary.length === 0 ? -1 : ary[Math.floor((ary.length - 1) / 2)];
 
                     const altMaxIndex = median(
                         altitudeProfile
                             .map((obj, i) => (obj.y === altMax ? i : null))
-                            .filter(i => i !== null),
+                            .filter((i) => i !== null),
                     );
                     const altMinIndex = median(
                         altitudeProfile
                             .map((obj, i) => (obj.y === altMin ? i : null))
-                            .filter(i => i !== null),
+                            .filter((i) => i !== null),
                     );
 
-                    const rounder = val => {
+                    const rounder = (val) => {
                         if (val > 10000) return Math.round(val / 1000) * 1000;
                         if (val > 1000) return Math.round(val / 100) * 100;
                         if (val > 100) return Math.round(val / 10) * 10;
@@ -125,7 +125,7 @@ export default ({ mapRef, geo }) => {
                                 axis: 'x',
                                 displayColors: false,
                                 callbacks: {
-                                    label: item => {
+                                    label: (item) => {
                                         const { x, y, latlng } = altitudeProfile[item.index];
                                         const label = `${prettyMetric(
                                             x,
@@ -176,10 +176,10 @@ export default ({ mapRef, geo }) => {
                                 datalabels: {
                                     clip: false,
                                     clamp: true,
-                                    offset: context => {
+                                    offset: (context) => {
                                         return context.dataIndex === altMaxIndex ? 0 : 5;
                                     },
-                                    align: context => {
+                                    align: (context) => {
                                         const i = context.dataIndex;
                                         const l = context.dataset.data.length;
                                         const a = 270;
@@ -190,11 +190,11 @@ export default ({ mapRef, geo }) => {
                                     font: {
                                         weight: 600,
                                     },
-                                    display: context =>
+                                    display: (context) =>
                                         (context.dataIndex === altMinIndex ||
                                             context.dataIndex === altMaxIndex) &&
                                         altMinIndex !== altMaxIndex,
-                                    formatter: p => `${rounder(p.y)}m`,
+                                    formatter: (p) => `${rounder(p.y)}m`,
                                 },
                             },
                             layout: {

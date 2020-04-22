@@ -42,17 +42,17 @@ export default () => {
         }
     };
 
-    const load = e => {
+    const load = (e) => {
         if (e.target.files.length !== 0) {
             const reader = new window.FileReader();
-            reader.onload = f => {
+            reader.onload = (f) => {
                 try {
                     const obj = JSON.parse(f.target.result);
                     const valid =
-                          obj !== null &&
-                          typeof obj === 'object' &&
-                          typeof obj[storageKey] === 'object' &&
-                          typeof obj[storageKey][storageVersion] === 'object';
+                        obj !== null &&
+                        typeof obj === 'object' &&
+                        typeof obj[storageKey] === 'object' &&
+                        typeof obj[storageKey][storageVersion] === 'object';
                     setLoadedStorage(valid ? obj[storageKey][storageVersion] : 'invalid');
                 } catch (err) {
                     setLoadedStorage('error');
@@ -68,7 +68,7 @@ export default () => {
         setRestoreSuccessful(true);
     };
 
-    const validObject = obj => obj !== null && typeof obj === 'object';
+    const validObject = (obj) => obj !== null && typeof obj === 'object';
 
     return (
         <Layout title="Backup" href="/backup/">
@@ -119,13 +119,15 @@ export default () => {
                             {loadedStorage === 'invalid' && <p>Data seems to be invalid.</p>}
                             {validObject(loadedStorage) && (
                                 <>
-                                    {loadedStorage.lastModifiedDate &&
-                                     <p>Exported: {Moment()
-                                                   .utc(loadedStorage.lastModifiedDate)
-                                                   .local()
-                                                   .format('Do MMM YYYY')}
-                                     </p>
-                                    }
+                                    {loadedStorage.lastModifiedDate && (
+                                        <p>
+                                            Exported:{' '}
+                                            {Moment()
+                                                .utc(loadedStorage.lastModifiedDate)
+                                                .local()
+                                                .format('Do MMM YYYY')}
+                                        </p>
+                                    )}
                                     <TableContainer component={Paper}>
                                         <Table>
                                             <TableHead>
@@ -148,34 +150,39 @@ export default () => {
                                                     'campsites',
                                                     'routes',
                                                     'attractions',
-                                                ].map(sup => (
+                                                ].map((sup) => (
                                                     <TableRow key={sup}>
                                                         <TableCell component="th" scope="row">
                                                             {humanize(sup)}
                                                         </TableCell>
-                                                        {['mark', 'done', 'favt'].map(sub => (
+                                                        {['mark', 'done', 'favt'].map((sub) => (
                                                             <TableCell
                                                                 key={sup + sub}
                                                                 align="center"
                                                             >
-                                                                {(storage.pageData && storage.pageData[sup] &&
-                                                                  Object.values(
-                                                                      storage.pageData[sup],
-                                                                  ).filter(
-                                                                      i => i[sub] && i[sub].v,
-                                                                  ).length) ||
-                                                                 0}
+                                                                {(storage.pageData &&
+                                                                    storage.pageData[sup] &&
+                                                                    Object.values(
+                                                                        storage.pageData[sup],
+                                                                    ).filter(
+                                                                        (i) => i[sub] && i[sub].v,
+                                                                    ).length) ||
+                                                                    0}
                                                                 &nbsp;&rsaquo;&nbsp;
                                                                 <strong>
-                                                                    {(loadedStorage.pageData && loadedStorage.pageData[sup] &&
-                                                                      Object.values(
-                                                                          loadedStorage.pageData[
-                                                                              sup
-                                                                          ],
-                                                                      ).filter(
-                                                                          i => i[sub] && i[sub].v,
-                                                                      ).length) ||
-                                                                     0}
+                                                                    {(loadedStorage.pageData &&
+                                                                        loadedStorage.pageData[
+                                                                            sup
+                                                                        ] &&
+                                                                        Object.values(
+                                                                            loadedStorage.pageData[
+                                                                                sup
+                                                                            ],
+                                                                        ).filter(
+                                                                            (i) =>
+                                                                                i[sub] && i[sub].v,
+                                                                        ).length) ||
+                                                                        0}
                                                                 </strong>
                                                             </TableCell>
                                                         ))}
@@ -204,10 +211,7 @@ export default () => {
                     <Dialog disableBackdropClick disableEscapeKeyDown open>
                         <DialogTitle>Restore Successful</DialogTitle>
                         <DialogActions>
-                            <Button
-                                onClick={() => setRestoreSuccessful(null)}
-                                color="primary"
-                            >
+                            <Button onClick={() => setRestoreSuccessful(null)} color="primary">
                                 Ok
                             </Button>
                         </DialogActions>

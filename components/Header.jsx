@@ -35,12 +35,12 @@ export default ({ title, href }) => {
         attractions: AttractionsIcon,
     };
 
-    const icon = item => {
+    const icon = (item) => {
         const Icon = icons[item];
         return <Icon />;
     };
 
-    const listItem = item => (
+    const listItem = (item) => (
         <NextLink key={item} href={`/${item}/all`}>
             <ListItem button>
                 <ListItemIcon>{icon(item)}</ListItemIcon>
