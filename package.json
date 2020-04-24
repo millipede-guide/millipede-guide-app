@@ -11,7 +11,7 @@
         "routes": "node -e 'require(\"./next.config.js\").exportPathMap()'",
         "prettier": "prettier --write '*.js'  'pages/**/*.js*' 'components/**/*.js*' 'css/**/*.js' 'utils/**/*.js' 'scripts/**/*.js'",
         "lint": "eslint --fix --ignore-pattern '!.eslintrc.js' '*.js'  'pages/**/*.js*' 'components/**/*.js*' 'css/**/*.js' 'utils/**/*.js' 'scripts/**/*.js'",
-        "docs": "cd ./public/docs && node scripts/validate.js && cd ../.. && node scripts/photos.js && node scripts/docsExport.js && node scripts/buildIndex.js"
+        "docs": "node scripts/photos.js && node scripts/docsExport.js && node scripts/buildIndex.js"
     },
     "keywords": [],
     "author": "",

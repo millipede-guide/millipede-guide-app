@@ -4,6 +4,7 @@ import { H2, P, ContentBox, ContentInner } from './Typography';
 
 export const licenseUrls = {
     'CC BY 3.0': 'https://creativecommons.org/licenses/by/3.0/',
+    'CC BY-3.0': 'https://creativecommons.org/licenses/by/3.0/',
     'CC BY-NC 2.0': 'https://creativecommons.org/licenses/by-nc/2.0/',
     'CC BY-NC-SA 2.0': 'https://creativecommons.org/licenses/by-nc-sa/2.0/',
     'CC BY-NC-SA 4.0': 'https://creativecommons.org/licenses/by-nc-sa/4.0/',

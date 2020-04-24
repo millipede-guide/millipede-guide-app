@@ -1,6 +1,14 @@
 import humanize from 'underscore.string/humanize';
 
-export const markerTypes = ['toilets', 'water', 'shelter', 'photo', 'transport', 'parking'];
+export const markerTypes = [
+    'toilets',
+    'water',
+    'shelter',
+    'photo',
+    'transport',
+    'parking',
+    'information',
+];
 
 export const markerIcons = {
     parks: 'pine-tree',
@@ -13,6 +21,7 @@ export const markerIcons = {
     toilets: 'human-male-female',
     transport: 'bus',
     water: 'water-pump',
+    information: 'information-variant',
 };
 
 export const mapIcon = (type) =>
@@ -34,21 +43,50 @@ export const pointToLayer = (feature, latlng) => {
     });
 };
 
+export const mapLinkOSM = (location, osm) =>
+    `https://www.openstreetmap.org/${
+        osm
+            ? Object.keys(osm).map((i) => `${i}/${osm[i]}`)[0]
+            : `#map=19/${location[0]}/${location[1]}`
+    }`;
+export const mapLinkGoogle = (location) =>
+    `https://www.google.com/maps/dir/?api=1&destination=${location[0]},${location[1]}`;
+export const mapLinkApple = (location) =>
+    `http://maps.apple.com/?daddr=${location[0]},${location[1]}`;
+
 export const onEachFeature = (feature, featureLayer) => {
     featureLayer.bindPopup(
         () => {
             const props = feature.properties;
             const html = [];
-            if ('photo' in props && props.photo) {
+            if (props.photo) {
                 html.push(
                     `<div class='MuiCardMedia-root' style='width: 216px; height: 140px; border-radius: 4px; background-image: url("${props.photo.src}")'></div>`,
                 );
             }
-            if ('name' in props && props.name) {
+            if (props.name) {
                 html.push(
                     `<div style="font-weight: bold; font-size: 14px; margin: 8px 0 0 0;">${props.name}</div>`,
                 );
             }
+            if (props.tags) {
+                const tags = Object.keys(props.tags)
+                    .map((i) => `<strong>${i}</strong>: ${props.tags[i]}`)
+                    .join(', ');
+                html.push(`<div>${tags}</div>`);
+            }
+            const location = [feature.geometry.coordinates[1], feature.geometry.coordinates[0]];
+            const links = [
+                `<a href="${mapLinkOSM(
+                    location,
+                    props.osm,
+                )}"><span class="mdi mdi-map"></span></a>`,
+                `<a href="${mapLinkGoogle(
+                    location,
+                )}"><span class="mdi mdi-google-maps"></span></a>`,
+                `<a href="${mapLinkApple(location)}"><span class="mdi mdi-apple"></span></a>`,
+            ];
+            html.push(`<div class="map-popup-link-icons">${links.join('&nbsp;&nbsp;')}</div>`);
             if (props.href) {
                 // TODO: This is not a Nextjs link:
                 return `<div style='text-align: center;'><a href="${

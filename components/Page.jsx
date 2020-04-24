@@ -19,7 +19,7 @@ import Link from './Link';
 import photoIndex from '../public/photos/index.json';
 import { getFeaturePhoto } from '../utils/getFeaturePhoto';
 
-export default ({ category, id, doc, jsonUrl }) => {
+export default ({ category, id, doc, fileName }) => {
     return (
         <>
             <Head>
@@ -119,8 +119,10 @@ export default ({ category, id, doc, jsonUrl }) => {
                     </Grid>
                     <MapToolbar category={category} id={id} doc={doc} />
                     <GeoJsonMap
+                        doc={doc}
                         center={doc.location}
-                        geoJsonUrl={jsonUrl.replace('.json', '.geo.json')}
+                        category={category}
+                        fileName={fileName}
                         showAltitudeProfile={category === 'routes'}
                     />
                     <Photos doc={doc} />
@@ -133,9 +135,10 @@ export default ({ category, id, doc, jsonUrl }) => {
                     <Infrastructure heading="Water" items={doc.water} />
                     <Infrastructure heading="Toilets" items={doc.toilets} />
                     <Infrastructure heading="Shelter" items={doc.shelter} />
+                    <Infrastructure heading="Information" items={doc.information} />
                     <WebsiteLinks doc={doc} />
-                    <Export doc={doc} jsonUrl={jsonUrl} />
-                    <OpenSource jsonUrl={jsonUrl} />
+                    <Export doc={doc} category={category} fileName={fileName} />
+                    <OpenSource category={category} fileName={fileName} />
                     <Attribution doc={doc} />
                 </Layout>
             </LightboxContainer>

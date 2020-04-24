@@ -67,6 +67,11 @@
     background-color: #0FF;
 }
 
+.mapicon-information {
+    color: #FFF;
+    background-color: #F0F;
+}
+
 .mapicon-altitude {
     background-color: #000;
     border: 0px;
@@ -78,4 +83,8 @@
     background-repeat:no-repeat;
     background-position:center center;
     background-size: 100% 100%, auto;
+}
+
+.map-popup-link-icons {
+    font-size: 1.5em;
 }

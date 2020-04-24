@@ -5,7 +5,10 @@ import { ContentBox } from './Typography';
 import GeoJsonAltitudeProfile from './GeoJsonAltitudeProfile';
 import { markerTypes, markerIcons, pointToLayer, onEachFeature } from '../utils/mapMarkers';
 
-export default ({ center, geoJsonUrl, showAltitudeProfile }) => {
+const devEnv = process.env.NODE_ENV === 'development';
+const docToGeoJson = devEnv ? require('../utils/docToGeoJson').docToGeoJson : null;
+
+export default ({ doc, center, category, fileName, showAltitudeProfile }) => {
     const mapRef = useRef(null);
     const [geo, setGeo] = useState(null);
 
@@ -19,9 +22,24 @@ export default ({ center, geoJsonUrl, showAltitudeProfile }) => {
 
     useEffect(() => {
         if (typeof window === 'object' && typeof window.L === 'object') {
-            if (geoJsonUrl) {
-                window.fetch(geoJsonUrl).then((response) => {
-                    response.json().then((data) => setGeo(data));
+            if (devEnv) {
+                window.fetch(`/docs/${category}/${fileName}.geo.json`).then((response) => {
+                    if (response.ok) {
+                        response.json().then((geoBase) => {
+                            setGeo(docToGeoJson(category, doc, geoBase));
+                        });
+                    } else {
+                        setGeo(
+                            docToGeoJson(category, doc, {
+                                type: 'FeatureCollection',
+                                features: [],
+                            }),
+                        );
+                    }
+                });
+            } else {
+                window.fetch(`/export/${category}/${fileName}.geo.json`).then((response) => {
+                    response.json().then((obj) => setGeo(obj));
                 });
             }
         }

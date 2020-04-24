@@ -20,14 +20,14 @@ const icon = (i) => {
     return <Icon />;
 };
 
-export default ({ jsonUrl }) => (
+export default ({ category, fileName }) => (
     <ContentBox>
         <H2>File Downloads</H2>
         {Object.keys(iconMap).map((ext) => (
             <Button
                 key={ext}
                 color="primary"
-                href={jsonUrl.replace('.json', `.${ext}`)}
+                href={`/export/${category}/${fileName}.${ext}`}
                 startIcon={icon(ext)}
                 style={{ marginRight: '1em' }}
             >

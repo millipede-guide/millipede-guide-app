@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box';
 import AlertIcon from 'mdi-material-ui/Alert';
 import { H2, P, ContentBox } from './Typography';
 
-export default ({ jsonUrl }) => (
+export default ({ category, fileName }) => (
     <ContentBox>
         <H2>Open Source</H2>
         <Box mt={1}>
@@ -14,9 +14,7 @@ export default ({ jsonUrl }) => (
         </Box>
         <Button
             color="primary"
-            href={`https://github.com/millipede-guide/millipede-guide-docs/blob/master/${jsonUrl
-                .replace('/export/', '')
-                .replace('.json', '.yaml')}`}
+            href={`https://github.com/millipede-guide/millipede-guide-docs/blob/master/${category}/${fileName}.yaml`}
             startIcon={<FileEditIcon />}
             style={{ marginRight: '1em' }}
         >
@@ -25,7 +23,7 @@ export default ({ jsonUrl }) => (
         <Button
             color="primary"
             href={`https://github.com/millipede-guide/millipede-guide-docs/issues/new?title=${encodeURIComponent(
-                `Report: ${jsonUrl.replace('/export/', '').replace('.json', '')}`,
+                `Report: ${category}/${fileName}`,
             )}`}
             startIcon={<AlertIcon />}
             style={{ marginRight: '1em' }}

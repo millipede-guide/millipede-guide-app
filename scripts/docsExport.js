@@ -8,7 +8,7 @@ const Path = require('path');
 const MkDir = typeof window === 'undefined' ? require('mkdirp') : null;
 const tokml = require('tokml');
 const togpx = require('togpx');
-const { docToGeoJson } = require('./docToGeoJson');
+const { docToGeoJson } = require('../utils/docToGeoJson');
 // const data2xml = require('data2xml')();
 
 ['attractions', 'campsites', 'parks', 'routes'].forEach((category) => {
@@ -51,9 +51,17 @@ const { docToGeoJson } = require('./docToGeoJson');
                 JSON.stringify(geo, null, 4),
             );
 
-            FS.writeFileSync(Path.join(exportDir, `${fileName}.kml`), tokml(geo));
-
             FS.writeFileSync(Path.join(exportDir, `${fileName}.gpx`), togpx(geo));
+
+            /* eslint-disable no-param-reassign */
+            geo.features.forEach((i) => {
+                // KML can't handle objects in features:
+                delete i.properties.osm;
+                delete i.properties.tags;
+            });
+            /* eslint-enable no-param-reassign */
+
+            FS.writeFileSync(Path.join(exportDir, `${fileName}.kml`), tokml(geo));
         }
     });
 });
