@@ -1,14 +1,17 @@
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import Hidden from '@material-ui/core/Hidden';
 // see /css/theme.js
 
 const debug = false;
 const c = (s) => (debug ? s : undefined);
 
 export const H1 = ({ children }) => (
-    <Box mt={0} mb={0} style={{ backgroundColor: c('#F00') }}>
-        <Typography variant="h1">{children}</Typography>
-    </Box>
+    <Hidden xsDown>
+        <Box mt={0} mb={0} style={{ backgroundColor: c('#F00') }}>
+            <Typography variant="h1">{children}</Typography>
+        </Box>
+    </Hidden>
 );
 
 export const H2 = ({ children }) => (

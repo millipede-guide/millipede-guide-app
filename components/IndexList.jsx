@@ -22,6 +22,7 @@ import { StorageContext } from './Storage';
 import MarkerMap from './MarkerMap';
 import LocationFilterDialog from './LocationFilterDialog';
 import BooleanFilterDialog from './BooleanFilterDialog';
+import { H1 } from '../components/Typography';
 
 export default ({ category, geo }) => {
     const flags = ['mark', 'done', 'favt'];
@@ -120,6 +121,7 @@ export default ({ category, geo }) => {
                     href={`/export/${category}/index.geo.json`}
                 />
             </Head>
+            <H1>{humanize(category)}</H1>
             <Box mt={1}>
                 <Grid
                     container
@@ -253,9 +255,6 @@ export default ({ category, geo }) => {
                         </Grid>
                     ))}
                 </Grid>
-            </Box>
-            <Box mt={3}>
-                <a href={`/export/${category}/index.geo.json`}>GeoJSON</a>
             </Box>
             <LocationFilterDialog
                 {...{

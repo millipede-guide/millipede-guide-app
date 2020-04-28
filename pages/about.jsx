@@ -1,8 +1,9 @@
 import Layout from '../components/Layout';
-import { ContentBox, P } from '../components/Typography';
+import { ContentBox, H1, P } from '../components/Typography';
 
 export default () => (
     <Layout title="About" href="/about/">
+        <H1>About</H1>
         <ContentBox>
             <P>
                 The Millipede Guide is a collaborate, open-source guide to the natural world

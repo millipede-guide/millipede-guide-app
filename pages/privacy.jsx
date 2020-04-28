@@ -1,9 +1,10 @@
 import Typography from '@material-ui/core/Typography';
 import Layout from '../components/Layout';
-import { ContentBox, P } from '../components/Typography';
+import { ContentBox, H1, P } from '../components/Typography';
 
 export default () => (
     <Layout title="Privacy" href="/about/">
+        <H1>Privacy</H1>
         <ContentBox>
             <P>This website and app:</P>
             <Typography variant="body1" component="ul">

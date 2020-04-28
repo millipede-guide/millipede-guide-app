@@ -22,7 +22,7 @@ import CompletedIcon from 'mdi-material-ui/CheckCircleOutline';
 import FavouriteIcon from 'mdi-material-ui/HeartOutline';
 import { StorageContext, storageKey, storageVersion } from '../components/Storage';
 import Layout from '../components/Layout';
-import { H2, P, ContentBox } from '../components/Typography';
+import { H1, H2, P, ContentBox } from '../components/Typography';
 
 export default () => {
     const [storage, setStorage] = useContext(StorageContext);
@@ -82,6 +82,7 @@ export default () => {
 
     return (
         <Layout title="Export" href="/export/">
+            <H1>Export</H1>
             <ContentBox>
                 <P>
                     All data for this app is privately stored on your device. It is never sent to a

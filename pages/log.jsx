@@ -16,7 +16,7 @@ import routesIndex from '../public/export/routes/index.geo.json';
 import campsitesIndex from '../public/export/campsites/index.geo.json';
 import parksIndex from '../public/export/parks/index.geo.json';
 import { StorageContext } from '../components/Storage';
-import { ContentBox, P } from '../components/Typography';
+import { ContentBox, H1, P } from '../components/Typography';
 import Layout from '../components/Layout';
 import { dateStorageFormat, dateDisplayFormat } from '../components/BookmarkControls';
 
@@ -47,7 +47,7 @@ const LogItem = ({ date, category, id, favt }) => {
     return (
         <>
             <NextLink href={`/${category}/[id]`} as={`/${category}/${id}`}>
-                <ListItem alignItems="flex-start" button>
+                <ListItem alignItems="flex-start" button disableGutters>
                     <ListItemAvatar>
                         <Badge
                             badgeContent={
@@ -130,6 +130,7 @@ export default () => {
 
     return (
         <Layout title="Log" href="/log/">
+            <H1>Log</H1>
             <ContentBox>
                 {(!storage || !storage.available) && 'Loading...'}
                 {storage && storage.available && (

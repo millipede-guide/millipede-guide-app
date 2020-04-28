@@ -14,7 +14,7 @@ import LogIcon from 'mdi-material-ui/CheckCircle';
 import PrivacyIcon from 'mdi-material-ui/Eye';
 import ExportIcon from 'mdi-material-ui/FileDownload';
 import Layout from '../components/Layout';
-import { ContentBox, Small } from '../components/Typography';
+import { ContentBox, H1, Small } from '../components/Typography';
 import photoIndex from '../public/photos/index.json';
 import sitePhotos from '../utils/sitePhotos.json';
 import omap from '../utils/omap';
@@ -22,6 +22,7 @@ import omap from '../utils/omap';
 export default function Index() {
     return (
         <Layout>
+            <H1>The Millipede Guide</H1>
             <ContentBox>
                 <Box mt={3}>
                     <Grid
