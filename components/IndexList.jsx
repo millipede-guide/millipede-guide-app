@@ -113,9 +113,12 @@ export default ({ category, geo }) => {
     return (
         <Layout title={humanize(category)} href={`/${category}/all/`}>
             <Head>
-                <title>{humanize(category)} - Millipede Guide</title>
-                <meta property="og:title" content={humanize(category)} />
-                <meta property="og:type" content="website" />
+                <link
+                    rel="alternate"
+                    type="application/geo+json"
+                    title="GeoJSON"
+                    href={`/export/${category}/index.geo.json`}
+                />
             </Head>
             <Box mt={1}>
                 <Grid
@@ -192,62 +195,67 @@ export default ({ category, geo }) => {
                 >
                     {geoFeatures.map((feature) => (
                         <Grid key={feature.properties.id} item xs={6} sm={4} md={3}>
-                            <Card>
-                                <NextLink href={`/${category}/[id]`} as={feature.properties.href}>
-                                    <CardActionArea>
-                                        <CardMedia
-                                            style={{
-                                                height: '140px',
-                                                textAlign: 'right',
-                                            }}
-                                            image={
-                                                feature.properties.photo
-                                                    ? feature.properties.photo.src
-                                                    : null
-                                            }
-                                        >
-                                            <Bookmarks
-                                                category={category}
-                                                id={feature.properties.id}
-                                            />
-                                        </CardMedia>
-                                        <CardContent>
-                                            <Typography
-                                                variant="body2"
-                                                component="div"
-                                                style={{ margin: 0 }}
+                            <NextLink href={`/${category}/[id]`} as={feature.properties.href}>
+                                <a style={{ textDecoration: 'none' }}>
+                                    <Card>
+                                        <CardActionArea>
+                                            <CardMedia
+                                                style={{
+                                                    height: '140px',
+                                                    textAlign: 'right',
+                                                }}
+                                                image={
+                                                    feature.properties.photo
+                                                        ? feature.properties.photo.src
+                                                        : null
+                                                }
                                             >
-                                                {[
-                                                    storage.indexLocationFilter &&
-                                                    storage.indexLocationFilter.park
-                                                        ? null
-                                                        : feature.properties.park,
-                                                    storage.indexLocationFilter &&
-                                                    storage.indexLocationFilter.region
-                                                        ? null
-                                                        : feature.properties.region,
-                                                    storage.indexLocationFilter &&
-                                                    storage.indexLocationFilter.country
-                                                        ? null
-                                                        : feature.properties.country,
-                                                ]
-                                                    .filter(Boolean)
-                                                    .join(', ')}
-                                            </Typography>
-                                            <Typography
-                                                variant="h2"
-                                                component="div"
-                                                style={{ marginTop: 0 }}
-                                            >
-                                                {feature.properties.name}
-                                            </Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </NextLink>
-                            </Card>
+                                                <Bookmarks
+                                                    category={category}
+                                                    id={feature.properties.id}
+                                                />
+                                            </CardMedia>
+                                            <CardContent>
+                                                <Typography
+                                                    variant="body2"
+                                                    component="div"
+                                                    style={{ margin: 0 }}
+                                                >
+                                                    {[
+                                                        storage.indexLocationFilter &&
+                                                        storage.indexLocationFilter.park
+                                                            ? null
+                                                            : feature.properties.park,
+                                                        storage.indexLocationFilter &&
+                                                        storage.indexLocationFilter.region
+                                                            ? null
+                                                            : feature.properties.region,
+                                                        storage.indexLocationFilter &&
+                                                        storage.indexLocationFilter.country
+                                                            ? null
+                                                            : feature.properties.country,
+                                                    ]
+                                                        .filter(Boolean)
+                                                        .join(', ')}
+                                                </Typography>
+                                                <Typography
+                                                    variant="h2"
+                                                    component="div"
+                                                    style={{ marginTop: 0 }}
+                                                >
+                                                    {feature.properties.name}
+                                                </Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Card>
+                                </a>
+                            </NextLink>
                         </Grid>
                     ))}
                 </Grid>
+            </Box>
+            <Box mt={3}>
+                <a href={`/export/${category}/index.geo.json`}>GeoJSON</a>
             </Box>
             <LocationFilterDialog
                 {...{

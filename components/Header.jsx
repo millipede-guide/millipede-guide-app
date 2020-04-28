@@ -18,7 +18,9 @@ import CampsitesIcon from 'mdi-material-ui/Tent';
 import RoutesIcon from 'mdi-material-ui/Walk';
 import AttractionsIcon from 'mdi-material-ui/Binoculars';
 import AboutIcon from 'mdi-material-ui/Information';
-import FileDownloadIcon from 'mdi-material-ui/FileDownload';
+import LogIcon from 'mdi-material-ui/CheckCircle';
+import PrivacyIcon from 'mdi-material-ui/Eye';
+import ExportIcon from 'mdi-material-ui/FileDownload';
 import ChevronRightIcon from 'mdi-material-ui/ChevronRight';
 import Badge from '@material-ui/core/Badge';
 import Hidden from '@material-ui/core/Hidden';
@@ -126,15 +128,15 @@ export default ({ title, href }) => {
                         <Divider />
                         {Object.keys(icons).map(listItem)}
                         <Divider />
-                        <NextLink href="/about">
+                        <NextLink href="/log" as="/log/">
                             <ListItem button>
                                 <ListItemIcon>
-                                    <AboutIcon />
+                                    <LogIcon />
                                 </ListItemIcon>
-                                <ListItemText primary="About" />
+                                <ListItemText primary="Log" />
                             </ListItem>
                         </NextLink>
-                        <NextLink href="/backup">
+                        <NextLink href="/export" as="/export/">
                             <ListItem button>
                                 <ListItemIcon>
                                     <StorageContext.Consumer>
@@ -149,12 +151,29 @@ export default ({ title, href }) => {
                                                     null
                                                 }
                                             >
-                                                <FileDownloadIcon />
+                                                <ExportIcon />
                                             </Badge>
                                         )}
                                     </StorageContext.Consumer>
                                 </ListItemIcon>
-                                <ListItemText primary="Data Backup" />
+                                <ListItemText primary="Export" />
+                            </ListItem>
+                        </NextLink>
+                        <Divider />
+                        <NextLink href="/about" as="/about/">
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <AboutIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="About" />
+                            </ListItem>
+                        </NextLink>
+                        <NextLink href="/privacy" as="/privacy/">
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <PrivacyIcon />
+                                </ListItemIcon>
+                                <ListItemText primary="Privacy" />
                             </ListItem>
                         </NextLink>
                     </List>

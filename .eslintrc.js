@@ -47,7 +47,8 @@ module.exports = {
         'react/react-in-jsx-scope': 'off',
         // 'react/jsx-indent': ['error', 4],
         // 'react/jsx-indent-props': ['error', 4],
-        'react/jsx-props-no-spreading': ['off'],
+        'react/jsx-props-no-spreading': 'off',
+        'jsx-a11y/anchor-is-valid': 'off',
         // 'react/jsx-one-expression-per-line': ['off'],
         // 'react/jsx-filename-extension': [
         //     1,

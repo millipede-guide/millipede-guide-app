@@ -7,11 +7,17 @@ const nextConfig = {
     exportPathMap() {
         const paths = {
             '/': { page: '/' },
+            '/log/': {
+                page: '/log',
+            },
+            '/export/': {
+                page: '/export',
+            },
             '/about/': {
                 page: '/about',
             },
-            '/backup/': {
-                page: '/backup',
+            '/privacy/': {
+                page: '/privacy',
             },
         };
 

@@ -1,10 +1,17 @@
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
+import Head from 'next/head';
 import Header from './Header';
 
-export default ({ title, href, children }) => {
+export default ({ title, href, windowTitle, children }) => {
     return (
         <>
+            <Head>
+                <title>
+                    {[windowTitle || title, 'The Millipede Guide'].filter(Boolean).join(' - ')}
+                </title>
+                <meta property="og:title" content={windowTitle || title} />
+            </Head>
             <Header title={title} href={href} />
             <Container maxWidth="md" mt={3}>
                 <Box mt={2} mb={3}>

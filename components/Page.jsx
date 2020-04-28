@@ -23,16 +23,6 @@ export default ({ category, id, doc, fileName }) => {
     return (
         <>
             <Head>
-                <title>
-                    {[doc.name, doc.park, doc.region, doc.country].filter(Boolean).join(', ')} -{' '}
-                    {humanize(category)} - Millipede Guide
-                </title>
-                <meta property="og:type" content="website" />
-                <meta
-                    property="og:url"
-                    content={`https://www.millipede-guide.com/${category}/${id}`}
-                />
-                <meta property="og:title" content={doc.name} />
                 <meta
                     property="og:description"
                     content={['park' in doc ? doc.park : null, doc.region, doc.country]
@@ -49,7 +39,11 @@ export default ({ category, id, doc, fileName }) => {
                 )}
             </Head>
             <LightboxContainer>
-                <Layout title={humanize(category)} href={`/${category}/all/`}>
+                <Layout
+                    title={humanize(category)}
+                    windowTitle={doc.name}
+                    href={`/${category}/all/`}
+                >
                     <Grid
                         container
                         direction="row"

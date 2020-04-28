@@ -5,6 +5,7 @@ import BookmarkOffIcon from 'mdi-material-ui/StarOutline';
 import CompletedOffIcon from 'mdi-material-ui/CheckCircleOutline';
 import FavouriteOffIcon from 'mdi-material-ui/HeartOutline';
 import Box from '@material-ui/core/Box';
+import { useContext } from 'react';
 import { StorageContext } from './Storage';
 
 const bookmark = 'mark';
@@ -48,47 +49,36 @@ export const BookmarkIcon = ({ type, active, color, fontSize = 'default' }) => {
 };
 
 export default ({ category, id, fontSize = 'small' }) => {
-    const get = (storage, i) => {
+    const [storage] = useContext(StorageContext);
+
+    const get = (i) => {
         try {
-            const prop = storage.pageData[category][id][i];
-            return typeof prop === 'boolean' ? prop : prop.v;
+            const { log } = storage.pageData[category][id][i];
+            return log !== undefined && log.length > 0;
         } catch (e) {
             return false;
         }
     };
 
     return (
-        <StorageContext.Consumer>
-            {([storage]) => (
-                <>
-                    {storage.available &&
-                        (get(storage, bookmark) ||
-                            get(storage, completed) ||
-                            get(storage, favourite)) && (
-                            <Box
-                                m={0}
-                                pt={0.3}
-                                pr={0.3}
-                                pl={0.3}
-                                style={{
-                                    display: 'inline-block',
-                                    borderBottomLeftRadius: '5px',
-                                    backgroundColor: '#FFF',
-                                }}
-                            >
-                                {get(storage, bookmark) && (
-                                    <BookmarkIcon active type={bookmark} fontSize={fontSize} />
-                                )}
-                                {get(storage, completed) && (
-                                    <BookmarkIcon active type={completed} fontSize={fontSize} />
-                                )}
-                                {get(storage, favourite) && (
-                                    <BookmarkIcon active type={favourite} fontSize={fontSize} />
-                                )}
-                            </Box>
-                        )}
-                </>
+        <>
+            {storage && storage.available && (get(bookmark) || get(completed) || get(favourite)) && (
+                <Box
+                    m={0}
+                    pt={0.3}
+                    pr={0.3}
+                    pl={0.3}
+                    style={{
+                        display: 'inline-block',
+                        borderBottomLeftRadius: '5px',
+                        backgroundColor: '#FFF',
+                    }}
+                >
+                    {get(bookmark) && <BookmarkIcon active type={bookmark} fontSize={fontSize} />}
+                    {get(completed) && <BookmarkIcon active type={completed} fontSize={fontSize} />}
+                    {get(favourite) && <BookmarkIcon active type={favourite} fontSize={fontSize} />}
+                </Box>
             )}
-        </StorageContext.Consumer>
+        </>
     );
 };

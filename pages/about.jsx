@@ -1,13 +1,8 @@
-import Head from 'next/head';
 import Layout from '../components/Layout';
-import { H1, H2, ContentBox, P } from '../components/Typography';
+import { ContentBox, P } from '../components/Typography';
 
 export default () => (
     <Layout title="About" href="/about/">
-        <Head>
-            <title>About - Millipede Guide</title>
-        </Head>
-        <H1>About</H1>
         <ContentBox>
             <P>
                 The Millipede Guide is a collaborate, open-source guide to the natural world
@@ -28,9 +23,8 @@ export default () => (
                 Geotagged information is easily viewable on built-in maps as well as downloads for
                 common file formats and links to OSM, Google and Apple maps.
             </P>
-            <H2>Attribution</H2>
             <P>
-                Main icon image{' '}
+                Icon/logo image is by{' '}
                 <a href="https://www.needpix.com/photo/download/1278472/worm-centipedes-free-pictures-free-photos-free-images-royalty-free-free-illustrations">
                     charlygutmann (pixabay.com)
                 </a>
