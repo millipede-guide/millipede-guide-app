@@ -3,7 +3,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import Moment from 'moment';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -15,36 +14,10 @@ import Divider from '@material-ui/core/Divider';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import CloseIcon from '@material-ui/icons/Close';
-import { withStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 import { StorageContext } from './Storage';
-
-const styles = (theme) => ({
-    root: {
-        margin: 0,
-        padding: theme.spacing(2),
-    },
-    closeButton: {
-        position: 'absolute',
-        right: theme.spacing(1),
-        top: theme.spacing(1),
-        color: theme.palette.grey[500],
-    },
-});
-
-const CustomDialogTitle = withStyles(styles)((props) => {
-    const { children, classes, onClose, ...other } = props;
-    return (
-        <DialogTitle disableTypography className={classes.root} {...other}>
-            <Typography variant="h6">{children}</Typography>
-            {onClose ? (
-                <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
-                    <CloseIcon />
-                </IconButton>
-            ) : null}
-        </DialogTitle>
-    );
-});
 
 export default ({ category, id, attr, setAttr, dateStorageFormat, dateDisplayFormat }) => {
     const [storage, setStorage] = useContext(StorageContext);
@@ -82,8 +55,8 @@ export default ({ category, id, attr, setAttr, dateStorageFormat, dateDisplayFor
         return newDates;
     };
 
-    const addDate = () => {
-        const d = Moment(selectedDate).format(dateStorageFormat);
+    const addDate = (i) => {
+        const d = Moment(i || selectedDate).format(dateStorageFormat);
         if (dates.indexOf(d) === -1) {
             setStorageDates([...dates, d]);
         }
@@ -94,8 +67,38 @@ export default ({ category, id, attr, setAttr, dateStorageFormat, dateDisplayFor
 
     return (
         <Dialog disableBackdropClick open={attr !== null}>
-            <CustomDialogTitle onClose={() => setAttr(null)}>Log</CustomDialogTitle>
+            <DialogTitle onClose={() => setAttr(null)}>Log</DialogTitle>
             <DialogContent>
+                <Card>
+                    <CardContent>
+                        <MuiPickersUtilsProvider utils={MomentUtils}>
+                            <KeyboardDatePicker
+                                variant="dialog"
+                                okLabel="Add"
+                                disableFuture
+                                format="DD/MM/YYYY"
+                                value={selectedDate}
+                                onChange={setSelectedDate}
+                                onAccept={(date) => {
+                                    addDate(date);
+                                }}
+                            />
+                        </MuiPickersUtilsProvider>
+                    </CardContent>
+                    <CardActions disableSpacing>
+                        <div style={{ width: '100%', textAlign: 'right' }}>
+                            <Button
+                                onClick={() => {
+                                    addDate();
+                                }}
+                                color="primary"
+                            >
+                                Add Date
+                            </Button>
+                        </div>
+                    </CardActions>
+                </Card>
+                <br />
                 <List dense>
                     <Divider />
                     {dates.length === 0 && (
@@ -110,7 +113,7 @@ export default ({ category, id, attr, setAttr, dateStorageFormat, dateDisplayFor
                             style={{
                                 backgroundColor:
                                     Moment(selectedDate).format(dateStorageFormat) === i
-                                        ? '#FFFFF0'
+                                        ? '#F0FFF0'
                                         : 'inherit',
                             }}
                         >
@@ -125,23 +128,14 @@ export default ({ category, id, attr, setAttr, dateStorageFormat, dateDisplayFor
                         </ListItem>
                     ))}
                 </List>
-                <br />
-                <MuiPickersUtilsProvider utils={MomentUtils}>
-                    <KeyboardDatePicker
-                        value={selectedDate}
-                        onChange={setSelectedDate}
-                        format="DD/MM/YYYY"
-                    />
-                </MuiPickersUtilsProvider>
             </DialogContent>
             <DialogActions>
                 <Button
                     onClick={() => {
-                        addDate();
+                        setAttr(null);
                     }}
-                    color="primary"
                 >
-                    Add Date
+                    Done
                 </Button>
             </DialogActions>
         </Dialog>

@@ -6,8 +6,8 @@ import Hidden from '@material-ui/core/Hidden';
 const debug = false;
 const c = (s) => (debug ? s : undefined);
 
-export const H1 = ({ children }) => (
-    <Hidden xsDown>
+export const H1 = ({ xs = false, children }) => (
+    <Hidden xsDown={!xs}>
         <Box mt={0} mb={0} style={{ backgroundColor: c('#F00') }}>
             <Typography variant="h1">{children}</Typography>
         </Box>

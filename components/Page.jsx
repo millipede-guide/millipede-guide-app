@@ -53,7 +53,7 @@ export default ({ category, id, doc, fileName }) => {
                         wrap="wrap-reverse"
                     >
                         <Grid item>
-                            <H1>{doc.name}</H1>
+                            <H1 xs>{doc.name}</H1>
                         </Grid>
                         <Grid item>
                             <StorageContext.Consumer>

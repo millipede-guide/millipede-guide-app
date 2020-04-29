@@ -22,7 +22,7 @@ import { StorageContext } from './Storage';
 import MarkerMap from './MarkerMap';
 import LocationFilterDialog from './LocationFilterDialog';
 import BooleanFilterDialog from './BooleanFilterDialog';
-import { H1 } from '../components/Typography';
+import { H1 } from './Typography';
 
 export default ({ category, geo }) => {
     const flags = ['mark', 'done', 'favt'];
