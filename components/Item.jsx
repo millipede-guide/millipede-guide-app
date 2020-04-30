@@ -1,9 +1,6 @@
 import Page from './Page';
 import loadFile from '../utils/loadFile';
-
-const devEnv = process.env.NODE_ENV === 'development';
-
-const YAML = devEnv ? require('js-yaml') : null;
+import YAML from 'js-yaml';
 
 const Item = (props) => <Page {...props} />;
 
@@ -11,11 +8,9 @@ Item.getInitialProps = async function loadData(context) {
     const category = context.asPath.split('/').filter((i) => i !== '')[0];
     const { id } = context.query;
     const fileName = id.split('~').reverse().join('/');
-    const filePath = devEnv
-        ? `/docs/${category}/${fileName}.yaml`
-        : `/export/${category}/${fileName}.json`;
+    const filePath = `/docs/${category}/${fileName}.yaml`;
     const content = await loadFile(filePath);
-    const doc = devEnv ? YAML.safeLoad(content) : JSON.parse(content);
+    const doc = YAML.safeLoad(content);
     return { category, id, fileName, doc };
 };
 
