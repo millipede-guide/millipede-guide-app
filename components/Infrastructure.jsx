@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import GoogleMapsIcon from 'mdi-material-ui/GoogleMaps';
 import AppleIcon from 'mdi-material-ui/Apple';
 import NoImageIcon from 'mdi-material-ui/ImageOffOutline';
+import PrimaryIcon from 'mdi-material-ui/Star';
 import MultipleImageIcon from 'mdi-material-ui/ImageMultipleOutline';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import MapIcon from 'mdi-material-ui/Map';
@@ -32,7 +33,7 @@ function lat2tile(lat, zoom) {
 
 export default ({ heading, items }) => (
     <>
-        {items !== undefined && items.length > 0 && (
+        {items !== undefined && items.filter((i) => i.show !== false).length > 0 && (
             <LightboxContext.Consumer>
                 {(lightbox) => (
                     <ContentBox>
@@ -53,7 +54,9 @@ export default ({ heading, items }) => (
                                             item
                                             xs={6}
                                             sm={3}
-                                            key={'name' in item ? item.name : JSON.stringify(item)}
+                                            key={JSON.stringify(
+                                                item.location || item.osm || item.name,
+                                            )}
                                         >
                                             <Card>
                                                 <CardActionArea
@@ -89,6 +92,16 @@ export default ({ heading, items }) => (
                                                                   }.jpg`
                                                         }
                                                     >
+                                                        {item.primary && (
+                                                            <PrimaryIcon
+                                                                style={{
+                                                                    color: '#0005',
+                                                                    position: 'absolute',
+                                                                    top: '5px',
+                                                                    left: '5px',
+                                                                }}
+                                                            />
+                                                        )}
                                                         {(item.photos === undefined ||
                                                             item.photos.length === 0) && (
                                                             <NoImageIcon
@@ -114,7 +127,9 @@ export default ({ heading, items }) => (
                                                     </CardMedia>
                                                 </CardActionArea>
                                                 <CardContent>
-                                                    {'name' in item && <strong>{item.name}</strong>}
+                                                    {'name' in item && (
+                                                        <strong>{humanize(item.name)}</strong>
+                                                    )}
                                                     <Typography
                                                         variant="body2"
                                                         color="textSecondary"

@@ -1,15 +1,5 @@
 import humanize from 'underscore.string/humanize';
 
-export const markerTypes = [
-    'toilets',
-    'water',
-    'shelter',
-    'photo',
-    'transport',
-    'parking',
-    'information',
-];
-
 export const markerIcons = {
     parks: 'pine-tree',
     campsites: 'tent',
@@ -21,7 +11,11 @@ export const markerIcons = {
     toilets: 'human-male-female',
     transport: 'bus',
     water: 'water-pump',
-    information: 'information-variant',
+    information: 'information',
+    viewpoint: 'binoculars',
+    moutain_peak: 'summit',
+    waterfall: 'waves',
+    water_crossing: 'wave',
 };
 
 export const mapIcon = (type) =>
@@ -38,7 +32,8 @@ export const pointToLayer = (feature, latlng) => {
         icon: mapIcon(t),
         title: humanize(t),
         alt: humanize(t),
-        zIndexOffset: 1000 + (markerTypes.length - markerTypes.indexOf(t)) * 10,
+        zIndexOffset:
+            1000 + (Object.keys(markerIcons).length - Object.keys(markerIcons).indexOf(t)) * 10,
         riseOnHover: true,
     });
 };

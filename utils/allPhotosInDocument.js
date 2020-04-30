@@ -1,18 +1,15 @@
 module.exports.allPhotosInDocument = (doc) => {
-    return [].concat(
-        doc.photos || [],
-        ...[]
-            .concat(
-                ...[
-                    doc.parking,
-                    doc.water,
-                    doc.toilets,
-                    doc.shelter,
-                    doc.park_office,
-                    doc.visitor_centre,
-                ].filter(Boolean),
-            )
-            .map((i) => i.photos)
-            .filter(Boolean),
-    );
+    return [
+        ...(doc.photos || []),
+        ...[].concat(
+            ...['infrastructure', 'natural'].map((key) =>
+                [].concat(
+                    ...[]
+                        .concat(...Object.values(doc[key] || {}))
+                        .map((i) => i.photos)
+                        .filter(Boolean),
+                ),
+            ),
+        ),
+    ];
 };

@@ -1,81 +1,79 @@
 const humanize = require('underscore.string/humanize');
 const photoIndex = require('../public/photos/index.json');
 
-module.exports.docToGeoJson = (category, doc, geo) => {
-    ['transport', 'parking', 'water', 'toilets', 'shelter', 'information'].forEach((key) => {
-        if (doc[key]) {
-            doc[key]
-                .filter((i) => i.show !== false)
-                .forEach((item) => {
-                    const { osm, location, name, photos, tags } = item;
-                    if (location) {
-                        geo.features.push({
-                            type: 'Feature',
-                            geometry: {
-                                type: 'Point',
-                                coordinates: [location[1], location[0]],
-                            },
-                            properties: {
-                                type: key,
-                                osm,
-                                name: humanize(key) + (name ? ` - ${name}` : ''),
-                                photo:
-                                    photos && photos.length >= 1
-                                        ? {
-                                              ...photos[0],
-                                              src: `/photos/sm/${
-                                                  photoIndex[photos[0].src].hash
-                                              }.jpg`,
-                                          }
-                                        : null,
-                                tags,
-                            },
-                        });
-                    }
-                });
-        }
-    });
+const coordinates = (ary) => [ary[1], ary[0]];
 
-    if (doc.photos) {
-        doc.photos.forEach(({ src, href, attr, license, location }) => {
-            const loc = location || photoIndex[src].location;
-            if (loc) {
-                geo.features.push({
-                    type: 'Feature',
-                    geometry: {
-                        type: 'Point',
-                        coordinates: [loc[1], loc[0]],
-                    },
-                    properties: {
-                        type: 'photo',
-                        name: 'Photo',
-                        photo: {
-                            src: `/photos/sm/${photoIndex[src].hash}.jpg`,
-                            href,
-                            attr,
-                            license,
-                        },
-                        icon: 'camera',
-                    },
-                });
-            }
-        });
-    }
-
-    if (doc.location) {
-        geo.features.push({
+const geoFeatures = (key, ary) =>
+    ary
+        .filter((i) => i.show !== false)
+        .filter((i) => i.location !== undefined)
+        .map(({ osm, location, name, photos, tags }) => ({
             type: 'Feature',
             geometry: {
                 type: 'Point',
-                coordinates: [doc.location[1], doc.location[0]],
+                coordinates: coordinates(location),
             },
             properties: {
-                type: category,
-                name: doc.name,
-                icon: 'map-marker',
+                type: key,
+                osm,
+                name: humanize(key) + (name ? ` - ${name}` : ''),
+                photo:
+                    photos && photos.length >= 1
+                        ? {
+                              ...photos[0],
+                              src: `/photos/sm/${photoIndex[photos[0].src].hash}.jpg`,
+                          }
+                        : null,
+                tags,
             },
-        });
-    }
+        }));
 
-    return geo;
+const objToGeoFeatures = (obj) =>
+    Object.keys(obj).reduce((features, key) => {
+        return [...features, ...geoFeatures(key, obj[key] || [])];
+    }, []);
+
+const geoPhotos = (ary) =>
+    ary
+        .filter((i) => i.show !== false)
+        .filter((i) => i.location || photoIndex[i.src].location)
+        .map(({ src, href, attr, license, location }) => ({
+            type: 'Feature',
+            geometry: {
+                type: 'Point',
+                coordinates: coordinates(location || photoIndex[src].location),
+            },
+            properties: {
+                type: 'photo',
+                name: 'Photo',
+                photo: {
+                    src: `/photos/sm/${photoIndex[src].hash}.jpg`,
+                    href,
+                    attr,
+                    license,
+                },
+            },
+        }));
+
+module.exports.docToGeoJson = (category, doc, geoBase) => {
+    return {
+        ...geoBase,
+        features: [
+            ...geoBase.features,
+            ...objToGeoFeatures(doc.infrastructure || {}),
+            ...objToGeoFeatures(doc.natural || {}),
+            ...geoPhotos(doc.photos || []),
+            {
+                type: 'Feature',
+                geometry: {
+                    type: 'Point',
+                    coordinates: coordinates(doc.location),
+                },
+                properties: {
+                    type: category,
+                    name: doc.name,
+                },
+            },
+        ],
+    };
 };

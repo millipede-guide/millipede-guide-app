@@ -124,12 +124,16 @@ export default ({ category, id, doc, fileName }) => {
                     <Features heading="Allowances and Restrictions" features={doc.restrictions} />
                     <Features heading="Accessibility" features={doc.accessibility} />
                     <Features heading="Getting There" features={doc.getting_there} />
-                    <Infrastructure heading="Transport" items={doc.transport} />
-                    <Infrastructure heading="Parking" items={doc.parking} />
-                    <Infrastructure heading="Water" items={doc.water} />
-                    <Infrastructure heading="Toilets" items={doc.toilets} />
-                    <Infrastructure heading="Shelter" items={doc.shelter} />
-                    <Infrastructure heading="Information" items={doc.information} />
+                    {doc.infrastructure &&
+                        ['transport', 'parking', 'toilets', 'water', 'shelter', 'information']
+                            .filter((k) => doc.infrastructure[k])
+                            .map((k) => (
+                                <Infrastructure
+                                    key={k}
+                                    heading={humanize(k)}
+                                    items={doc.infrastructure[k] || []}
+                                />
+                            ))}
                     <WebsiteLinks doc={doc} />
                     <Export doc={doc} category={category} fileName={fileName} />
                     <OpenSource category={category} fileName={fileName} />

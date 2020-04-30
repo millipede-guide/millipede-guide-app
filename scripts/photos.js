@@ -22,12 +22,11 @@ const indexFilePath = Path.join(photosDirPath, 'index.json');
 // https://stackoverflow.com/a/51302466/5165
 const download = (src, filePath) =>
     new Promise((resolve) => {
-        console.log('Fetch...');
         if (FS.existsSync(filePath) && !regenerate) {
-            console.log(' > EXISTS');
             resolve(true);
         } else {
             console.log('DOWNLOADING...');
+            console.log('', src);
             fetch(src)
                 .then((response) => {
                     if (!response.ok) {
@@ -59,11 +58,11 @@ const download = (src, filePath) =>
 
 const resize = (inFilePath, outFilePath, width, height) =>
     new Promise((resolve) => {
-        console.log(`Resize ${width}x${height}...`);
         if (FS.existsSync(outFilePath) && !regenerate) {
-            console.log(' > EXISTS');
             resolve();
         } else {
+            console.log(`Resize ${width}x${height}...`);
+            console.log('', outFilePath);
             // https://sharp.pixelplumbing.com/api-resize
             Sharp(inFilePath)
                 .resize({
@@ -83,11 +82,12 @@ const dmsToDecimal = ([d, m, s]) => (d + m / 60 + s / 3600).toFixed(6);
 
 const extractExif = (filePath, obj) =>
     new Promise((resolve) => {
-        console.log('EXIF...');
         if (obj.exif !== undefined && !regenerate) {
-            console.log(` > ${obj.exif}`);
             resolve();
         } else {
+            console.log('EXIF...');
+            console.log('', filePath);
+
             /* eslint-disable no-new */
             new ExifImage(
                 {
@@ -125,7 +125,6 @@ const extractExif = (filePath, obj) =>
 
 const run = async (index) => {
     const addSrc = async (src, page) => {
-        console.log(src);
         const obj = index[src] === undefined ? {} : index[src];
         if (obj.pages === undefined) obj.pages = [];
         if (obj.pages.indexOf(page) === -1) {
@@ -144,21 +143,14 @@ const run = async (index) => {
         return true;
     };
 
-    console.log('Site photos:');
-
     for (const { src } of Object.values(JSON.parse(FS.readFileSync('utils/sitePhotos.json')))) {
         await addSrc(src, 'sitePhotos');
     }
 
-    console.log('Loading YAML:');
-
     for (const category of ['attractions', 'campsites', 'parks', 'routes']) {
         for (const filePath of Glob.sync(`public/docs/${category}/**/*.yaml`)) {
-            console.log(filePath);
             const doc = YAML.safeLoad(FS.readFileSync(filePath));
-            if (doc.draft === 't') {
-                console.log(' > DRAFT');
-            } else {
+            if (doc.draft !== 't') {
                 const photos = allPhotosInDocument(doc);
                 for (const { src } of photos) {
                     await addSrc(src, filePath.replace('public/docs', ''));

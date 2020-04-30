@@ -21,6 +21,7 @@ import WheelchairAccessibility from 'mdi-material-ui/WheelchairAccessibility';
 import Stairs from 'mdi-material-ui/Stairs';
 import Leaf from 'mdi-material-ui/Leaf';
 import Terrain from 'mdi-material-ui/Terrain';
+import Summit from 'mdi-material-ui/Summit';
 import BabyCarriage from 'mdi-material-ui/BabyCarriage';
 import BicycleBasket from 'mdi-material-ui/BicycleBasket';
 import ShoePrint from 'mdi-material-ui/ShoePrint';
@@ -73,12 +74,13 @@ const iconMap = {
     horses: Horseshoe,
     kayak: SailBoat,
     lookout: Binoculars,
+    viewpoint: Binoculars,
     loop: Reload,
     motorbikes: Motorbike,
     motorcycle: Motorbike,
     motorhome: RvTruck,
     mountain_bike: Bicycle,
-    mountain_peak: Terrain,
+    mountain_peak: Summit,
     mountainous: Terrain,
     pets: DogSide,
     public_transport: BusStopIcon,
@@ -94,6 +96,7 @@ const iconMap = {
     slippery: ShoePrint,
     smoking: Smoking,
     stairs: Stairs,
+    steps: Stairs,
     stepping_stones_water_crossing: Waves,
     stroller: BabyCarriage,
     tidal_water_crossing: Waves,

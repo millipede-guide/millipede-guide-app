@@ -46,6 +46,11 @@ a {
     background-color: #F00;
 }
 
+.mapicon-viewpoint, .mapicon-moutain_peak, .mapicon-waterfall, .mapicon-water_crossing {
+    color: #FFF;
+    background-color: #0A0;
+}
+
 .mapicon-parking {
     color: #FFF;
     background-color: #00F;
