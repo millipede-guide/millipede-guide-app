@@ -1,6 +1,6 @@
+import YAML from 'js-yaml';
 import Page from './Page';
 import loadFile from '../utils/loadFile';
-import YAML from 'js-yaml';
 
 const Item = (props) => <Page {...props} />;
 

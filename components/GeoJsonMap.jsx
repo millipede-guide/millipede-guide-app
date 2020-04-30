@@ -4,9 +4,7 @@ import humanize from 'underscore.string/humanize';
 import { ContentBox } from './Typography';
 import GeoJsonAltitudeProfile from './GeoJsonAltitudeProfile';
 import { markerIcons, pointToLayer, onEachFeature } from '../utils/mapMarkers';
-
-const devEnv = process.env.NODE_ENV === 'development';
-const docToGeoJson = devEnv ? require('../utils/docToGeoJson').docToGeoJson : null;
+import { docToGeoJson } from '../utils/docToGeoJson';
 
 const geoTemplate = {
     type: 'FeatureCollection',
