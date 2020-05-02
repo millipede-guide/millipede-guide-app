@@ -1,14 +1,15 @@
 import humanize from 'underscore.string/humanize';
 
 export const markerIcons = {
-    parks: 'pine-tree',
-    campsites: 'tent',
-    routes: 'flag-variant',
-    attractions: 'binoculars',
+    // in order of z-index:
+    route: 'flag-variant',
+    campsite: 'tent',
+    attraction: 'star',
+    park: 'pine-tree',
     parking: 'parking',
     photo: 'camera',
     shelter: 'home-variant',
-    toilets: 'human-male-female',
+    toilet: 'human-male-female',
     transport: 'bus',
     water: 'water-pump',
     information: 'information',
@@ -16,6 +17,14 @@ export const markerIcons = {
     moutain_peak: 'summit',
     waterfall: 'waves',
     water_crossing: 'wave',
+};
+
+export const singular = {
+    routes: 'route',
+    campsites: 'campsite',
+    parks: 'park',
+    attractions: 'attraction',
+    toilets: 'toilet',
 };
 
 export const mapIcon = (type) =>

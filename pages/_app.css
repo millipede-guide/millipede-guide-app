@@ -41,7 +41,7 @@ a {
     background-color: #FF7F00;
 }
 
-.mapicon-parks, .mapicon-campsites, .mapicon-routes, .mapicon-attractions  {
+.mapicon-park, .mapicon-campsite, .mapicon-route, .mapicon-attraction  {
     color: #FFF;
     background-color: #F00;
 }
@@ -66,7 +66,7 @@ a {
     background-color: #8F8;
 }
 
-.mapicon-toilets {
+.mapicon-toilet {
     color: #000;
     background-color: #FFFF00;
 }

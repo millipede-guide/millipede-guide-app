@@ -1,5 +1,6 @@
 const humanize = require('underscore.string/humanize');
 const photoIndex = require('../public/photos/index.json');
+const { singular } = require('./mapMarkers');
 
 const coordinates = (ary) => [ary[1], ary[0]];
 
@@ -14,7 +15,7 @@ const geoFeatures = (key, ary) =>
                 coordinates: coordinates(location),
             },
             properties: {
-                type: key,
+                type: singular[key] || key,
                 osm,
                 name: humanize(key) + (name ? ` - ${name}` : ''),
                 photo:
@@ -28,8 +29,8 @@ const geoFeatures = (key, ary) =>
             },
         }));
 
-const objToGeoFeatures = (obj) =>
-    Object.keys(obj).reduce((features, key) => {
+const objToGeoFeatures = (category, obj) =>
+      Object.keys(obj).filter(key => singular[key] !== singular[category]).reduce((features, key) => {
         return [...features, ...geoFeatures(key, obj[key] || [])];
     }, []);
 
@@ -60,8 +61,8 @@ module.exports.docToGeoJson = (category, doc, geoBase) => {
         ...geoBase,
         features: [
             ...geoBase.features,
-            ...objToGeoFeatures(doc.infrastructure || {}),
-            ...objToGeoFeatures(doc.natural || {}),
+            ...objToGeoFeatures(category, doc.infrastructure || {}),
+            ...objToGeoFeatures(category, doc.natural || {}),
             ...geoPhotos(doc.photos || []),
             {
                 type: 'Feature',
@@ -70,7 +71,7 @@ module.exports.docToGeoJson = (category, doc, geoBase) => {
                     coordinates: coordinates(doc.location),
                 },
                 properties: {
-                    type: category,
+                    type: singular[category],
                     name: doc.name,
                 },
             },

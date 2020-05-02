@@ -33,9 +33,18 @@ export default ({ doc, center, category, fileName, showAltitudeProfile }) => {
                         'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
                 },
             );
+            
+            const thuderforestBaseLayer = window.L.tileLayer(
+                'https://thunderforest.millipede-guide.com/{z}/{x}/{y}.png',
+                {
+                    attribution:
+                    '<a href="https://www.thunderforest.com/maps/landscape/">thunderforest.com</a>'
+                },
+            );
 
             const baseLayers = {
-                'Street Map': osmBaseLayer,
+                'Landscape': thuderforestBaseLayer,
+                'Streets': osmBaseLayer,
             };
 
             const featureLayers = {};
@@ -75,7 +84,7 @@ export default ({ doc, center, category, fileName, showAltitudeProfile }) => {
                 fullscreenControl: {
                     pseudoFullscreen: true,
                 },
-                layers: [osmBaseLayer, ...Object.values(featureLayers)],
+                layers: [thuderforestBaseLayer, ...Object.values(featureLayers)],
             });
 
             setDynamicStyle(4);
@@ -111,8 +120,11 @@ export default ({ doc, center, category, fileName, showAltitudeProfile }) => {
         if (geoBase !== null && geoBase.type && geoBase.type === 'FeatureCollection') {
             if (typeof window === 'object' && typeof window.L === 'object') {
                 const geo = window.L.geoJSON(geoBase, {
-                    pointToLayer,
-                    onEachFeature,
+                    pointToLayer: (feature, latlng) => window.L.circleMarker(latlng, { radius: 1 }),
+                    style: {
+                        fillOpacity: 0,
+                    },
+
                 }).addTo(geoBaseLayer.current);
                 mapRef.current.fitBounds(geo.getBounds(), {
                     animate: false,
