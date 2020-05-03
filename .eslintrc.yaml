@@ -1,0 +1,46 @@
+ignorePatterns:
+  - '*.json'
+  - '*.css'
+extends:
+  - standard
+  - 'plugin:react/recommended'
+  - airbnb
+  - prettier
+  - prettier/react
+parserOptions:
+  ecmaVersion: 2020
+  sourceType: module
+  allowImportExportEverywhere: false
+  ecmaFeatures:
+    jsx: true
+env:
+  es6: true
+  node: true
+rules:
+  indent:
+    - error
+    - 4
+  react/prop-types: 'off'
+  react/require-default-props: 'off'
+  react/react-in-jsx-scope: 'off'
+  react/jsx-props-no-spreading: 'off'
+  jsx-a11y/anchor-is-valid: 'off'
+  import/no-named-as-default: 'off'
+  import/no-named-as-default-member: 'off'
+plugins:
+  - babel
+  - import
+  - prettier
+  - react
+  - react-hooks
+  - standard
+settings:
+  import/resolver:
+    node:
+      extensions:
+        - .js
+        - .jsx
+        - .mjs
+  react:
+    version: detect
+

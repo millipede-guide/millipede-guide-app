@@ -1,4 +1,4 @@
-module.exports.getFeaturePhoto = (photos) => {
+export default (photos) => {
     if (photos && photos.length > 0) {
         const featured = photos.filter((i) => i.feature);
         if (featured.length > 0) {

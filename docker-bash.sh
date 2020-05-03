@@ -1,1 +1,1 @@
-docker-compose exec nextjs bash
+docker-compose run --rm --service-ports nextjs bash

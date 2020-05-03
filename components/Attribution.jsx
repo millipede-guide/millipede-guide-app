@@ -1,5 +1,5 @@
 import Link from '@material-ui/core/Link';
-import { allPhotosInDocument } from '../utils/allPhotosInDocument';
+import allPhotosInDocument from '../utils/allPhotosInDocument';
 import { H2, P, ContentBox, ContentInner } from './Typography';
 
 export const licenseUrls = {

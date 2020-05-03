@@ -5,31 +5,33 @@ services:
     image: "node:12"
     volumes:
       - .:/app:delegated
-      - node_modules:/app/node_modules
-      - next:/app/.next
       - ../millipede_docs:/app/public/docs:ro
+      - next_build:/app/build
+      - next_out:/app/out
+      - node_modules:/app/node_modules
     ports:
       - "3000:3000"
     working_dir: /app
     networks:
       - default
-    command: npm run dev
+    command: sh -c "npm install && npm run dev"
 
-  nginx:
-    image: nginx
-    env_file:
-      - .env
-    restart: unless-stopped
-    volumes:
-      - ./nginx-gzip.conf:/etc/nginx/conf.d/gzip.conf:ro
-      - ./out:/usr/share/nginx/html:ro
-    networks:
-      - default
-      - www
+  # nginx:
+  #   image: nginx
+  #   env_file:
+  #     - .env
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./nginx-gzip.conf:/etc/nginx/conf.d/gzip.conf:ro
+  #     - ./out:/usr/share/nginx/html:ro
+  #   networks:
+  #     - default
+  #     - www
     
 volumes:
   node_modules:
-  next:
+  next_build:
+  next_out:
         
 networks:
   www:

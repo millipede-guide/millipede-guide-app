@@ -17,7 +17,7 @@ import OpenSource from './OpenSource';
 import { H1 } from './Typography';
 import Link from './Link';
 import photoIndex from '../public/photos/index.json';
-import { getFeaturePhoto } from '../utils/getFeaturePhoto';
+import getFeaturePhoto from '../utils/getFeaturePhoto';
 
 export default ({ category, id, doc, fileName }) => {
     return (

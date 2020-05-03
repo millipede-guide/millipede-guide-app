@@ -3,6 +3,7 @@ const fs = require('fs');
 const withOffline = require('next-offline');
 
 const nextConfig = {
+    distDir: 'build',
     exportTrailingSlash: true,
     exportPathMap() {
         const paths = {

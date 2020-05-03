@@ -1,15 +1,17 @@
 /* eslint-disable no-console */
 /* eslint-disable import/no-extraneous-dependencies */
 
-const FS = require('fs');
-const Glob = require('glob');
-const YAML = require('js-yaml');
-const Path = require('path');
-const MkDir = typeof window === 'undefined' ? require('mkdirp') : null;
-const tokml = require('tokml');
-const togpx = require('togpx');
-const { docToGeoJson } = require('../utils/docToGeoJson');
+import FS from 'fs';
+import Glob from 'glob';
+import YAML from 'js-yaml';
+import Path from 'path';
+import MkDir from 'mkdirp';
+import tokml from 'tokml';
+import togpx from 'togpx';
+import docToGeoJson from '../utils/docToGeoJson.mjs';
 // const data2xml = require('data2xml')();
+
+const photosIndex = JSON.parse(FS.readFileSync('./public/photos/index.json'));
 
 ['attractions', 'campsites', 'parks', 'routes'].forEach((category) => {
     Glob.sync(`public/docs/${category}/**/*.yaml`).forEach((filePath) => {
@@ -45,7 +47,7 @@ const { docToGeoJson } = require('../utils/docToGeoJson');
                     features: [],
                 };
             }
-            docToGeoJson(category, doc, geo);
+            docToGeoJson(category, doc, geo, photosIndex);
             FS.writeFileSync(
                 Path.join(exportDir, `${fileName}.geo.json`),
                 JSON.stringify(geo, null, 4),

@@ -1,6 +1,5 @@
-const humanize = require('underscore.string/humanize');
-const photoIndex = require('../public/photos/index.json');
-const { singular } = require('./mapMarkers');
+import humanize from 'underscore.string/humanize.js';
+import { singular } from './mapMarkers.mjs';
 
 const coordinates = (ary) => [ary[1], ary[0]];
 
@@ -18,37 +17,33 @@ const geoFeatures = (key, ary) =>
                 type: singular[key] || key,
                 osm,
                 name: humanize(key) + (name ? ` - ${name}` : ''),
-                photo:
-                    photos && photos.length >= 1
-                        ? {
-                              ...photos[0],
-                              src: `/photos/sm/${photoIndex[photos[0].src].hash}.jpg`,
-                          }
-                        : null,
+                photo: photos && photos.length >= 1 ? photos[0] : null,
                 tags,
             },
         }));
 
 const objToGeoFeatures = (category, obj) =>
-      Object.keys(obj).filter(key => singular[key] !== singular[category]).reduce((features, key) => {
-        return [...features, ...geoFeatures(key, obj[key] || [])];
-    }, []);
+    Object.keys(obj)
+        .filter((key) => singular[key] !== singular[category])
+        .reduce((features, key) => {
+            return [...features, ...geoFeatures(key, obj[key] || [])];
+        }, []);
 
-const geoPhotos = (ary) =>
+const geoPhotos = (ary, photosIndex) =>
     ary
         .filter((i) => i.show !== false)
-        .filter((i) => i.location || photoIndex[i.src].location)
+        .filter((i) => i.location || photosIndex[i.src].location)
         .map(({ src, href, attr, license, location }) => ({
             type: 'Feature',
             geometry: {
                 type: 'Point',
-                coordinates: coordinates(location || photoIndex[src].location),
+                coordinates: coordinates(location || photosIndex[src].location),
             },
             properties: {
                 type: 'photo',
                 name: 'Photo',
                 photo: {
-                    src: `/photos/sm/${photoIndex[src].hash}.jpg`,
+                    src,
                     href,
                     attr,
                     license,
@@ -56,14 +51,14 @@ const geoPhotos = (ary) =>
             },
         }));
 
-module.exports.docToGeoJson = (category, doc, geoBase) => {
+export default (category, doc, geoBase, photosIndex) => {
     return {
         ...geoBase,
         features: [
             ...geoBase.features,
             ...objToGeoFeatures(category, doc.infrastructure || {}),
             ...objToGeoFeatures(category, doc.natural || {}),
-            ...geoPhotos(doc.photos || []),
+            ...geoPhotos(doc.photos || [], photosIndex),
             {
                 type: 'Feature',
                 geometry: {

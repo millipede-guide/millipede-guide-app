@@ -3,21 +3,23 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-await-in-loop */
 
-const FS = require('fs');
-const Glob = require('glob');
-const YAML = require('js-yaml');
-const fetch = require('isomorphic-unfetch');
-const Path = require('path');
-const Sharp = require('sharp');
-const { ExifImage } = require('exif');
-const moment = require('moment');
-const crypto = require('crypto');
-const { allPhotosInDocument } = require('../utils/allPhotosInDocument');
+import FS from 'fs';
+import Glob from 'glob';
+import YAML from 'js-yaml';
+import fetch from 'isomorphic-unfetch';
+import Path from 'path';
+import Sharp from 'sharp';
+import ExifImage from 'exif';
+import moment from 'moment';
+import crypto from 'crypto';
+import allPhotosInDocument from '../utils/allPhotosInDocument.mjs';
 
 const regenerate = process.argv.indexOf('-r') !== -1;
 
 const photosDirPath = 'public/photos';
 const indexFilePath = Path.join(photosDirPath, 'index.json');
+
+console.log(indexFilePath, FS.existsSync(indexFilePath) ? 'EXISTS' : 'NEW');
 
 // https://stackoverflow.com/a/51302466/5165
 const download = (src, filePath) =>
@@ -125,6 +127,7 @@ const extractExif = (filePath, obj) =>
 
 const run = async (index) => {
     const addSrc = async (src, page) => {
+        // console.log(src);
         const obj = index[src] === undefined ? {} : index[src];
         if (obj.pages === undefined) obj.pages = [];
         if (obj.pages.indexOf(page) === -1) {
@@ -148,6 +151,7 @@ const run = async (index) => {
     }
 
     for (const category of ['attractions', 'campsites', 'parks', 'routes']) {
+        // console.log(category);
         for (const filePath of Glob.sync(`public/docs/${category}/**/*.yaml`)) {
             const doc = YAML.safeLoad(FS.readFileSync(filePath));
             if (doc.draft !== 't') {

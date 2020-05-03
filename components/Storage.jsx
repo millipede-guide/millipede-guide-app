@@ -1,3 +1,5 @@
+/* globals DOMException */
+
 import Moment from 'moment';
 import { createContext, useState, useReducer, useEffect } from 'react';
 

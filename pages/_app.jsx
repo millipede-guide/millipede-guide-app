@@ -7,15 +7,14 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
-
 import App from 'next/app';
-import { ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import theme from '../css/theme';
+import theme from './_theme';
 
 import { StorageProvider } from '../components/Storage';
 
-export default class MyApp extends App {
+export default class CustomApp extends App {
     componentDidMount() {
         // Remove the server-side injected CSS.
         const jssStyles = document.querySelector('#jss-server-side');
@@ -29,7 +28,7 @@ export default class MyApp extends App {
 
         return (
             <StorageProvider>
-                <ThemeProvider theme={theme}>
+                <ThemeProvider theme={responsiveFontSizes(createMuiTheme(theme))}>
                     {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
                     <CssBaseline />
                     <Component {...pageProps} />

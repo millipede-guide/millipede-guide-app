@@ -114,7 +114,7 @@ const iconMap = {
     // tables: TableFurniture,
 };
 
-export default i => {
+export default (i) => {
     const Icon = i in iconMap ? iconMap[i] : Information;
     return <Icon />;
 };

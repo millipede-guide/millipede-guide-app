@@ -4,7 +4,8 @@ import humanize from 'underscore.string/humanize';
 import { ContentBox } from './Typography';
 import GeoJsonAltitudeProfile from './GeoJsonAltitudeProfile';
 import { markerIcons, pointToLayer, onEachFeature } from '../utils/mapMarkers';
-import { docToGeoJson } from '../utils/docToGeoJson';
+import photosIndex from '../public/photos/index.json';
+import docToGeoJson from '../utils/docToGeoJson';
 
 const geoTemplate = {
     type: 'FeatureCollection',
@@ -33,18 +34,18 @@ export default ({ doc, center, category, fileName, showAltitudeProfile }) => {
                         'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
                 },
             );
-            
+
             const thuderforestBaseLayer = window.L.tileLayer(
                 'https://thunderforest.millipede-guide.com/{z}/{x}/{y}.png',
                 {
                     attribution:
-                    '<a href="https://www.thunderforest.com/maps/landscape/">thunderforest.com</a>'
+                        '<a href="https://www.thunderforest.com/maps/landscape/">thunderforest.com</a>',
                 },
             );
 
             const baseLayers = {
-                'Landscape': thuderforestBaseLayer,
-                'Streets': osmBaseLayer,
+                Landscape: thuderforestBaseLayer,
+                Streets: osmBaseLayer,
             };
 
             const featureLayers = {};
@@ -54,7 +55,7 @@ export default ({ doc, center, category, fileName, showAltitudeProfile }) => {
             featureLayers['<span class="mdi mdi-map-marker-path"></span> Path'] =
                 geoBaseLayer.current;
 
-            const geoMarkers = docToGeoJson(category, doc, { ...geoTemplate });
+            const geoMarkers = docToGeoJson(category, doc, { ...geoTemplate }, photosIndex);
 
             Object.keys(markerIcons).forEach((t) => {
                 const markerFeatures = geoMarkers.features.filter(
@@ -71,7 +72,7 @@ export default ({ doc, center, category, fileName, showAltitudeProfile }) => {
                         },
                         {
                             pointToLayer,
-                            onEachFeature,
+                            onEachFeature: (f, l) => onEachFeature(f, l, photosIndex),
                         },
                     );
                 }
@@ -124,7 +125,6 @@ export default ({ doc, center, category, fileName, showAltitudeProfile }) => {
                     style: {
                         fillOpacity: 0,
                     },
-
                 }).addTo(geoBaseLayer.current);
                 mapRef.current.fitBounds(geo.getBounds(), {
                     animate: false,

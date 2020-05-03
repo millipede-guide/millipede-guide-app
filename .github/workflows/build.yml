@@ -17,6 +17,9 @@ jobs:
     steps:
       - name: Checkout main
         uses: actions/checkout@v2
+
+      - name: ESLint
+        run: npm run eslint
         
       - name: Checkout docs
         uses: actions/checkout@v2

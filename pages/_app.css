@@ -19,13 +19,13 @@ a {
     border-radius: 5px;
     overflow: hidden;
     color: #000;
-    background-color: #FFF;
+    background-color: #fff;
     transform-origin: center center;
 }
 
 .mapicon-cluster {
-    color: #FFF;
-    background-color: #F00;
+    color: #fff;
+    background-color: #f00;
     width: auto;
     height: 24px;
     line-height: 22px;
@@ -37,48 +37,54 @@ a {
 }
 
 .mapicon-transport {
-    color: #FFF;
-    background-color: #FF7F00;
+    color: #fff;
+    background-color: #ff7f00;
 }
 
-.mapicon-park, .mapicon-campsite, .mapicon-route, .mapicon-attraction  {
-    color: #FFF;
-    background-color: #F00;
+.mapicon-park,
+.mapicon-campsite,
+.mapicon-route,
+.mapicon-attraction {
+    color: #fff;
+    background-color: #f00;
 }
 
-.mapicon-viewpoint, .mapicon-moutain_peak, .mapicon-waterfall, .mapicon-water_crossing {
-    color: #FFF;
-    background-color: #0A0;
+.mapicon-viewpoint,
+.mapicon-moutain_peak,
+.mapicon-waterfall,
+.mapicon-water_crossing {
+    color: #fff;
+    background-color: #0a0;
 }
 
 .mapicon-parking {
-    color: #FFF;
-    background-color: #00F;
+    color: #fff;
+    background-color: #00f;
 }
 
 .mapicon-photo {
-    color: #FFF;
-    background-color: #B0B;
+    color: #fff;
+    background-color: #b0b;
 }
 
 .mapicon-shelter {
     color: #000;
-    background-color: #8F8;
+    background-color: #8f8;
 }
 
 .mapicon-toilet {
     color: #000;
-    background-color: #FFFF00;
+    background-color: #ffff00;
 }
 
 .mapicon-water {
     color: #000;
-    background-color: #0FF;
+    background-color: #0ff;
 }
 
 .mapicon-information {
-    color: #FFF;
-    background-color: #F0F;
+    color: #fff;
+    background-color: #f0f;
 }
 
 .mapicon-altitude {
@@ -89,8 +95,8 @@ a {
 
 .diagonal-line {
     background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' preserveAspectRatio='none' viewBox='0 0 100 100'><path d='M0 99 L99 0 L100 2 L2 100' fill='grey' /></svg>");
-    background-repeat:no-repeat;
-    background-position:center center;
+    background-repeat: no-repeat;
+    background-position: center center;
     background-size: 100% 100%, auto;
 }
 

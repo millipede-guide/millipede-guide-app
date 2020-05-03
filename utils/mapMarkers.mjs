@@ -1,4 +1,4 @@
-import humanize from 'underscore.string/humanize';
+import humanize from 'underscore.string/humanize.js';
 
 export const markerIcons = {
     // in order of z-index:
@@ -58,14 +58,15 @@ export const mapLinkGoogle = (location) =>
 export const mapLinkApple = (location) =>
     `http://maps.apple.com/?daddr=${location[0]},${location[1]}`;
 
-export const onEachFeature = (feature, featureLayer) => {
+export const onEachFeature = (feature, featureLayer, photosIndex) => {
     featureLayer.bindPopup(
         () => {
             const props = feature.properties;
             const html = [];
-            if (props.photo) {
+            if (props.photo && photosIndex) {
+                const src = `/photos/sm/${photosIndex[props.photo.src].hash}.jpg`;
                 html.push(
-                    `<div class='MuiCardMedia-root' style='width: 216px; height: 140px; border-radius: 4px; background-image: url("${props.photo.src}")'></div>`,
+                    `<div class='MuiCardMedia-root' style='width: 216px; height: 140px; border-radius: 4px; background-image: url("${src}")'></div>`,
                 );
             }
             if (props.name) {

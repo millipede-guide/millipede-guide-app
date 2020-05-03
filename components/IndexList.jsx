@@ -23,6 +23,7 @@ import MarkerMap from './MarkerMap';
 import LocationFilterDialog from './LocationFilterDialog';
 import BooleanFilterDialog from './BooleanFilterDialog';
 import { H1 } from './Typography';
+import photosIndex from '../public/photos/index.json';
 
 export default ({ category, geo }) => {
     const flags = ['mark', 'done', 'favt'];
@@ -208,7 +209,11 @@ export default ({ category, geo }) => {
                                                 }}
                                                 image={
                                                     feature.properties.photo
-                                                        ? feature.properties.photo.src
+                                                        ? `/photos/sm/${
+                                                              photosIndex[
+                                                                  feature.properties.photo.src
+                                                              ].hash
+                                                          }.jpg`
                                                         : null
                                                 }
                                             >

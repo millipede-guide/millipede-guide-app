@@ -1,4 +1,4 @@
-module.exports.allPhotosInDocument = (doc) => {
+export default (doc) => {
     return [
         ...(doc.photos || []),
         ...[].concat(

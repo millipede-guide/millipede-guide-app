@@ -1,11 +1,10 @@
 /* eslint-disable no-console */
 
-const FS = require('fs');
-const Glob = require('glob');
-const YAML = require('js-yaml');
-const Path = require('path');
-const photoIndex = require('../public/photos/index.json');
-const { getFeaturePhoto } = require('../utils/getFeaturePhoto');
+import FS from 'fs';
+import Glob from 'glob';
+import YAML from 'js-yaml';
+import Path from 'path';
+import getFeaturePhoto from '../utils/getFeaturePhoto.mjs';
 
 const makeUrlId = (filePath) => filePath.replace('.yaml', '').split('/').reverse().join('~');
 
@@ -13,10 +12,7 @@ const photoObj = (photos) => {
     if (photos) {
         const photo = getFeaturePhoto(photos);
         if (photo) {
-            return {
-                ...photo,
-                src: `/photos/sm/${photoIndex[photo.src].hash}.jpg`,
-            };
+            return photo;
         }
     }
     return null;
