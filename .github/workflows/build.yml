@@ -39,12 +39,12 @@ jobs:
 
       - name: NPM Install
         run: npm ci
-
-      - name: ESLint
-        run: npm run eslint
         
       - name: Compile docs
         run: npm run docs
+
+      - name: ESLint
+        run: npm run eslint
         
       - name: Next.js build
         run: npm run build
