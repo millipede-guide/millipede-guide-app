@@ -17,12 +17,6 @@ jobs:
     steps:
       - name: Checkout main
         uses: actions/checkout@v2
-
-      - name: NPM Install
-        run: npm ci
-
-      - name: ESLint
-        run: npm run eslint
         
       - name: Checkout docs
         uses: actions/checkout@v2
@@ -42,6 +36,12 @@ jobs:
           mv out/photos/orig/* public/photos/orig/
           mv out/photos/lg/* public/photos/lg/
           mv out/photos/sm/* public/photos/sm/
+
+      - name: NPM Install
+        run: npm ci
+
+      - name: ESLint
+        run: npm run eslint
         
       - name: Compile docs
         run: npm run docs
