@@ -62,10 +62,10 @@ export default ({ title, href }) => {
                                     color="error"
                                     badgeContent={
                                         (storage &&
-                                            storage.pageData &&
-                                            storage.pageData.updates &&
-                                            1) ||
-                                        null
+                                         storage.pageData &&
+                                         storage.pageData.updates &&
+                                         1) ||
+                                            null
                                     }
                                 >
                                     <MenuIcon />
@@ -83,7 +83,13 @@ export default ({ title, href }) => {
                                 fontWeight: 500,
                             }}
                         >
-                            <Hidden xsDown={Boolean(title)}>Millipede</Hidden> Guide
+                            {title &&
+                             <>
+                                 <Hidden mdUp>{process.env.appShortName}</Hidden>
+                                 <Hidden xsDown>{process.env.appName}</Hidden>
+                             </>
+                            }
+                            {!title && process.env.appName}
                         </MuiLink>
                     </Box>
                     {title && (
@@ -145,10 +151,10 @@ export default ({ title, href }) => {
                                                 color="error"
                                                 badgeContent={
                                                     (storage &&
-                                                        storage.pageData &&
-                                                        storage.pageData.updates &&
-                                                        1) ||
-                                                    null
+                                                     storage.pageData &&
+                                                     storage.pageData.updates &&
+                                                     1) ||
+                                                        null
                                                 }
                                             >
                                                 <ExportIcon />

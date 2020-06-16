@@ -8,7 +8,7 @@ export default ({ title, href, windowTitle, children }) => {
         <>
             <Head>
                 <title>
-                    {[windowTitle || title, 'The Millipede Guide'].filter(Boolean).join(' - ')}
+                    {[windowTitle || title, process.env.appShortName].filter(Boolean).join(' - ')}
                 </title>
                 <meta property="og:title" content={windowTitle || title} />
             </Head>

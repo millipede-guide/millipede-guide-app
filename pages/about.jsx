@@ -6,12 +6,12 @@ export default () => (
         <H1>About</H1>
         <ContentBox>
             <P>
-                The Millipede Guide is a collaborate, open-source guide to the natural world
+                This is a guide to the natural world
                 including heritage listed areas, parks, attractions, campsites and walking (or
-                cycling) routes
+                cycling) routes.
             </P>
             <P>
-                The guide aims to include basic, qualitative, fact-based information with geotags
+                It aims to include basic, qualitative, fact-based information with geotags
                 for everything.
             </P>
             <P>
@@ -21,8 +21,13 @@ export default () => (
                 steps.
             </P>
             <P>
-                Geotagged information is easily viewable on built-in maps as well as downloads for
+                Geotagged information is easily viewable on embedded maps as well as downloads for
                 common file formats and links to OSM, Google and Apple maps.
+            </P>
+            <P>
+                The app and content are open source and contributions are welcome.
+                The project is hosted on GitHub at{' '}
+                <a href={`https://${process.env.githubUrl}`}>{process.env.githubUrl}</a>.
             </P>
             <P>
                 Icon/logo image is by{' '}

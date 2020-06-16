@@ -28,7 +28,7 @@ export default ({ doc, center, category, fileName, showAltitudeProfile }) => {
     useEffect(() => {
         if (typeof window === 'object' && typeof window.L === 'object') {
             const osmBaseLayer = window.L.tileLayer(
-                'https://tile.millipede-guide.com/{z}/{x}/{y}.png',
+                `https://${process.env.osmHost}/{z}/{x}/{y}.png`,
                 {
                     attribution:
                         'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
@@ -36,7 +36,7 @@ export default ({ doc, center, category, fileName, showAltitudeProfile }) => {
             );
 
             const thuderforestBaseLayer = window.L.tileLayer(
-                'https://thunderforest.millipede-guide.com/{z}/{x}/{y}.png',
+                `https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=${process.env.tfApiKey}`,
                 {
                     attribution:
                         '<a href="https://www.thunderforest.com/maps/landscape/">thunderforest.com</a>',
