@@ -6,15 +6,26 @@ import Page from '../../components/Page';
 
 export const getStaticPaths = async () => {
     const paths = ['routes', 'parks', 'attractions', 'campsites'].reduce((acc, category) => {
+        const dir = Path.join('public', 'docs', category);
+
         return acc.concat(
             Glob.sync(Path.join('**', '*.yaml'), {
-                cwd: Path.join('public', 'docs', category),
-            }).map((f) => ({
-                params: {
-                    category,
-                    id: f.replace(/.yaml$/, '').split('/'),
-                },
-            })),
+                cwd: dir,
+            })
+                .map((f) => {
+                    const doc = YAML.safeLoad(FS.readFileSync(Path.join(dir, f)));
+
+                    if (doc.draft !== 't') {
+                        return {
+                            params: {
+                                category,
+                                id: f.replace(/.yaml$/, '').split('/'),
+                            },
+                        };
+                    }
+                    return null;
+                })
+                .filter((i) => i !== null),
         );
     }, []);
 
