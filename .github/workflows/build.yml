@@ -17,13 +17,16 @@ jobs:
     steps:
       - name: Checkout main
         uses: actions/checkout@v2
-        
+
+      - name: Lint
+        run: npm run linter
+
       - name: Checkout docs
         uses: actions/checkout@v2
         with:
           repository: millipede-guide/millipede-guide-docs
           path: public/docs
-        
+
       - name: Checkout build
         uses: actions/checkout@v2
         with:
@@ -39,19 +42,16 @@ jobs:
 
       - name: NPM Install
         run: npm ci
-        
+
       - name: Compile docs
         run: npm run docs
 
-      - name: ESLint
-        run: npm run eslint
-        
       - name: Next.js build
         run: npm run build
-        
+
       - name: Next.js export
         run: npm run export
-        
+
       - name: Git Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:

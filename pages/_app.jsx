@@ -10,7 +10,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import App from 'next/app';
 import { createMuiTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import theme from '../components/theme.js';
+import theme from '../components/theme';
 
 import { StorageProvider } from '../components/Storage';
 

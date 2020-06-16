@@ -17,12 +17,12 @@ import Layout from '../components/Layout';
 import { dateStorageFormat, dateDisplayFormat } from '../components/BookmarkControls';
 
 const LogItem = ({ date, category, id, favt }) => {
-    const [ name, park, region, country ] = [].fill(4);
+    const [park, region, country] = [].fill(4);
     const photo = {};
 
     return (
         <>
-            <NextLink href={`/[category]/[...id]`} as={`/${category}/${id}`}>
+            <NextLink href="/[category]/[...id]" as={`/${category}/${id}`}>
                 <ListItem alignItems="flex-start" button disableGutters>
                     <ListItemAvatar>
                         <Badge
