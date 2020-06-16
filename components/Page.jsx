@@ -20,8 +20,9 @@ import photoIndex from '../public/photos/index.json';
 import getFeaturePhoto from '../utils/getFeaturePhoto';
 
 export default ({ category, id, doc, fileName }) => {
-    const featurePhoto = doc.photos && doc.photos.length > 0 && getFeaturePhoto(doc.photos) || null;
-    
+    const featurePhoto =
+        (doc.photos && doc.photos.length > 0 && getFeaturePhoto(doc.photos)) || null;
+
     return (
         <>
             <Head>

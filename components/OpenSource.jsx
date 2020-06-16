@@ -1,9 +1,8 @@
 import Button from '@material-ui/core/Button';
 import FileEditIcon from 'mdi-material-ui/FileEdit';
-import Box from '@material-ui/core/Box';
 import AlertIcon from 'mdi-material-ui/Alert';
 import MapIcon from 'mdi-material-ui/Map';
-import { H2, P, ContentBox } from './Typography';
+import { H2, ContentBox } from './Typography';
 
 export default ({ category, fileName }) => (
     <ContentBox>

@@ -6,13 +6,12 @@ export default () => (
         <H1>About</H1>
         <ContentBox>
             <P>
-                This is a guide to the natural world
-                including heritage listed areas, parks, attractions, campsites and walking (or
-                cycling) routes.
+                This is a guide to the natural world including heritage listed areas, parks,
+                attractions, campsites and walking (or cycling) routes.
             </P>
             <P>
-                It aims to include basic, qualitative, fact-based information with geotags
-                for everything.
+                It aims to include basic, qualitative, fact-based information with geotags for
+                everything.
             </P>
             <P>
                 Photos in the guide aim to show as much information as possible and represent
@@ -25,8 +24,8 @@ export default () => (
                 common file formats and links to OSM, Google and Apple maps.
             </P>
             <P>
-                The app and content are open source and contributions are welcome.
-                The project is hosted on GitHub at{' '}
+                The app and content are open source and contributions are welcome. The project is
+                hosted on GitHub at{' '}
                 <a href={`https://${process.env.githubUrl}`}>{process.env.githubUrl}</a>.
             </P>
             <P>
