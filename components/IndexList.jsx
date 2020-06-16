@@ -10,7 +10,6 @@ import Box from '@material-ui/core/Box';
 import { useContext, useMemo, useState, useEffect } from 'react';
 import Alert from '@material-ui/lab/Alert';
 import Button from '@material-ui/core/Button';
-import Head from 'next/head';
 import FilterOptionsActiveIcon from 'mdi-material-ui/TextBoxCheck';
 import FilterOptionsInactiveIcon from 'mdi-material-ui/TextBoxCheckOutline';
 import IconButton from '@material-ui/core/IconButton';
@@ -190,7 +189,7 @@ export default ({ category, geo }) => {
                 >
                     {geoFeatures.map((feature) => (
                         <Grid key={feature.properties.id} item xs={6} sm={4} md={3}>
-                            <NextLink href={'/[category]/[...id]'} as={feature.properties.href}>
+                            <NextLink href="/[category]/[...id]" as={feature.properties.href}>
                                 <a style={{ textDecoration: 'none' }}>
                                     <Card>
                                         <CardActionArea>
