@@ -39,11 +39,7 @@ export default ({ category, id, doc, fileName }) => {
                 )}
             </Head>
             <LightboxContainer>
-                <Layout
-                    title={humanize(category)}
-                    windowTitle={doc.name}
-                    href={`/${category}/all/`}
-                >
+                <Layout title={humanize(category)} windowTitle={doc.name} href={`/${category}`}>
                     <Grid
                         container
                         direction="row"
@@ -61,7 +57,7 @@ export default ({ category, id, doc, fileName }) => {
                                     <Breadcrumbs separator="&rsaquo;">
                                         {doc.park && (
                                             <Link
-                                                href={`/${category}/all/`}
+                                                href={`/${category}`}
                                                 onClick={() =>
                                                     setStorage({
                                                         action: 'indexLocationFilter',
@@ -77,7 +73,7 @@ export default ({ category, id, doc, fileName }) => {
                                             </Link>
                                         )}
                                         <Link
-                                            href={`/${category}/all/`}
+                                            href={`/${category}`}
                                             onClick={() =>
                                                 setStorage({
                                                     action: 'indexLocationFilter',
@@ -92,7 +88,7 @@ export default ({ category, id, doc, fileName }) => {
                                             {doc.region}
                                         </Link>
                                         <Link
-                                            href={`/${category}/all/`}
+                                            href={`/${category}`}
                                             onClick={() =>
                                                 setStorage({
                                                     action: 'indexLocationFilter',

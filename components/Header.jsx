@@ -128,7 +128,7 @@ export default ({ title, href }) => {
                         <Divider />
                         {Object.keys(icons).map(listItem)}
                         <Divider />
-                        <NextLink href="/log" as="/log/">
+                        <NextLink href="/log" as="/log">
                             <ListItem button>
                                 <ListItemIcon>
                                     <LogIcon />
@@ -136,7 +136,7 @@ export default ({ title, href }) => {
                                 <ListItemText primary="Log" />
                             </ListItem>
                         </NextLink>
-                        <NextLink href="/export" as="/export/">
+                        <NextLink href="/export" as="/export">
                             <ListItem button>
                                 <ListItemIcon>
                                     <StorageContext.Consumer>
@@ -160,7 +160,7 @@ export default ({ title, href }) => {
                             </ListItem>
                         </NextLink>
                         <Divider />
-                        <NextLink href="/about" as="/about/">
+                        <NextLink href="/about" as="/about">
                             <ListItem button>
                                 <ListItemIcon>
                                     <AboutIcon />
@@ -168,7 +168,7 @@ export default ({ title, href }) => {
                                 <ListItemText primary="About" />
                             </ListItem>
                         </NextLink>
-                        <NextLink href="/privacy" as="/privacy/">
+                        <NextLink href="/privacy" as="/privacy">
                             <ListItem button>
                                 <ListItemIcon>
                                     <PrivacyIcon />

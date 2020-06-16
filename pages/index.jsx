@@ -34,7 +34,7 @@ export default function Index() {
                     >
                         {omap(sitePhotos).map(([category, { src }]) => (
                             <Grid key={category} item xs={6} sm={6} md={3}>
-                                <NextLink href={`/${category}/all`} as={`/${category}/all/`}>
+                                <NextLink href="/[category]" as={`/${category}`}>
                                     <a>
                                         <Card>
                                             <CardActionArea>
@@ -66,7 +66,7 @@ export default function Index() {
                         spacing={2}
                     >
                         <Grid item>
-                            <NextLink href="/log" as="/log/">
+                            <NextLink href="/log" as="/log">
                                 <a>
                                     <Button color="primary" startIcon={<LogIcon />}>
                                         Log
@@ -75,7 +75,7 @@ export default function Index() {
                             </NextLink>
                         </Grid>
                         <Grid item>
-                            <NextLink href="/export" as="/export/">
+                            <NextLink href="/export" as="/export">
                                 <a>
                                     <Button color="primary" startIcon={<ExportIcon />}>
                                         Export
@@ -84,7 +84,7 @@ export default function Index() {
                             </NextLink>
                         </Grid>
                         <Grid item>
-                            <NextLink href="/about" as="/about/">
+                            <NextLink href="/about" as="/about">
                                 <a>
                                     <Button color="primary" startIcon={<AboutIcon />}>
                                         About
@@ -93,7 +93,7 @@ export default function Index() {
                             </NextLink>
                         </Grid>
                         <Grid item>
-                            <NextLink href="/privacy" as="/privacy/">
+                            <NextLink href="/privacy" as="/privacy">
                                 <a>
                                     <Button color="primary" startIcon={<PrivacyIcon />}>
                                         Privacy

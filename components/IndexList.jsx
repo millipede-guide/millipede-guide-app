@@ -113,15 +113,7 @@ export default ({ category, geo }) => {
     }, [storage]);
 
     return (
-        <Layout title={humanize(category)} href={`/${category}/all/`}>
-            <Head>
-                <link
-                    rel="alternate"
-                    type="application/geo+json"
-                    title="GeoJSON"
-                    href={`/export/${category}/index.geo.json`}
-                />
-            </Head>
+        <Layout title={humanize(category)} href={`/${category}`}>
             <H1>{humanize(category)}</H1>
             <Box mt={1}>
                 <Grid
@@ -198,7 +190,7 @@ export default ({ category, geo }) => {
                 >
                     {geoFeatures.map((feature) => (
                         <Grid key={feature.properties.id} item xs={6} sm={4} md={3}>
-                            <NextLink href={`/${category}/[id]`} as={feature.properties.href}>
+                            <NextLink href={'/[category]/[...id]'} as={feature.properties.href}>
                                 <a style={{ textDecoration: 'none' }}>
                                     <Card>
                                         <CardActionArea>
