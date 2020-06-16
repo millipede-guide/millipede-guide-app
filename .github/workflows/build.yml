@@ -18,12 +18,6 @@ jobs:
       - name: Checkout main
         uses: actions/checkout@v2
 
-      - name: NPM Install
-        run: npm ci
-
-      - name: Lint
-        run: npm run linter
-
       - name: Checkout docs
         uses: actions/checkout@v2
         with:
@@ -43,8 +37,14 @@ jobs:
           mv out/photos/lg/* public/photos/lg/
           mv out/photos/sm/* public/photos/sm/
 
+      - name: NPM Install
+        run: npm ci
+
       - name: Compile docs
         run: npm run docs
+
+      - name: Lint
+        run: npm run linter
 
       - name: Next.js build
         run: npm run build
