@@ -1,4 +1,4 @@
-import humanize from 'underscore.string/humanize.js';
+import humanize from 'underscore.string/humanize';
 
 export const markerIcons = {
     // in order of z-index:

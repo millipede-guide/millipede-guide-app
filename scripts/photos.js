@@ -12,7 +12,7 @@ import Sharp from 'sharp';
 import ExifImage from 'exif';
 import moment from 'moment';
 import crypto from 'crypto';
-import allPhotosInDocument from '../utils/allPhotosInDocument.mjs';
+import allPhotosInDocument from '../utils/allPhotosInDocument';
 
 const regenerate = process.argv.indexOf('-r') !== -1;
 

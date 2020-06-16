@@ -8,7 +8,7 @@ import Path from 'path';
 import MkDir from 'mkdirp';
 import tokml from 'tokml';
 import togpx from 'togpx';
-import docToGeoJson from '../utils/docToGeoJson.mjs';
+import docToGeoJson from '../utils/docToGeoJson';
 // const data2xml = require('data2xml')();
 
 const photosIndex = JSON.parse(FS.readFileSync('./public/photos/index.json'));

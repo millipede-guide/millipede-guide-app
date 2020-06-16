@@ -1,5 +1,5 @@
-import humanize from 'underscore.string/humanize.js';
-import { singular } from './mapMarkers.mjs';
+import humanize from 'underscore.string/humanize';
+import { singular } from './mapMarkers';
 
 const coordinates = (ary) => [ary[1], ary[0]];
 
