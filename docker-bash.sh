@@ -1,1 +1,1 @@
-docker-compose run --rm --service-ports nextjs bash
+docker-compose run --service-ports node bash

@@ -1,1 +1,1 @@
-docker-compose run --rm nextjs bash -c "npm run build && npm run export"
+docker-compose run --rm node bash -c "npm run build && npm run export"
