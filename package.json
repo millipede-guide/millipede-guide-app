@@ -10,7 +10,7 @@
         "routes": "node -e 'require(\"./next.config.js\").exportPathMap()'",
         "prettier": "prettier --write '*.js' '{components,pages,scripts,utils}/**/*.{js,jsx,mjs,cjs}'",
         "linter": "eslint --fix --ext .js,.mjs,.cjs,.jsx --ignore-path .gitignore .",
-        "docs": "node --experimental-modules scripts/photos.mjs && node --experimental-modules scripts/docsExport.mjs"
+        "docs": "node --experimental-modules scripts/photos.js && node --experimental-modules scripts/docsExport.js"
     },
     "keywords": [],
     "author": "Reilly Beacom",

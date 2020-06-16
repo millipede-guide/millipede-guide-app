@@ -11,42 +11,18 @@ import Badge from '@material-ui/core/Badge';
 import FavouriteIcon from 'mdi-material-ui/Heart';
 import Grid from '@material-ui/core/Grid';
 import NextLink from 'next/link';
-import attractionsIndex from '../public/export/attractions/index.geo.json';
-import routesIndex from '../public/export/routes/index.geo.json';
-import campsitesIndex from '../public/export/campsites/index.geo.json';
-import parksIndex from '../public/export/parks/index.geo.json';
 import { StorageContext } from '../components/Storage';
 import { ContentBox, H1, P } from '../components/Typography';
 import Layout from '../components/Layout';
 import { dateStorageFormat, dateDisplayFormat } from '../components/BookmarkControls';
 
-const geoToObj = (geo) =>
-    geo.features.reduce(
-        (obj, feature) => ({ ...obj, [feature.properties.id]: feature.properties }),
-        {},
-    );
-
-const index = {
-    parks: geoToObj(parksIndex),
-    campsites: geoToObj(campsitesIndex),
-    routes: geoToObj(routesIndex),
-    attractions: geoToObj(attractionsIndex),
-};
-
 const LogItem = ({ date, category, id, favt }) => {
-    const { name, photo, park, region, country } = index[category][id]
-        ? index[category][id]
-        : {
-              name: id.split('~').reverse().join(' '),
-              photo: {},
-              park: '',
-              region: '',
-              country: '',
-          };
+    const [ name, park, region, country ] = [].fill(4);
+    const photo = {};
 
     return (
         <>
-            <NextLink href={`/${category}/[id]`} as={`/${category}/${id}`}>
+            <NextLink href={`/[category]/[...id]`} as={`/${category}/${id}`}>
                 <ListItem alignItems="flex-start" button disableGutters>
                     <ListItemAvatar>
                         <Badge
@@ -71,7 +47,7 @@ const LogItem = ({ date, category, id, favt }) => {
                             >
                                 <Grid item xs={12} sm>
                                     <Typography variant="body1" style={{ fontWeight: 500 }}>
-                                        {name}
+                                        {id}
                                     </Typography>
                                     <Typography variant="body2">
                                         {park && `${park}, `}
@@ -103,9 +79,9 @@ export default () => {
     useEffect(() => {
         if (storage.available && !storage.error && storage.pageData) {
             const data = [];
-            Object.keys(index).forEach((category) => {
-                Object.keys(storage.pageData[category]).forEach((id) => {
-                    if (id !== 'index' && id in index[category]) {
+            ['parks', 'routes', 'attractions', 'campsites'].forEach((category) => {
+                Object.keys(storage.pageData[category] || {}).forEach((id) => {
+                    if (id !== 'index') {
                         const { done } = storage.pageData[category][id];
                         const { favt } = storage.pageData[category][id];
                         if (done && done.log !== undefined && done.log.length > 0) {

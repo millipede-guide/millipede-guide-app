@@ -7,7 +7,6 @@ const nextConfig = {
         osmHost: process.env.OSM_HOST,
         tfApiKey: process.env.TF_API_KEY,
     },
-    distDir: 'build',
     exportTrailingSlash: false,
 };
 
