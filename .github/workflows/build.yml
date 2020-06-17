@@ -47,10 +47,14 @@ jobs:
         run: npm run linter
 
       - name: Next.js build
-        run: npm run build
-
-      - name: Next.js export
-        run: npm run export
+        run: npm run build && npm run export
+        env:
+          APP_NAME: ${{ secrets.APP_NAME }}
+          APP_SHORT_NAME: ${{ secrets.APP_SHORT_NAME }}
+          OSM_HOST: ${{ secrets.OSM_HOST }}
+          TF_API_KEY: ${{ secrets.TF_API_KEY }}
+          GH_PROJECT_URL: ${{ secrets.GH_PROJECT_URL }}
+          GH_DOCS_URL: ${{ secrets.GH_DOCS_URL }}
 
       - name: Git Deploy
         uses: JamesIves/github-pages-deploy-action@releases/v3
