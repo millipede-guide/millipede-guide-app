@@ -26,7 +26,10 @@ export default () => (
             <P>
                 The app and content are open source and contributions are welcome. The project is
                 hosted on GitHub at{' '}
-                <a href={`https://${process.env.githubUrl}`}>{process.env.githubUrl}</a>.
+                <a href={`https://github.com/${process.env.githubUrl}`}>
+                    github.com/{process.env.githubUrl}
+                </a>
+                .
             </P>
             <P>
                 Icon/logo image is by{' '}

@@ -9,7 +9,7 @@ export default ({ category, fileName }) => (
         <H2>Open Source</H2>
         <Button
             color="primary"
-            href={`https://${process.env.githubDocsUrl}/blob/master/${category}/${fileName}.yaml`}
+            href={`https://github.com/${process.env.githubDocsUrl}/blob/master/${category}/${fileName}.yaml`}
             startIcon={<FileEditIcon />}
             style={{ marginRight: '1em' }}
         >
@@ -17,9 +17,9 @@ export default ({ category, fileName }) => (
         </Button>
         <Button
             color="primary"
-            href={`https://${process.env.githubDocsUrl}/issues/new?title=${encodeURIComponent(
-                `Report: ${category}/${fileName}`,
-            )}`}
+            href={`https://github.com/${
+                process.env.githubDocsUrl
+            }/issues/new?title=${encodeURIComponent(`Report: ${category}/${fileName}`)}`}
             startIcon={<AlertIcon />}
             style={{ marginRight: '1em' }}
         >
