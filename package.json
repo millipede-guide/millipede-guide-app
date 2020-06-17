@@ -8,7 +8,7 @@
         "export": "next export",
         "prod": "next start",
         "routes": "node -e 'require(\"./next.config.js\").exportPathMap()'",
-        "prettier": "prettier --write '*.js' '{components,pages,scripts,utils}/**/*.{js,jsx,mjs,cjs}'",
+        "prettier": "prettier --write '*.js' '{components,pages,scripts,utils}/**/*.{js,jsx,mjs,cjs}' --loglevel silent",
         "linter": "eslint --fix --ext .js,.mjs,.cjs,.jsx --ignore-path .gitignore .",
         "docs": "node --experimental-modules scripts/photos.js && node --experimental-modules scripts/docsExport.js"
     },
