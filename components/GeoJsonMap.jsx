@@ -44,8 +44,8 @@ export default ({ doc, center, category, fileName, showAltitudeProfile }) => {
             );
 
             const baseLayers = {
-                Landscape: thuderforestBaseLayer,
                 Streets: osmBaseLayer,
+                Terrain: thuderforestBaseLayer,
             };
 
             const featureLayers = {};
@@ -85,7 +85,7 @@ export default ({ doc, center, category, fileName, showAltitudeProfile }) => {
                 fullscreenControl: {
                     pseudoFullscreen: true,
                 },
-                layers: [thuderforestBaseLayer, ...Object.values(featureLayers)],
+                layers: [osmBaseLayer, ...Object.values(featureLayers)],
             });
 
             setDynamicStyle(4);

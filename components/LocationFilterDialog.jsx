@@ -1,4 +1,3 @@
-import { makeStyles } from '@material-ui/core/styles';
 import { useContext, useState, useEffect, useMemo } from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -9,22 +8,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
 import { StorageContext } from './Storage';
 
-const useStyles = makeStyles((theme) => ({
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
-    },
-}));
-
 export default ({ open, setOpen, category, geo }) => {
-    const classes = useStyles();
-
     const [storage, setStorage] = useContext(StorageContext);
 
     const [country, setCountry] = useState('');
@@ -60,94 +47,93 @@ export default ({ open, setOpen, category, geo }) => {
     }, [geo]);
 
     return (
-        <Dialog
-            disableBackdropClick
-            disableEscapeKeyDown
-            open={open}
-            onClose={() => setOpen(false)}
-        >
+        <Dialog open={open} onClose={() => setOpen(false)} fullWidth maxWidth="sm">
             <DialogTitle>Select Location</DialogTitle>
             <DialogContent>
-                <form className={classes.container}>
-                    <div>
-                        <FormControl variant="outlined" className={classes.formControl}>
-                            <InputLabel id="country-label">Country</InputLabel>
+                <Box>
+                    <FormControl variant="outlined" fullWidth>
+                        <InputLabel id="country-label">Country</InputLabel>
+                        <Select
+                            labelId="country-label"
+                            id="country-select"
+                            value={country}
+                            onChange={(e) => {
+                                setPark('');
+                                setRegion('');
+                                setCountry(e.target.value);
+                            }}
+                            label="Country"
+                            placeholder="All"
+                            autoWidth={false}
+                        >
+                            <MenuItem aria-label="None" value="">
+                                <em>All</em>
+                            </MenuItem>
+                            {Object.keys(geoLocations).map((i) => (
+                                <MenuItem key={i} value={i}>
+                                    {i}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Box>
+                {country && geoLocations[country] && (
+                    <Box mt={3}>
+                        <FormControl variant="outlined" fullWidth>
+                            <InputLabel id="region-label">Region</InputLabel>
                             <Select
-                                labelId="country-label"
-                                id="country-select"
-                                value={country}
+                                labelId="region-label"
+                                id="region-select"
+                                value={region}
                                 onChange={(e) => {
                                     setPark('');
-                                    setRegion('');
-                                    setCountry(e.target.value);
+                                    setRegion(e.target.value);
                                 }}
-                                label="Country"
+                                label="Region"
+                                placeholder="All"
+                                autoWidth={false}
                             >
                                 <MenuItem aria-label="None" value="">
                                     <em>All</em>
                                 </MenuItem>
-                                {Object.keys(geoLocations).map((i) => (
+                                {Object.keys(geoLocations[country]).map((i) => (
                                     <MenuItem key={i} value={i}>
                                         {i}
                                     </MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
-                    </div>
-                    {country && geoLocations[country] && (
-                        <div>
-                            <FormControl variant="outlined" className={classes.formControl}>
-                                <InputLabel id="region-label">Region</InputLabel>
+                    </Box>
+                )}
+                {category !== 'parks' &&
+                    country &&
+                    region &&
+                    geoLocations[country] &&
+                    geoLocations[country][region] && (
+                        <Box mt={3}>
+                            <FormControl variant="outlined" fullWidth>
+                                <InputLabel id="park-label">Park</InputLabel>
                                 <Select
-                                    labelId="region-label"
-                                    id="region-select"
-                                    value={region}
-                                    onChange={(e) => {
-                                        setPark('');
-                                        setRegion(e.target.value);
-                                    }}
-                                    label="Region"
+                                    labelId="park-label"
+                                    id="park-select"
+                                    value={park}
+                                    onChange={(e) => setPark(e.target.value)}
+                                    label="Park"
+                                    placeholder="All"
+                                    autoWidth={false}
                                 >
                                     <MenuItem aria-label="None" value="">
                                         <em>All</em>
                                     </MenuItem>
-                                    {Object.keys(geoLocations[country]).map((i) => (
+                                    {geoLocations[country][region].map((i) => (
                                         <MenuItem key={i} value={i}>
                                             {i}
                                         </MenuItem>
                                     ))}
                                 </Select>
                             </FormControl>
-                        </div>
+                        </Box>
                     )}
-                    {category !== 'parks' &&
-                        country &&
-                        region &&
-                        geoLocations[country] &&
-                        geoLocations[country][region] && (
-                            <div>
-                                <FormControl variant="outlined" className={classes.formControl}>
-                                    <InputLabel id="park-label">Park</InputLabel>
-                                    <Select
-                                        labelId="park-label"
-                                        id="park-select"
-                                        value={park}
-                                        onChange={(e) => setPark(e.target.value)}
-                                        label="Park"
-                                    >
-                                        <MenuItem aria-label="None" value="">
-                                            <em>All</em>
-                                        </MenuItem>
-                                        {geoLocations[country][region].map((i) => (
-                                            <MenuItem key={i} value={i}>
-                                                {i}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </div>
-                        )}
-                </form>
             </DialogContent>
             <DialogActions>
                 <Button
