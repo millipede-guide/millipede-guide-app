@@ -72,8 +72,8 @@ export default ({ title, href }) => {
                         >
                             {title && (
                                 <>
+                                    <Hidden smDown>{process.env.appName}</Hidden>
                                     <Hidden mdUp>{process.env.appShortName}</Hidden>
-                                    <Hidden xsDown>{process.env.appName}</Hidden>
                                 </>
                             )}
                             {!title && process.env.appName}
