@@ -11,14 +11,17 @@ import Badge from '@material-ui/core/Badge';
 import FavouriteIcon from 'mdi-material-ui/Heart';
 import Grid from '@material-ui/core/Grid';
 import NextLink from 'next/link';
+import _get from 'lodash/get';
+import CategoryIcon from '../components/CategoryIcon';
 import { StorageContext } from '../components/Storage';
 import { ContentBox, H1, P } from '../components/Typography';
 import Layout from '../components/Layout';
 import { dateStorageFormat, dateDisplayFormat } from '../components/BookmarkControls';
+import photoIndex from '../public/photos/index.json';
 
 const LogItem = ({ date, category, id, favt }) => {
-    const [park, region, country] = [].fill(4);
-    const photo = {};
+    const [storage] = useContext(StorageContext);
+    const { name, park, region, country, photo } = _get(storage, ['pageCache', category, id], {});
 
     return (
         <>
@@ -32,7 +35,12 @@ const LogItem = ({ date, category, id, favt }) => {
                                 )
                             }
                         >
-                            <Avatar src={photo.src} variant="rounded" />
+                            <Avatar
+                                src={photo && `/photos/sm/${photoIndex[photo.src].hash}.jpg`}
+                                variant="rounded"
+                            >
+                                <CategoryIcon category={category} />
+                            </Avatar>
                         </Badge>
                     </ListItemAvatar>
                     <ListItemText
@@ -47,7 +55,7 @@ const LogItem = ({ date, category, id, favt }) => {
                             >
                                 <Grid item xs={12} sm>
                                     <Typography variant="body1" style={{ fontWeight: 500 }}>
-                                        {id}
+                                        {name || id}
                                     </Typography>
                                     <Typography variant="body2">
                                         {park && `${park}, `}

@@ -2,6 +2,7 @@
 
 import Moment from 'moment';
 import { createContext, useState, useReducer, useEffect } from 'react';
+import getFeaturePhoto from '../utils/getFeaturePhoto';
 
 export const storageKey = 'millipede';
 
@@ -68,6 +69,9 @@ const actions = (storage, action) => {
             return { ...action.data, available: true, error: false };
         case 'error':
             return { ...storage, available: false, error: true };
+        case 'pageCache':
+            deepSet(updated, ['pageCache', action.category, action.id], action.data);
+            return updated;
         case 'pageData':
             deepSet(updated, ['pageData', action.category, action.id, action.key], action.val);
             if (action.userUpdate) updated.pageData.updates = (updated.pageData.updates || 0) + 1;
@@ -125,4 +129,22 @@ export const StorageProvider = ({ children }) => {
     return (
         <StorageContext.Provider value={[storage, setStorage]}>{children}</StorageContext.Provider>
     );
+};
+
+export const setPageCache = (setStorage, category, id, doc) => {
+    const featurePhoto =
+        (doc.photos && doc.photos.length > 0 && getFeaturePhoto(doc.photos)) || null;
+
+    setStorage({
+        type: 'pageCache',
+        category,
+        id,
+        data: {
+            name: doc.name,
+            park: doc.park,
+            region: doc.region,
+            country: doc.country,
+            photo: featurePhoto,
+        },
+    });
 };

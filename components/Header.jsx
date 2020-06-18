@@ -13,10 +13,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from 'mdi-material-ui/Home';
-import ParksIcon from 'mdi-material-ui/ImageFilterHdr';
-import CampsitesIcon from 'mdi-material-ui/Tent';
-import RoutesIcon from 'mdi-material-ui/Walk';
-import AttractionsIcon from 'mdi-material-ui/Binoculars';
 import AboutIcon from 'mdi-material-ui/Information';
 import LogIcon from 'mdi-material-ui/CheckCircle';
 import PrivacyIcon from 'mdi-material-ui/Eye';
@@ -26,30 +22,21 @@ import Badge from '@material-ui/core/Badge';
 import Hidden from '@material-ui/core/Hidden';
 import MuiLink from './Link';
 import { StorageContext } from './Storage';
+import CategoryIcon from './CategoryIcon';
+
+const CategoryItem = ({ category }) => (
+    <NextLink key={category} href={`/${category}`}>
+        <ListItem button>
+            <ListItemIcon>
+                <CategoryIcon category={category} />
+            </ListItemIcon>
+            <ListItemText primary={humanize(category)} />
+        </ListItem>
+    </NextLink>
+);
 
 export default ({ title, href }) => {
     const [drawerIsOpen, openDrawer] = useState(false);
-
-    const icons = {
-        parks: ParksIcon,
-        campsites: CampsitesIcon,
-        routes: RoutesIcon,
-        attractions: AttractionsIcon,
-    };
-
-    const icon = (item) => {
-        const Icon = icons[item];
-        return <Icon />;
-    };
-
-    const listItem = (item) => (
-        <NextLink key={item} href={`/${item}/all`}>
-            <ListItem button>
-                <ListItemIcon>{icon(item)}</ListItemIcon>
-                <ListItemText primary={humanize(item)} />
-            </ListItem>
-        </NextLink>
-    );
 
     return (
         <>
@@ -132,7 +119,10 @@ export default ({ title, href }) => {
                             </ListItem>
                         </NextLink>
                         <Divider />
-                        {Object.keys(icons).map(listItem)}
+                        <CategoryItem category="parks" />
+                        <CategoryItem category="attractions" />
+                        <CategoryItem category="routes" />
+                        <CategoryItem category="campsites" />
                         <Divider />
                         <NextLink href="/log" as="/log">
                             <ListItem button>

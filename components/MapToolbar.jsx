@@ -10,7 +10,7 @@ export default ({ category, id, doc }) => (
     <Box>
         <Grid container direction="row" justify="space-between" alignItems="center">
             <Grid item>
-                <BookmarkControls category={category} id={id} userUpdate />
+                <BookmarkControls category={category} id={id} doc={doc} userUpdate />
             </Grid>
             <Grid item>
                 <IconButton

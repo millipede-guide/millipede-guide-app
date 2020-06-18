@@ -17,9 +17,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import { StorageContext } from './Storage';
+import { StorageContext, setPageCache } from './Storage';
 
-export default ({ category, id, attr, setAttr, dateStorageFormat, dateDisplayFormat }) => {
+export default ({ category, id, doc, attr, setAttr, dateStorageFormat, dateDisplayFormat }) => {
     const [storage, setStorage] = useContext(StorageContext);
     const [dates, setDates] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -40,6 +40,8 @@ export default ({ category, id, attr, setAttr, dateStorageFormat, dateDisplayFor
     }, [storage, category, id, attr]);
 
     const setStorageDates = (newDates) => {
+        setPageCache(setStorage, category, id, doc);
+
         setStorage({
             type: 'pageData',
             category,

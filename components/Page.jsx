@@ -35,9 +35,7 @@ export default ({ category, id, doc, fileName }) => {
                 {featurePhoto && (
                     <meta
                         property="og:image"
-                        content={`https://www.millipede-guide.com/photos/sm/${
-                            photoIndex[featurePhoto.src].hash
-                        }.jpg`}
+                        content={`/photos/sm/${photoIndex[featurePhoto.src].hash}.jpg`}
                     />
                 )}
             </Head>

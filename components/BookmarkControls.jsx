@@ -1,14 +1,14 @@
 import IconButton from '@material-ui/core/IconButton';
 import Moment from 'moment';
 import { useContext, useState } from 'react';
-import { StorageContext } from './Storage';
+import { StorageContext, setPageCache } from './Storage';
 import { BookmarkIcon } from './Bookmarks';
 import BookmarkDialog from './BookmarkDialog';
 
 export const dateStorageFormat = 'YYYY-MM-DD';
 export const dateDisplayFormat = 'Do MMM YYYY';
 
-export default ({ category, id, userUpdate = false, size = 'medium' }) => {
+export default ({ category, id, doc, userUpdate = false, size = 'medium' }) => {
     const bookmark = 'mark';
     const completed = 'done';
     const favourite = 'favt';
@@ -39,6 +39,8 @@ export default ({ category, id, userUpdate = false, size = 'medium' }) => {
 
     const toggle = (i) => {
         const t = Moment().format(dateStorageFormat);
+
+        setPageCache(setStorage, category, id, doc);
 
         setStorage({
             type: 'pageData',
@@ -87,6 +89,7 @@ export default ({ category, id, userUpdate = false, size = 'medium' }) => {
             <BookmarkDialog
                 category={category}
                 id={id}
+                doc={doc}
                 attr={dialog}
                 setAttr={setDialog}
                 dateStorageFormat={dateStorageFormat}
