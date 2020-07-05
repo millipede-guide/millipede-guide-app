@@ -6,11 +6,12 @@
         "dev": "next",
         "build": "webpack --config leaflet.webpack.config.cjs && next build",
         "export": "next export",
-        "prod": "next start",
-        "routes": "node -e 'require(\"./next.config.js\").exportPathMap()'",
-        "prettier": "prettier --write '*.js' '{components,pages,scripts,utils}/**/*.{js,jsx,mjs,cjs}' --loglevel silent",
+        "serve": "serve -l 3000 out",
         "linter": "eslint --fix --ext .js,.mjs,.cjs,.jsx --ignore-path .gitignore .",
-        "docs": "node --experimental-modules scripts/photos.js && node --experimental-modules scripts/docsExport.js"
+        "prettier": "prettier --write '*.js' '{components,pages,scripts,utils}/**/*.{js,jsx,mjs,cjs}'",
+        "contentValidate": "node --experimental-modules scripts/validate.js",
+        "contentPhotos": "node --experimental-modules scripts/photos.js",
+        "contentConvert": "node --experimental-modules scripts/convert.js"
     },
     "keywords": [],
     "author": "Reilly Beacom",
@@ -53,9 +54,16 @@
         "tokml": "^0.4.0",
         "typeface-roboto": "0.0.75",
         "underscore.string": "^3.3.5",
-        "webpack-cli": "^3.3.11"
+        "webpack-cli": "^3.3.11",
+        "path": "^0.12.7",
+        "@mapbox/togeojson": "^0.16.0",
+        "cheerio": "^1.0.0-rc.3",
+        "geojson-utils": "^1.1.0",
+        "jsdom": "^16.2.2",
+        "query-overpass": "^1.5.5"
     },
     "devDependencies": {
+        "serve": "^11.3.2",
         "babel-eslint": "^10.1.0",
         "eslint": "^6.8.0",
         "eslint-config-airbnb": "^18.1.0",

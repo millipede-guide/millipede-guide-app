@@ -26,7 +26,7 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }) => {
     const { category } = params;
-    const dir = Path.join('public', 'docs', category);
+    const dir = Path.join('public', 'content', category);
 
     const geo = {
         type: 'FeatureCollection',

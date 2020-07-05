@@ -14,10 +14,10 @@ import docToGeoJson from '../utils/docToGeoJson.js';
 const photosIndex = JSON.parse(FS.readFileSync('./public/photos/index.json'));
 
 ['attractions', 'campsites', 'parks', 'routes'].forEach((category) => {
-    Glob.sync(`public/docs/${category}/**/*.yaml`).forEach((filePath) => {
+    Glob.sync(`public/content/${category}/**/*.yaml`).forEach((filePath) => {
         console.log(' ', filePath);
 
-        const exportDir = Path.dirname(filePath).replace('/docs/', '/export/');
+        const exportDir = Path.dirname(filePath).replace('/content/', '/export/');
         const fileName = Path.basename(filePath, '.yaml');
 
         MkDir.sync(exportDir);

@@ -1,0 +1,321 @@
+type: object
+definitions:
+  boolean: &boolean
+    type: boolean
+  boolean_true: &boolean_true
+    type: string
+    pattern: ^t$
+  short_label: &short_label
+    type: string
+    minLength: 1
+    maxLength: 64
+  long_label: &long_label
+    type: string
+    minLength: 1
+    maxLength: 128
+  uri: &uri
+    type: string
+    format: uri
+  location: &location
+    type: array
+    minItems: 2
+    maxItems: 2
+    items:
+      - type: number
+        description: Latitude
+        minimum: -90
+        maximum: 90
+      - type: number
+        description: Longitude
+        minimum: -180
+        maximum: 180
+  osm: &osm
+    type: object
+    minProperties: 1
+    additionalProperties: false
+    properties:
+      relation: &osm_array
+        oneOf:
+          - type: number
+          - type: array
+            minItems: 1
+            items:
+              type: number
+      way: *osm_array
+      node: *osm_array
+  photo: &photo
+    type: object
+    required:
+      - src
+      - license
+      - attr
+    additionalProperties: false
+    properties:
+      src: *uri
+      href: *uri
+      license: *short_label
+      attr: *short_label
+      year:
+        type: number
+      feature:
+        type: string
+        pattern: ^t$
+  links: &links
+    type: object
+    minProperties: 1
+    additionalProperties: false
+    properties:
+      official: *uri
+      wikipedia: *uri
+      wikivoyage: *uri
+  infrastructure: &infrastructure
+    type: array
+    minItems: 1
+    items: &infrastructure_items
+      type: object
+      minProperties: 1
+      additionalProperties: false
+      properties: &infrastructure_properties
+        show: *boolean
+        primary:
+          type: string
+          pattern: ^t$
+        osm: *osm
+        location: *location
+        name: *long_label
+        links: *links
+        photos:
+          type: array
+          minItems: 1
+          maxItems: 3
+          items: *photo
+        tags: &infrastructure_tags
+          type: object
+          minProperties: 1
+          additionalProperties: false
+required:
+  - name
+  - location
+  - copyright
+  - license
+additionalProperties: false
+properties:
+  draft: *boolean_true
+  name: *long_label
+  park: *long_label
+  region: *short_label
+  country: *short_label
+  location: *location
+  osm: *osm
+  iucn:
+    type: string
+    description: https://www.iucn.org/theme/protected-areas/about/protected-area-categories
+    pattern: ^(Ia|Ib|II|III|IV|V|VI)$
+  nearest_town:
+    type: object
+    required:
+      - name
+      - location
+    additionalProperties: false
+    properties:
+      name: *long_label
+      location: *location
+      links: *links
+  photos:
+    type: array
+    minItems: 1
+    maxItems: 12
+    items: *photo
+  features:
+    type: object
+    minProperties: 1
+    additionalProperties: false
+    properties:
+      mountain_peak: *boolean
+      rainforest: *boolean
+      waterfall: *boolean
+      canyon: *boolean
+      cliff_edges: *boolean
+      steps: *boolean
+      walking: *boolean
+      cycling: *boolean
+      mountain_biking: *boolean
+      slippery: *boolean
+      flood_risk: *boolean
+      water_crossing: *boolean
+      water_crossing_with_stepping_stones: *boolean
+      loop: *boolean
+      viewpoint: *boolean
+      tree_fall_risk: *boolean
+      allocated_campsites: *boolean
+      showers: *boolean
+      tables: *boolean
+      rubbish_bins: *boolean
+      beach: *boolean
+      unesco_world_heritage: *boolean
+      booking_required: *boolean
+      drive_in_campsites: *boolean
+      national_park: *boolean
+      sandy_track: *boolean
+      dirt_track: *boolean
+      gravel_track: *boolean
+      sealed_surface: *boolean
+      rail_trail: *boolean
+  restrictions:
+    type: object
+    minProperties: 1
+    additionalProperties: false
+    properties:
+      hikers_only: *boolean
+      dogs: *boolean
+      dogs_off_leash: *boolean
+      smoking: *boolean
+      amplified_music: *boolean
+      generators: *boolean
+      gathering_firewood: *boolean
+      camping: *boolean
+      campfires: *boolean
+      drive_in: *boolean
+      horses: *boolean
+      bicycles: *boolean
+      motorbikes: *boolean
+      vehicles: *boolean
+      firearms: *boolean
+  accessibility:
+    type: object
+    minProperties: 1
+    additionalProperties: false
+    properties:
+      short_walk: *boolean
+      stroller: *boolean
+      wheelchair: *boolean
+  getting_there:
+    type: object
+    minProperties: 1
+    additionalProperties: false
+    properties:
+      hike_in: *boolean
+      public_transport: *boolean
+      car: *boolean
+      4x4: *boolean
+      sealed_road: *boolean
+      causeway: *boolean
+      motorcycle: *boolean
+      mountain_bike: *boolean
+      road_bicycle: *boolean
+      boat: *boolean
+  natural:  
+    type: object
+    minProperties: 1
+    additionalProperties: false
+    properties:
+      viewpoint:
+        <<: *infrastructure
+      moutain_peak:
+        <<: *infrastructure
+      waterfall:
+        <<: *infrastructure
+      water_crossing:
+        <<: *infrastructure
+  infrastructure:
+    type: object
+    minProperties: 1
+    additionalProperties: false
+    properties:
+      toilets:
+        <<: *infrastructure
+        items:
+          <<: *infrastructure_items
+          properties:
+            <<: *infrastructure_properties
+            tags:
+              <<: *infrastructure_tags
+              properties:
+                access: *short_label
+                disposal: *short_label
+                drinking_water: *short_label
+                position: *short_label
+                unisex: *short_label
+                wheelchair: *short_label
+                changing_table: *short_label
+                fee: *short_label
+      water:
+        <<: *infrastructure
+        items:
+          <<: *infrastructure_items
+          properties:
+            <<: *infrastructure_properties
+            tags:
+              <<: *infrastructure_tags
+              properties:
+                type:
+                  type: string
+                  pattern: ^(natural|tap|drinking_fountain|well|pump)$
+                source:
+                  type: string
+                  pattern: ^(pipe|tank|river|dam|lake|spring)$
+                potable: *boolean
+                treated: *boolean
+      transport:
+        <<: *infrastructure
+        items:
+          <<: *infrastructure_items
+          properties:
+            <<: *infrastructure_properties
+            tags:
+              <<: *infrastructure_tags
+              properties:
+                type: *short_label
+                network: *short_label
+                operator: *short_label
+      parking:
+        <<: *infrastructure
+        items:
+          <<: *infrastructure_items
+          properties:
+            <<: *infrastructure_properties
+            tags:
+              <<: *infrastructure_tags
+              properties:
+                access: *short_label
+                capacity: *short_label
+                time_limit: *boolean
+                fee: *boolean
+                surface: *short_label
+                size: *short_label
+      shelter: *infrastructure
+      information:
+        <<: *infrastructure
+        items:
+          <<: *infrastructure_items
+          properties:
+            <<: *infrastructure_properties
+            tags:
+              <<: *infrastructure_tags
+              properties:        
+                visitor_centre: *boolean
+                park_office: *boolean
+  fees:
+    type: array
+    minItems: 1
+  links: *links
+  attractions:
+    type: array
+    items:
+      type: string
+  routes:
+    type: array
+    items:
+      type: string
+  campsites:
+    type: array
+    items:
+      type: string
+  copyright:
+    type: array
+    minLength: 1
+    items: *short_label
+  license:
+    type: string
+    minLength: 1
+    pattern: ^CC BY\-NC\-SA 4\.0$

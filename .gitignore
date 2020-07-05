@@ -13,5 +13,6 @@
 /public/photos/lg/**
 !/public/photos/lg/.keep
 /.env
-/public/docs
+/public/content
 /public/leaflet.js
+scripts/scrapers/sources/*.html

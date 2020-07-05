@@ -11,13 +11,13 @@ export default class CustomDocument extends Document {
                     <link rel="manifest" href="/manifest.json" />
 
                     <meta property="og:type" content="website" />
-                    <meta property="og:site_name" content="Millipede Guide" />
-                    <meta name="twitter:site" content="@millipedeguide" />
+                    <meta property="og:site_name" content={process.env.appName} />
+                    <meta name="twitter:site" content={process.env.twitter} />
 
-                    <meta name="application-name" content="Millipede Guide" />
+                    <meta name="application-name" content={process.env.appName} />
                     <meta name="apple-mobile-web-app-capable" content="yes" />
                     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-                    <meta name="apple-mobile-web-app-title" content="Millipede Guide" />
+                    <meta name="apple-mobile-web-app-title" content={process.env.appShortName} />
                     <meta
                         name="description"
                         content="Free and open-source guide to the natural world."

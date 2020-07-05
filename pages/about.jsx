@@ -26,8 +26,8 @@ export default () => (
             <P>
                 The app and content are open source and contributions are welcome. The project is
                 hosted on GitHub at{' '}
-                <a href={`https://github.com/${process.env.githubUrl}`}>
-                    github.com/{process.env.githubUrl}
+                <a href={`https://github.com/${process.env.githubRepository}`}>
+                    github.com/{process.env.githubRepository}
                 </a>
                 .
             </P>

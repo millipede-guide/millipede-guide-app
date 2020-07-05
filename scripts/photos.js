@@ -151,13 +151,13 @@ const run = async (index) => {
     }
 
     for (const category of ['attractions', 'campsites', 'parks', 'routes']) {
-        // console.log(category);
-        for (const filePath of Glob.sync(`public/docs/${category}/**/*.yaml`)) {
+        console.log(category);
+        for (const filePath of Glob.sync(`public/content/${category}/**/*.yaml`)) {
             const doc = YAML.safeLoad(FS.readFileSync(filePath));
             if (doc.draft !== 't') {
                 const photos = allPhotosInDocument(doc);
                 for (const { src } of photos) {
-                    await addSrc(src, filePath.replace('public/docs', ''));
+                    await addSrc(src, filePath.replace('public/content', ''));
                 }
             }
         }

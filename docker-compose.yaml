@@ -7,7 +7,7 @@ services:
       - .env
     volumes:
       - .:/app:cached
-      - ../millipede_docs:/app/public/docs:ro
+      - ../millipede-guide-content:/app/public/content:ro
       - next_build:/app/build:delegated
       - next_out:/app/out:delegated
       - node_modules:/app/node_modules:delegated

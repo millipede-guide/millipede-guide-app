@@ -1,2 +1,4 @@
 rules:
-    import/extensions: 'off'
+  no-console: 'off'
+  import/extensions: 'off'
+  no-param-reassign: 'off'
