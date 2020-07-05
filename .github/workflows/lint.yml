@@ -16,5 +16,8 @@ jobs:
       - name: NPM Install
         run: npm ci
 
+      - name: Create empty photos index
+        run: echo "{}" > ./public/photos/index.json
+
       - name: Lint
         run: npm run linter
