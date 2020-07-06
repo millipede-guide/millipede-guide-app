@@ -9,7 +9,8 @@ export default ({ category, fileName }) => (
         <H2>Open Source</H2>
         <Button
             color="primary"
-            href={`https://github.com/${process.env.githubDocsUrl}/blob/master/${category}/${fileName}.yaml`}
+            href={`https://github.com/${process.env.githubRepository}/blob/master/${category}/${fileName}.yaml`}
+            target='_blank'
             startIcon={<FileEditIcon />}
             style={{ marginRight: '1em' }}
         >
@@ -18,8 +19,9 @@ export default ({ category, fileName }) => (
         <Button
             color="primary"
             href={`https://github.com/${
-                process.env.githubDocsUrl
+                process.env.githubRepository
             }/issues/new?title=${encodeURIComponent(`Report: ${category}/${fileName}`)}`}
+            target='_blank'
             startIcon={<AlertIcon />}
             style={{ marginRight: '1em' }}
         >
@@ -28,6 +30,7 @@ export default ({ category, fileName }) => (
         <Button
             color="primary"
             href="https://www.openstreetmap.org/fixthemap"
+            target='_blank'
             startIcon={<MapIcon />}
             style={{ marginRight: '1em' }}
         >

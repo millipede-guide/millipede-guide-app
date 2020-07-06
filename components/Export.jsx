@@ -28,6 +28,7 @@ export default ({ category, fileName }) => (
                 key={ext}
                 color="primary"
                 href={`/export/${category}/${fileName}.${ext}`}
+                target='_blank'
                 startIcon={icon(ext)}
                 style={{ marginRight: '1em' }}
             >
