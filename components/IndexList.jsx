@@ -62,12 +62,16 @@ export default ({ category, geo }) => {
                                 let filter;
                                 let current;
                                 try {
-                                    filter = storage.pageData[category].index[flag].v;
+                                    filter =
+                                        storage.pageData[category].index[flag].log &&
+                                        storage.pageData[category].index[flag].log.length > 0;
                                 } catch (e) {
                                     filter = false;
                                 }
                                 try {
-                                    current = storage.pageData[category][props.id][flag].v;
+                                    current =
+                                        storage.pageData[category][props.id][flag].log &&
+                                        storage.pageData[category][props.id][flag].log.length > 0;
                                 } catch (e) {
                                     current = false;
                                 }

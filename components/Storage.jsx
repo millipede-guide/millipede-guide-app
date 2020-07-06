@@ -132,19 +132,21 @@ export const StorageProvider = ({ children }) => {
 };
 
 export const setPageCache = (setStorage, category, id, doc) => {
-    const featurePhoto =
-        (doc.photos && doc.photos.length > 0 && getFeaturePhoto(doc.photos)) || null;
+    if (doc) {
+        const featurePhoto =
+            (doc.photos && doc.photos.length > 0 && getFeaturePhoto(doc.photos)) || null;
 
-    setStorage({
-        type: 'pageCache',
-        category,
-        id,
-        data: {
-            name: doc.name,
-            park: doc.park,
-            region: doc.region,
-            country: doc.country,
-            photo: featurePhoto,
-        },
-    });
+        setStorage({
+            type: 'pageCache',
+            category,
+            id,
+            data: {
+                name: doc.name,
+                park: doc.park,
+                region: doc.region,
+                country: doc.country,
+                photo: featurePhoto,
+            },
+        });
+    }
 };

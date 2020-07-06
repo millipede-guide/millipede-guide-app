@@ -72,7 +72,7 @@ export default ({ category, id, doc, userUpdate = false, size = 'medium' }) => {
                 disabled={!storage.available}
                 size={size}
                 title={`Completed${getTime(completed)}`}
-                onClick={() => setDialog([completed])}
+                onClick={() => (id === 'index' ? toggle(completed) : setDialog(completed))}
                 color="primary"
             >
                 <BookmarkIcon type={completed} color="inherit" active={get(completed)} />

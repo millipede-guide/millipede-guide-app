@@ -17,6 +17,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import Box from '@material-ui/core/Box';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { StorageContext, setPageCache } from './Storage';
 
 export default ({ category, id, doc, attr, setAttr, dateStorageFormat, dateDisplayFormat }) => {
@@ -100,12 +102,14 @@ export default ({ category, id, doc, attr, setAttr, dateStorageFormat, dateDispl
                         </div>
                     </CardActions>
                 </Card>
-                <br />
+                <Box mt={1} style={{ textAlign: 'center' }}>
+                    <ArrowDownwardIcon />
+                </Box>
                 <List dense>
                     <Divider />
                     {dates.length === 0 && (
                         <ListItem divider>
-                            <ListItemText primary={<em>No dates logged yet.</em>} />
+                            <ListItemText primary={<em>No dates added yet.</em>} />
                         </ListItem>
                     )}
                     {dates.map((i) => (
