@@ -10,7 +10,7 @@ export default ({ category, fileName }) => (
         <Button
             color="primary"
             href={`https://github.com/${process.env.githubRepository}/blob/master/${category}/${fileName}.yaml`}
-            target='_blank'
+            target="_blank"
             startIcon={<FileEditIcon />}
             style={{ marginRight: '1em' }}
         >
@@ -21,7 +21,7 @@ export default ({ category, fileName }) => (
             href={`https://github.com/${
                 process.env.githubRepository
             }/issues/new?title=${encodeURIComponent(`Report: ${category}/${fileName}`)}`}
-            target='_blank'
+            target="_blank"
             startIcon={<AlertIcon />}
             style={{ marginRight: '1em' }}
         >
@@ -30,7 +30,7 @@ export default ({ category, fileName }) => (
         <Button
             color="primary"
             href="https://www.openstreetmap.org/fixthemap"
-            target='_blank'
+            target="_blank"
             startIcon={<MapIcon />}
             style={{ marginRight: '1em' }}
         >
