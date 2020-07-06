@@ -53,9 +53,9 @@ export default ({ category, geo }) => {
 
                     if (
                         storage &&
-                        storage.pageData &&
-                        storage.pageData[category] &&
-                        storage.pageData[category].index
+                            storage.pageData &&
+                            storage.pageData[category] &&
+                            storage.pageData[category].index
                     ) {
                         if (
                             !flags.reduce((bool, flag) => {
@@ -88,8 +88,9 @@ export default ({ category, geo }) => {
                                 return Object.keys(boolfilter[sup]).reduce((b2, sub) => {
                                     if (b2 && boolfilter[sup][sub] !== null) {
                                         return (
-                                            props[sup] !== undefined &&
-                                            props[sup][sub] === boolfilter[sup][sub]
+                                            props[sup] !== null &&
+                                                props[sup] !== undefined &&
+                                                props[sup][sub] === boolfilter[sup][sub]
                                         );
                                     }
                                     return b2;
@@ -133,14 +134,14 @@ export default ({ category, geo }) => {
                             onClick={() => setLocationFilterDialog(true)}
                         >
                             {(storage.indexLocationFilter &&
-                                [
-                                    storage.indexLocationFilter.park,
-                                    storage.indexLocationFilter.region,
-                                    storage.indexLocationFilter.country,
-                                ]
-                                    .filter(Boolean)
-                                    .join(', ')) ||
-                                'All Countries'}
+                              [
+                                  storage.indexLocationFilter.park,
+                                  storage.indexLocationFilter.region,
+                                  storage.indexLocationFilter.country,
+                              ]
+                              .filter(Boolean)
+                              .join(', ')) ||
+                             'All Countries'}
                         </Button>
                     </Grid>
                     <Grid item>
@@ -225,20 +226,20 @@ export default ({ category, geo }) => {
                                                 >
                                                     {[
                                                         storage.indexLocationFilter &&
-                                                        storage.indexLocationFilter.park
+                                                            storage.indexLocationFilter.park
                                                             ? null
                                                             : feature.properties.park,
                                                         storage.indexLocationFilter &&
-                                                        storage.indexLocationFilter.region
+                                                            storage.indexLocationFilter.region
                                                             ? null
                                                             : feature.properties.region,
                                                         storage.indexLocationFilter &&
-                                                        storage.indexLocationFilter.country
+                                                            storage.indexLocationFilter.country
                                                             ? null
                                                             : feature.properties.country,
                                                     ]
-                                                        .filter(Boolean)
-                                                        .join(', ')}
+                                                     .filter(Boolean)
+                                                     .join(', ')}
                                                 </Typography>
                                                 <Typography
                                                     variant="h2"
