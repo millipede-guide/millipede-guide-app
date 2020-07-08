@@ -11,7 +11,7 @@ const NextComposed = React.forwardRef((props, ref) => {
     const { as, href, ...other } = props;
 
     return (
-        <NextLink href={href} as={as}>
+        <NextLink href={href} as={`${process.env.assetPrefix}${as}`}>
             <a ref={ref} {...other} />
         </NextLink>
     );
@@ -48,6 +48,7 @@ function Link(props) {
     return (
         <MuiLink
             component={NextComposed}
+            underline="none"
             className={className}
             ref={innerRef}
             href={href}

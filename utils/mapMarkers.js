@@ -64,7 +64,9 @@ export const onEachFeature = (feature, featureLayer, photosIndex) => {
             const props = feature.properties;
             const html = [];
             if (props.photo && photosIndex) {
-                const src = `/photos/sm/${photosIndex[props.photo.src].hash}.jpg`;
+                const src = `${process.env.assetPrefix}/photos/sm/${
+                    photosIndex[props.photo.src].hash
+                }.jpg`;
                 html.push(
                     `<div class='MuiCardMedia-root' style='width: 216px; height: 140px; border-radius: 4px; background-image: url("${src}")'></div>`,
                 );

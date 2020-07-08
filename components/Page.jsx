@@ -35,12 +35,19 @@ export default ({ category, id, doc, fileName }) => {
                 {featurePhoto && (
                     <meta
                         property="og:image"
-                        content={`/photos/sm/${photoIndex[featurePhoto.src].hash}.jpg`}
+                        content={`${process.env.assetPrefix}/photos/sm/${
+                            photoIndex[featurePhoto.src].hash
+                        }.jpg`}
                     />
                 )}
             </Head>
             <LightboxContainer>
-                <Layout title={humanize(category)} windowTitle={doc.name} href={`/${category}`}>
+                <Layout
+                    title={humanize(category)}
+                    windowTitle={doc.name}
+                    href="/[component]"
+                    as={`/${category}`}
+                >
                     <Grid
                         container
                         direction="row"

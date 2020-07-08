@@ -5,7 +5,6 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import MuiLink from '@material-ui/core/Link';
-import NextLink from 'next/link';
 import Box from '@material-ui/core/Box';
 import humanize from 'underscore.string/humanize';
 import Button from '@material-ui/core/Button';
@@ -13,6 +12,7 @@ import AboutIcon from 'mdi-material-ui/Information';
 import LogIcon from 'mdi-material-ui/CheckCircle';
 import PrivacyIcon from 'mdi-material-ui/Eye';
 import ExportIcon from 'mdi-material-ui/FileDownload';
+import Link from '../components/Link';
 import Layout from '../components/Layout';
 import { ContentBox, H1, Small } from '../components/Typography';
 import photoIndex from '../public/photos/index.json';
@@ -34,25 +34,23 @@ export default function Index() {
                     >
                         {omap(sitePhotos).map(([category, { src }]) => (
                             <Grid key={category} item xs={6} sm={6} md={3}>
-                                <NextLink href="/[category]" as={`/${category}`}>
-                                    <a>
-                                        <Card>
-                                            <CardActionArea>
-                                                <CardMedia
-                                                    style={{
-                                                        height: '140px',
-                                                    }}
-                                                    image={`/photos/sm/${photoIndex[src].hash}.jpg`}
-                                                />
-                                                <CardContent>
-                                                    <Typography variant="h2" component="span">
-                                                        {humanize(category)}
-                                                    </Typography>
-                                                </CardContent>
-                                            </CardActionArea>
-                                        </Card>
-                                    </a>
-                                </NextLink>
+                                <Link href="/[category]" as={`/${category}`}>
+                                    <Card>
+                                        <CardActionArea>
+                                            <CardMedia
+                                                style={{
+                                                    height: '140px',
+                                                }}
+                                                image={`${process.env.assetPrefix}/photos/sm/${photoIndex[src].hash}.jpg`}
+                                            />
+                                            <CardContent>
+                                                <Typography variant="h2" component="span">
+                                                    {humanize(category)}
+                                                </Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Card>
+                                </Link>
                             </Grid>
                         ))}
                     </Grid>
@@ -66,40 +64,48 @@ export default function Index() {
                         spacing={2}
                     >
                         <Grid item>
-                            <NextLink href="/log" as="/log">
-                                <a>
-                                    <Button color="primary" startIcon={<LogIcon />}>
-                                        Log
-                                    </Button>
-                                </a>
-                            </NextLink>
+                            <Button
+                                component={Link}
+                                href="/log"
+                                as="/log"
+                                color="primary"
+                                startIcon={<LogIcon />}
+                            >
+                                Log
+                            </Button>
                         </Grid>
                         <Grid item>
-                            <NextLink href="/export" as="/export">
-                                <a>
-                                    <Button color="primary" startIcon={<ExportIcon />}>
-                                        Export
-                                    </Button>
-                                </a>
-                            </NextLink>
+                            <Button
+                                component={Link}
+                                href="/export"
+                                as="/export"
+                                color="primary"
+                                startIcon={<ExportIcon />}
+                            >
+                                Export
+                            </Button>
                         </Grid>
                         <Grid item>
-                            <NextLink href="/about" as="/about">
-                                <a>
-                                    <Button color="primary" startIcon={<AboutIcon />}>
-                                        About
-                                    </Button>
-                                </a>
-                            </NextLink>
+                            <Button
+                                component={Link}
+                                href="/about"
+                                as="/about"
+                                color="primary"
+                                startIcon={<AboutIcon />}
+                            >
+                                About
+                            </Button>
                         </Grid>
                         <Grid item>
-                            <NextLink href="/privacy" as="/privacy">
-                                <a>
-                                    <Button color="primary" startIcon={<PrivacyIcon />}>
-                                        Privacy
-                                    </Button>
-                                </a>
-                            </NextLink>
+                            <Button
+                                component={Link}
+                                href="/privacy"
+                                as="/privacy"
+                                color="primary"
+                                startIcon={<PrivacyIcon />}
+                            >
+                                Privacy
+                            </Button>
                         </Grid>
                     </Grid>
                 </Box>

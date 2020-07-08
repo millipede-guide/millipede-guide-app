@@ -85,7 +85,9 @@ export default ({ heading, items }) => (
                                                                   item.location[0],
                                                                   19,
                                                               )}.png`
-                                                            : `/photos/sm/${
+                                                            : `${
+                                                                  process.env.assetPrefix
+                                                              }/photos/sm/${
                                                                   photoIndex[item.photos[0].src]
                                                                       .hash
                                                               }.jpg`

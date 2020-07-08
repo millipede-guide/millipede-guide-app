@@ -36,7 +36,15 @@ const LogItem = ({ date, category, id, favt }) => {
                             }
                         >
                             <Avatar
-                                src={photo && photo.src && photoIndex[photo.src] && photoIndex[photo.src].hash && `/photos/sm/${photoIndex[photo.src].hash}.jpg`}
+                                src={
+                                    photo &&
+                                    photo.src &&
+                                    photoIndex[photo.src] &&
+                                    photoIndex[photo.src].hash &&
+                                    `${process.env.assetPrefix}/photos/sm/${
+                                        photoIndex[photo.src].hash
+                                    }.jpg`
+                                }
                                 variant="rounded"
                             >
                                 <CategoryIcon category={category} />

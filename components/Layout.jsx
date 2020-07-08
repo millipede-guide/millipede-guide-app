@@ -3,7 +3,7 @@ import Box from '@material-ui/core/Box';
 import Head from 'next/head';
 import Header from './Header';
 
-export default ({ title, href, windowTitle, children }) => {
+export default ({ title, href, as, windowTitle, children }) => {
     return (
         <>
             <Head>
@@ -12,7 +12,7 @@ export default ({ title, href, windowTitle, children }) => {
                 </title>
                 <meta property="og:title" content={windowTitle || title} />
             </Head>
-            <Header title={title} href={href} />
+            <Header title={title} href={href} as={as} />
             <Container maxWidth="md" mt={3}>
                 <Box mt={2} mb={3}>
                     {children}

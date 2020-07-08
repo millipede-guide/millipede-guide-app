@@ -39,7 +39,7 @@ export default ({ doc }) => (
                                                     }}
                                                     image={
                                                         src in photoIndex
-                                                            ? `/photos/sm/${photoIndex[src].hash}.jpg`
+                                                            ? `${process.env.assetPrefix}/photos/sm/${photoIndex[src].hash}.jpg`
                                                             : null
                                                     }
                                                 />

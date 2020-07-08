@@ -4,7 +4,6 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import NextLink from 'next/link';
 import humanize from 'underscore.string/humanize';
 import Box from '@material-ui/core/Box';
 import { useContext, useMemo, useState, useEffect } from 'react';
@@ -14,6 +13,7 @@ import FilterOptionsActiveIcon from 'mdi-material-ui/TextBoxCheck';
 import FilterOptionsInactiveIcon from 'mdi-material-ui/TextBoxCheckOutline';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
+import Link from './Link';
 import Layout from './Layout';
 import BookmarkControls from './BookmarkControls';
 import Bookmarks from './Bookmarks';
@@ -53,9 +53,9 @@ export default ({ category, geo }) => {
 
                     if (
                         storage &&
-                            storage.pageData &&
-                            storage.pageData[category] &&
-                            storage.pageData[category].index
+                        storage.pageData &&
+                        storage.pageData[category] &&
+                        storage.pageData[category].index
                     ) {
                         if (
                             !flags.reduce((bool, flag) => {
@@ -89,8 +89,8 @@ export default ({ category, geo }) => {
                                     if (b2 && boolfilter[sup][sub] !== null) {
                                         return (
                                             props[sup] !== null &&
-                                                props[sup] !== undefined &&
-                                                props[sup][sub] === boolfilter[sup][sub]
+                                            props[sup] !== undefined &&
+                                            props[sup][sub] === boolfilter[sup][sub]
                                         );
                                     }
                                     return b2;
@@ -117,7 +117,7 @@ export default ({ category, geo }) => {
     }, [storage]);
 
     return (
-        <Layout title={humanize(category)} href={`/${category}`}>
+        <Layout title={humanize(category)} href="/[category]" as={`/${category}`}>
             <H1>{humanize(category)}</H1>
             <Box mt={1}>
                 <Grid
@@ -134,14 +134,14 @@ export default ({ category, geo }) => {
                             onClick={() => setLocationFilterDialog(true)}
                         >
                             {(storage.indexLocationFilter &&
-                              [
-                                  storage.indexLocationFilter.park,
-                                  storage.indexLocationFilter.region,
-                                  storage.indexLocationFilter.country,
-                              ]
-                              .filter(Boolean)
-                              .join(', ')) ||
-                             'All Countries'}
+                                [
+                                    storage.indexLocationFilter.park,
+                                    storage.indexLocationFilter.region,
+                                    storage.indexLocationFilter.country,
+                                ]
+                                    .filter(Boolean)
+                                    .join(', ')) ||
+                                'All Countries'}
                         </Button>
                     </Grid>
                     <Grid item>
@@ -194,65 +194,62 @@ export default ({ category, geo }) => {
                 >
                     {geoFeatures.map((feature) => (
                         <Grid key={feature.properties.id} item xs={6} sm={4} md={3}>
-                            <NextLink href="/[category]/[...id]" as={feature.properties.href}>
-                                <a style={{ textDecoration: 'none' }}>
-                                    <Card>
-                                        <CardActionArea>
-                                            <CardMedia
-                                                style={{
-                                                    height: '140px',
-                                                    textAlign: 'right',
-                                                }}
-                                                image={
-                                                    feature.properties.photo
-                                                        ? `/photos/sm/${
-                                                              photosIndex[
-                                                                  feature.properties.photo.src
-                                                              ].hash
-                                                          }.jpg`
-                                                        : null
-                                                }
+                            <Link href="/[category]/[...id]" as={feature.properties.href}>
+                                <Card>
+                                    <CardActionArea>
+                                        <CardMedia
+                                            style={{
+                                                height: '140px',
+                                                textAlign: 'right',
+                                            }}
+                                            image={
+                                                feature.properties.photo
+                                                    ? `${process.env.assetPrefix}/photos/sm/${
+                                                          photosIndex[feature.properties.photo.src]
+                                                              .hash
+                                                      }.jpg`
+                                                    : null
+                                            }
+                                        >
+                                            <Bookmarks
+                                                category={category}
+                                                id={feature.properties.id}
+                                            />
+                                        </CardMedia>
+                                        <CardContent>
+                                            <Typography
+                                                variant="body2"
+                                                component="div"
+                                                style={{ margin: 0 }}
                                             >
-                                                <Bookmarks
-                                                    category={category}
-                                                    id={feature.properties.id}
-                                                />
-                                            </CardMedia>
-                                            <CardContent>
-                                                <Typography
-                                                    variant="body2"
-                                                    component="div"
-                                                    style={{ margin: 0 }}
-                                                >
-                                                    {[
-                                                        storage.indexLocationFilter &&
-                                                            storage.indexLocationFilter.park
-                                                            ? null
-                                                            : feature.properties.park,
-                                                        storage.indexLocationFilter &&
-                                                            storage.indexLocationFilter.region
-                                                            ? null
-                                                            : feature.properties.region,
-                                                        storage.indexLocationFilter &&
-                                                            storage.indexLocationFilter.country
-                                                            ? null
-                                                            : feature.properties.country,
-                                                    ]
-                                                     .filter(Boolean)
-                                                     .join(', ')}
-                                                </Typography>
-                                                <Typography
-                                                    variant="h2"
-                                                    component="div"
-                                                    style={{ marginTop: 0 }}
-                                                >
-                                                    {feature.properties.name}
-                                                </Typography>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
-                                </a>
-                            </NextLink>
+                                                {[
+                                                    storage.indexLocationFilter &&
+                                                    storage.indexLocationFilter.park
+                                                        ? null
+                                                        : feature.properties.park,
+                                                    storage.indexLocationFilter &&
+                                                    storage.indexLocationFilter.region
+                                                        ? null
+                                                        : feature.properties.region,
+                                                    storage.indexLocationFilter &&
+                                                    storage.indexLocationFilter.country
+                                                        ? null
+                                                        : feature.properties.country,
+                                                ]
+                                                    .filter(Boolean)
+                                                    .join(', ')}
+                                            </Typography>
+                                            <Typography
+                                                variant="h2"
+                                                component="div"
+                                                style={{ marginTop: 0 }}
+                                            >
+                                                {feature.properties.name}
+                                            </Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Card>
+                            </Link>
                         </Grid>
                     ))}
                 </Grid>

@@ -1,16 +1,30 @@
+/* eslint-disable no-console */
+
 const withOffline = require('next-offline');
 
+const assetPrefix =
+    (process.env.NODE_ENV === 'production' &&
+        ((process.env.CNAME && '') ||
+            (process.env.GITHUB_REPOSITORY &&
+                `/${process.env.GITHUB_REPOSITORY.split('/', 2)[1]}`) ||
+            '')) ||
+    '';
+
+console.log('assetPrefix: ', assetPrefix);
+
 const nextConfig = {
+    assetPrefix,
     env: {
-        appName: process.env.APP_NAME || 'Millipede Guide',
-        appShortName: process.env.APP_SHORT_NAME || 'Millipede',
-        twitter: process.env.TWITTER || '@millipedeguide',
+        appName: process.env.APP_NAME || process.env.GITHUB_ACTOR || 'Draft',
+        appShortName: process.env.APP_SHORT_NAME || process.env.GITHUB_ACTOR || 'Draft',
+        twitter: process.env.TWITTER || '',
         osmHost: process.env.OSM_HOST || 'a.tile.openstreetmap.org',
         tfApiKey: process.env.TF_API_KEY || '',
-        githubRepository:
-            process.env.GITHUB_REPOSITORY || 'millipede-guide/millipede-guide-content',
+        assetPrefix,
+        githubRepository: process.env.GITHUB_REPOSITORY,
     },
     exportTrailingSlash: false,
+    generateBuildId: async () => 'v1',
 };
 
 module.exports = withOffline(nextConfig);

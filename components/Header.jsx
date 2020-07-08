@@ -5,7 +5,6 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Box from '@material-ui/core/Box';
 import React, { useState } from 'react';
-import NextLink from 'next/link';
 import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -20,22 +19,20 @@ import ExportIcon from 'mdi-material-ui/FileDownload';
 import ChevronRightIcon from 'mdi-material-ui/ChevronRight';
 import Badge from '@material-ui/core/Badge';
 import Hidden from '@material-ui/core/Hidden';
-import MuiLink from './Link';
+import Link from './Link';
 import { StorageContext } from './Storage';
 import CategoryIcon from './CategoryIcon';
 
 const CategoryItem = ({ category }) => (
-    <NextLink key={category} href={`/${category}`}>
-        <ListItem button>
-            <ListItemIcon>
-                <CategoryIcon category={category} />
-            </ListItemIcon>
-            <ListItemText primary={humanize(category)} />
-        </ListItem>
-    </NextLink>
+    <ListItem button key={category} component={Link} href="/[category]" as={`/${category}`}>
+        <ListItemIcon>
+            <CategoryIcon category={category} />
+        </ListItemIcon>
+        <ListItemText primary={humanize(category)} />
+    </ListItem>
 );
 
-export default ({ title, href }) => {
+export default ({ title, href, as }) => {
     const [drawerIsOpen, openDrawer] = useState(false);
 
     return (
@@ -61,8 +58,9 @@ export default ({ title, href }) => {
                         </StorageContext.Consumer>
                     </IconButton>
                     <Box ml={1}>
-                        <MuiLink
-                            href="/"
+                        <Link
+                            href="/index"
+                            as="/"
                             style={{
                                 color: 'white',
                                 fontSize: '20px',
@@ -77,7 +75,7 @@ export default ({ title, href }) => {
                                 </>
                             )}
                             {!title && process.env.appName}
-                        </MuiLink>
+                        </Link>
                     </Box>
                     {title && (
                         <>
@@ -85,8 +83,9 @@ export default ({ title, href }) => {
                                 <ChevronRightIcon />
                             </Box>
                             <Box ml={0.5}>
-                                <MuiLink
+                                <Link
                                     href={href}
+                                    as={as}
                                     style={{
                                         color: 'white',
                                         fontSize: '20px',
@@ -95,7 +94,7 @@ export default ({ title, href }) => {
                                     }}
                                 >
                                     {title}
-                                </MuiLink>
+                                </Link>
                             </Box>
                         </>
                     )}
@@ -110,68 +109,58 @@ export default ({ title, href }) => {
                     style={{ width: '250px' }}
                 >
                     <List component="nav">
-                        <NextLink href="/">
-                            <ListItem button>
-                                <ListItemIcon>
-                                    <HomeIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Home" />
-                            </ListItem>
-                        </NextLink>
+                        <ListItem button component={Link} href="/index" as="/">
+                            <ListItemIcon>
+                                <HomeIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Home" />
+                        </ListItem>
                         <Divider />
                         <CategoryItem category="parks" />
                         <CategoryItem category="attractions" />
                         <CategoryItem category="routes" />
                         <CategoryItem category="campsites" />
                         <Divider />
-                        <NextLink href="/log" as="/log">
-                            <ListItem button>
-                                <ListItemIcon>
-                                    <LogIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Log" />
-                            </ListItem>
-                        </NextLink>
-                        <NextLink href="/export" as="/export">
-                            <ListItem button>
-                                <ListItemIcon>
-                                    <StorageContext.Consumer>
-                                        {([storage]) => (
-                                            <Badge
-                                                color="error"
-                                                badgeContent={
-                                                    (storage &&
-                                                        storage.pageData &&
-                                                        storage.pageData.updates &&
-                                                        1) ||
-                                                    null
-                                                }
-                                            >
-                                                <ExportIcon />
-                                            </Badge>
-                                        )}
-                                    </StorageContext.Consumer>
-                                </ListItemIcon>
-                                <ListItemText primary="Export" />
-                            </ListItem>
-                        </NextLink>
+                        <ListItem button component={Link} href="/log" as="/log">
+                            <ListItemIcon>
+                                <LogIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Log" />
+                        </ListItem>
+                        <ListItem button component={Link} href="/export" as="/export">
+                            <ListItemIcon>
+                                <StorageContext.Consumer>
+                                    {([storage]) => (
+                                        <Badge
+                                            color="error"
+                                            badgeContent={
+                                                (storage &&
+                                                    storage.pageData &&
+                                                    storage.pageData.updates &&
+                                                    1) ||
+                                                null
+                                            }
+                                        >
+                                            <ExportIcon />
+                                        </Badge>
+                                    )}
+                                </StorageContext.Consumer>
+                            </ListItemIcon>
+                            <ListItemText primary="Export" />
+                        </ListItem>
                         <Divider />
-                        <NextLink href="/about" as="/about">
-                            <ListItem button>
-                                <ListItemIcon>
-                                    <AboutIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="About" />
-                            </ListItem>
-                        </NextLink>
-                        <NextLink href="/privacy" as="/privacy">
-                            <ListItem button>
-                                <ListItemIcon>
-                                    <PrivacyIcon />
-                                </ListItemIcon>
-                                <ListItemText primary="Privacy" />
-                            </ListItem>
-                        </NextLink>
+                        <ListItem button component={Link} href="/about" as="/about">
+                            <ListItemIcon>
+                                <AboutIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="About" />
+                        </ListItem>
+                        <ListItem button component={Link} href="/privacy" as="/privacy">
+                            <ListItemIcon>
+                                <PrivacyIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Privacy" />
+                        </ListItem>
                     </List>
                 </div>
             </Drawer>
