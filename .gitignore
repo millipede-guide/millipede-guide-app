@@ -16,3 +16,4 @@
 /public/content
 /public/leaflet.js
 scripts/scrapers/sources/*.html
+validation-results.txt

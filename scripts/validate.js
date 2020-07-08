@@ -10,6 +10,8 @@ let pass = true;
 const documentSchema = YAML.safeLoad(FS.readFileSync('./schemas/document.yaml'));
 const geoJsonSchema = JSON.parse(FS.readFileSync('./schemas/geo.json'));
 
+const hr = '--------------------------------------------------';
+
 ['attractions', 'campsites', 'parks', 'routes'].forEach((category) => {
     Glob.sync(`./public/content/${category}/**/*.*`).forEach((filePath) => {
         const ext = Path.extname(filePath);
@@ -23,8 +25,11 @@ const geoJsonSchema = JSON.parse(FS.readFileSync('./schemas/geo.json'));
             content = JSON.parse(FS.readFileSync(filePath));
         } else {
             pass = false;
-            console.log(`FAIL: ${filePath}`);
+            console.log(`\n${hr}`);
+            console.log(`FILE:\n ${filePath.replace('./public/content/', '')}`);
+            console.log('\nERRORS:');
             console.log(` => Unknown file type!`);
+            console.log(`${hr}\n`);
         }
         if (content) {
             const result = validator.validate(content, schema, { throwError: false });
@@ -32,8 +37,13 @@ const geoJsonSchema = JSON.parse(FS.readFileSync('./schemas/geo.json'));
                 // console.log(`OK: ${filePath}`);
             } else {
                 pass = false;
-                console.log(`FAIL: ${filePath}`);
-                result.errors.forEach((e) => console.log(' => ', e.stack));
+                console.log(`\n${hr}`);
+                console.log(`FILE:\n ${filePath.replace('./public/content/', '')}`);
+                console.log('\nERRORS:');
+                result.errors.forEach((e) =>
+                    console.log(' => ', e.stack.replace(/^instance\s+/, '')),
+                );
+                console.log(hr, '\n');
             }
         }
     });
@@ -42,5 +52,5 @@ const geoJsonSchema = JSON.parse(FS.readFileSync('./schemas/geo.json'));
 if (pass) {
     console.log('Validation passed OK.');
 } else {
-    throw new Error('Validation failed!');
+    throw new Error('One or more content documents failed validation!');
 }
