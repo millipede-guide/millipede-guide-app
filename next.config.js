@@ -2,13 +2,15 @@
 
 const withOffline = require('next-offline');
 
-const assetPrefix =
-    (process.env.NODE_ENV === 'production' &&
-        ((process.env.CNAME && '') ||
-            (process.env.GITHUB_REPOSITORY &&
-                `/${process.env.GITHUB_REPOSITORY.split('/', 2)[1]}`) ||
-            '')) ||
-    '';
+let assetPrefix = '';
+
+if (process.env.NODE_ENV === 'production') {
+    if (!process.env.CNAME) {
+        if (process.env.GITHUB_REPOSITORY) {
+            assetPrefix = `/${process.env.GITHUB_REPOSITORY.split('/', 2)[1]}`;
+        }
+    }
+}
 
 console.log('assetPrefix: ', assetPrefix);
 
