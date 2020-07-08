@@ -65,7 +65,8 @@ export default ({ category, id, doc, fileName }) => {
                                     <Breadcrumbs separator="&rsaquo;">
                                         {doc.park && (
                                             <Link
-                                                href={`/${category}`}
+                                                href="/[category]"
+                                                as={`/${category}`}
                                                 onClick={() =>
                                                     setStorage({
                                                         action: 'indexLocationFilter',
@@ -81,7 +82,8 @@ export default ({ category, id, doc, fileName }) => {
                                             </Link>
                                         )}
                                         <Link
-                                            href={`/${category}`}
+                                            href="/[category]"
+                                            as={`/${category}`}
                                             onClick={() =>
                                                 setStorage({
                                                     action: 'indexLocationFilter',
@@ -96,7 +98,8 @@ export default ({ category, id, doc, fileName }) => {
                                             {doc.region}
                                         </Link>
                                         <Link
-                                            href={`/${category}`}
+                                            href="/[category]"
+                                            as={`/${category}`}
                                             onClick={() =>
                                                 setStorage({
                                                     action: 'indexLocationFilter',
