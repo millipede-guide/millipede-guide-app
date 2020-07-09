@@ -26,7 +26,6 @@ const nextConfig = {
         githubRepository: process.env.GITHUB_REPOSITORY,
     },
     exportTrailingSlash: false,
-    generateBuildId: async () => 'v1',
 };
 
 module.exports = withOffline(nextConfig);
