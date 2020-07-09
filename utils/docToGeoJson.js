@@ -15,10 +15,10 @@ const geoFeatures = (key, ary) =>
             },
             properties: {
                 type: singular[key] || key,
-                osm,
+                osm: osm || {},
                 name: humanize(key) + (name ? ` - ${name}` : ''),
                 photo: photos && photos.length >= 1 ? photos[0] : null,
-                tags,
+                tags: tags || [],
             },
         }));
 

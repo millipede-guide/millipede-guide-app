@@ -13,6 +13,11 @@ import docToGeoJson from '../utils/docToGeoJson.js';
 
 const photosIndex = JSON.parse(FS.readFileSync('./public/photos/index.json'));
 
+const geoTemplate = {
+    type: 'FeatureCollection',
+    features: [],
+};
+
 ['attractions', 'campsites', 'parks', 'routes'].forEach((category) => {
     Glob.sync(`public/content/${category}/**/*.yaml`).forEach((filePath) => {
         console.log(' ', filePath);
@@ -38,16 +43,13 @@ const photosIndex = JSON.parse(FS.readFileSync('./public/photos/index.json'));
             // FS.writeFileSync(Path.join(exportDir, fileName + '.xml'), data2xml('document', doc));
 
             const geoBaseFilePath = filePath.replace('.yaml', '.geo.json');
-            let geo;
-            if (FS.existsSync(geoBaseFilePath)) {
-                geo = JSON.parse(FS.readFileSync(geoBaseFilePath));
-            } else {
-                geo = {
-                    type: 'FeatureCollection',
-                    features: [],
-                };
-            }
-            docToGeoJson(category, doc, geo, photosIndex);
+
+            const baseGeo = FS.existsSync(geoBaseFilePath)
+                ? JSON.parse(FS.readFileSync(geoBaseFilePath))
+                : null;
+
+            const geo = docToGeoJson(category, doc, baseGeo || geoTemplate, photosIndex);
+
             FS.writeFileSync(
                 Path.join(exportDir, `${fileName}.geo.json`),
                 JSON.stringify(geo, null, 4),
