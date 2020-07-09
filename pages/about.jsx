@@ -21,7 +21,7 @@ export default () => (
             </P>
             <P>
                 Geotagged information is easily viewable on embedded maps as well as downloads for
-                common file formats and links to OSM, Google and Apple maps.
+                GPS devices and links out to OSM, Google and Apple maps.
             </P>
             <P>
                 The app and content are open source and contributions are welcome. The project is
@@ -31,11 +31,14 @@ export default () => (
                 </a>
                 .
             </P>
+            <br />
             <P>
-                Icon/logo image is by{' '}
-                <a href="https://www.needpix.com/photo/download/1278472/worm-centipedes-free-pictures-free-photos-free-images-royalty-free-free-illustrations">
-                    charlygutmann (pixabay.com)
-                </a>
+                <small>
+                    Icon/logo image is by{' '}
+                    <a href="https://www.needpix.com/photo/download/1278472/worm-centipedes-free-pictures-free-photos-free-images-royalty-free-free-illustrations">
+                        charlygutmann (pixabay.com)
+                    </a>
+                </small>
             </P>
         </ContentBox>
     </Layout>

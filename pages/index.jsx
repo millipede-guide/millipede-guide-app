@@ -10,7 +10,6 @@ import humanize from 'underscore.string/humanize';
 import Button from '@material-ui/core/Button';
 import AboutIcon from 'mdi-material-ui/Information';
 import LogIcon from 'mdi-material-ui/CheckCircle';
-import PrivacyIcon from 'mdi-material-ui/Eye';
 import ExportIcon from 'mdi-material-ui/FileDownload';
 import Link from '../components/Link';
 import Layout from '../components/Layout';
@@ -94,17 +93,6 @@ export default function Index() {
                                 startIcon={<AboutIcon />}
                             >
                                 About
-                            </Button>
-                        </Grid>
-                        <Grid item>
-                            <Button
-                                component={Link}
-                                href="/privacy"
-                                as="/privacy"
-                                color="primary"
-                                startIcon={<PrivacyIcon />}
-                            >
-                                Privacy
                             </Button>
                         </Grid>
                     </Grid>

@@ -107,13 +107,15 @@ export default ({ doc, center, category, fileName, showAltitudeProfile }) => {
 
     useEffect(() => {
         if (typeof window === 'object' && typeof window.L === 'object') {
-            window.fetch(`/content/${category}/${fileName}.geo.json`).then((response) => {
-                if (response.ok) {
-                    response.json().then((obj) => {
-                        setGeoBase(obj);
-                    });
-                }
-            });
+            window
+                .fetch(`${process.env.assetPrefix}/content/${category}/${fileName}.geo.json`)
+                .then((response) => {
+                    if (response.ok) {
+                        response.json().then((obj) => {
+                            setGeoBase(obj);
+                        });
+                    }
+                });
         }
     }, []);
 
