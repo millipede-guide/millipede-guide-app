@@ -32,7 +32,7 @@ export default ({ category, id, doc, fileName }) => {
                         .filter(Boolean)
                         .join(', ')}
                 />
-                {featurePhoto && (
+                {featurePhoto && featurePhoto.src && photoIndex[featurePhoto.src] && photoIndex[featurePhoto.src].hash && (
                     <meta
                         property="og:image"
                         content={`${process.env.assetPrefix}/photos/sm/${

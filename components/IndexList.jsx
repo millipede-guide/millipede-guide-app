@@ -203,7 +203,9 @@ export default ({ category, geo }) => {
                                                 textAlign: 'right',
                                             }}
                                             image={
-                                                feature.properties.photo
+                                                feature.properties.photo &&
+                                                    feature.properties.photo.src &&
+                                                    photosIndex[feature.properties.photo.src]
                                                     ? `${process.env.assetPrefix}/photos/sm/${
                                                           photosIndex[feature.properties.photo.src]
                                                               .hash

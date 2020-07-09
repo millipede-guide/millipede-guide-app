@@ -20,7 +20,7 @@ const nextConfig = {
         appName: process.env.APP_NAME || process.env.GITHUB_ACTOR || 'Draft',
         appShortName: process.env.APP_SHORT_NAME || process.env.GITHUB_ACTOR || 'Draft',
         twitter: process.env.TWITTER || '',
-        osmHost: process.env.OSM_HOST || 'a.tile.openstreetmap.org',
+        osmHost: process.env.OSM_HOST || '{s}.tile.openstreetmap.org',
         tfApiKey: process.env.TF_API_KEY || '',
         assetPrefix,
         githubRepository: process.env.GITHUB_REPOSITORY,

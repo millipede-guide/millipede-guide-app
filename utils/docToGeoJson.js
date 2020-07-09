@@ -32,7 +32,7 @@ const objToGeoFeatures = (category, obj) =>
 const geoPhotos = (ary, photosIndex) =>
     ary
         .filter((i) => i.show !== false)
-        .filter((i) => i.location || photosIndex[i.src].location)
+      .filter((i) => i.location || (photosIndex[i.src] && photosIndex[i.src].location))
         .map(({ src, href, attr, license, location }) => ({
             type: 'Feature',
             geometry: {
