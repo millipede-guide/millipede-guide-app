@@ -33,7 +33,7 @@ const osmQueryToGeoJson = async (query, cache, cacheFilePath) => {
                     } else {
                         if (data.copyright === undefined) {
                             data.copyright =
-                                'The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.';
+                                'Data © OpenStreetMap contributors, ODbL 1.0. https://osm.org/copyright';
                         }
                         FS.writeFileSync(cacheFilePath, JSON.stringify(data, null, 4));
                         resolve(data);
