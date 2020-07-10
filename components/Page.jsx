@@ -32,14 +32,17 @@ export default ({ category, id, doc, fileName }) => {
                         .filter(Boolean)
                         .join(', ')}
                 />
-                {featurePhoto && featurePhoto.src && photoIndex[featurePhoto.src] && photoIndex[featurePhoto.src].hash && (
-                    <meta
-                        property="og:image"
-                        content={`${process.env.assetPrefix}/photos/sm/${
-                            photoIndex[featurePhoto.src].hash
-                        }.jpg`}
-                    />
-                )}
+                {featurePhoto &&
+                    featurePhoto.src &&
+                    photoIndex[featurePhoto.src] &&
+                    photoIndex[featurePhoto.src].hash && (
+                        <meta
+                            property="og:image"
+                            content={`${process.env.assetPrefix}/photos/sm/${
+                                photoIndex[featurePhoto.src].hash
+                            }.jpg`}
+                        />
+                    )}
             </Head>
             <LightboxContainer>
                 <Layout

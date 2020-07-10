@@ -24,6 +24,15 @@ import BooleanFilterDialog from './BooleanFilterDialog';
 import { H1 } from './Typography';
 import photosIndex from '../public/photos/index.json';
 
+const cardPhoto = (feature) =>
+    feature.properties.photo &&
+    feature.properties.photo.src &&
+    photosIndex[feature.properties.photo.src]
+        ? `${process.env.assetPrefix}/photos/sm/${
+              photosIndex[feature.properties.photo.src].hash
+          }.jpg`
+        : null;
+
 export default ({ category, geo }) => {
     const flags = ['mark', 'done', 'favt'];
 
@@ -200,23 +209,28 @@ export default ({ category, geo }) => {
                                         <CardMedia
                                             style={{
                                                 height: '140px',
-                                                textAlign: 'right',
+                                                backgroundColor: '#EEE',
                                             }}
-                                            image={
-                                                feature.properties.photo &&
-                                                    feature.properties.photo.src &&
-                                                    photosIndex[feature.properties.photo.src]
-                                                    ? `${process.env.assetPrefix}/photos/sm/${
-                                                          photosIndex[feature.properties.photo.src]
-                                                              .hash
-                                                      }.jpg`
-                                                    : null
-                                            }
+                                            image={cardPhoto(feature)}
                                         >
-                                            <Bookmarks
-                                                category={category}
-                                                id={feature.properties.id}
-                                            />
+                                            <div style={{ position: 'absolute', top: 0, right: 0 }}>
+                                                <Bookmarks
+                                                    category={category}
+                                                    id={feature.properties.id}
+                                                />
+                                            </div>
+                                            {cardPhoto(feature) === null && (
+                                                <Typography
+                                                    variant="body1"
+                                                    style={{
+                                                        color: '#AAA',
+                                                        lineHeight: '140px',
+                                                        textAlign: 'center',
+                                                    }}
+                                                >
+                                                    No Photo
+                                                </Typography>
+                                            )}
                                         </CardMedia>
                                         <CardContent>
                                             <Typography

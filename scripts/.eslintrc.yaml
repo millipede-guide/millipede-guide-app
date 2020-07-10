@@ -2,3 +2,8 @@ rules:
   no-console: 'off'
   import/extensions: 'off'
   no-param-reassign: 'off'
+  no-restricted-syntax: 'off'
+  func-names: 'off'
+  no-await-in-loop: 'off'
+  node/no-deprecated-api: 'off'
+  
