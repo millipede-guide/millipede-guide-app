@@ -21,7 +21,15 @@ import Box from '@material-ui/core/Box';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { StorageContext, setPageCache } from './Storage';
 
-export default ({ category, id, doc, attr, setAttr, dateStorageFormat, dateDisplayFormat }) => {
+export default function BookmarkDialog({
+    category,
+    id,
+    doc,
+    attr,
+    setAttr,
+    dateStorageFormat,
+    dateDisplayFormat,
+}) {
     const [storage, setStorage] = useContext(StorageContext);
     const [dates, setDates] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -146,4 +154,4 @@ export default ({ category, id, doc, attr, setAttr, dateStorageFormat, dateDispl
             </DialogActions>
         </Dialog>
     );
-};
+}

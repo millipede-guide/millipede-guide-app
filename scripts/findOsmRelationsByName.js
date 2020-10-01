@@ -63,8 +63,8 @@ const updateDocuments = async () => {
                                     country,
                                     region,
                                     location: [
-                                        parseFloat(area.lat).toFixed(6),
-                                        parseFloat(area.lon).toFixed(6),
+                                        parseFloat(parseFloat(area.lat).toFixed(6)),
+                                        parseFloat(parseFloat(area.lon).toFixed(6)),
                                     ],
                                     osm: { relation: area.osm_id },
                                     ...doc,

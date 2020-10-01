@@ -8,7 +8,13 @@ import BookmarkDialog from './BookmarkDialog';
 export const dateStorageFormat = 'YYYY-MM-DD';
 export const dateDisplayFormat = 'Do MMM YYYY';
 
-export default ({ category, id, doc, userUpdate = false, size = 'medium' }) => {
+export default function BookmarkControls({
+    category,
+    id,
+    doc,
+    userUpdate = false,
+    size = 'medium',
+}) {
     const bookmark = 'mark';
     const completed = 'done';
     const favourite = 'favt';
@@ -97,4 +103,4 @@ export default ({ category, id, doc, userUpdate = false, size = 'medium' }) => {
             />
         </>
     );
-};
+}

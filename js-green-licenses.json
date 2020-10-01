@@ -1,0 +1,7 @@
+{
+    "packageWhitelist": [
+        "mdi-material-ui",
+        "rework",
+        "use-subscription"
+    ]
+}

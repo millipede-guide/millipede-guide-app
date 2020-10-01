@@ -1,4 +1,3 @@
-/* https://nextjs.org/docs/api-reference/next/link */
 /* https://github.com/mui-org/material-ui/blob/master/examples/nextjs/src/Link.js */
 /* eslint-disable jsx-a11y/anchor-has-content */
 import React from 'react';
@@ -12,7 +11,7 @@ const NextComposed = React.forwardRef((props, ref) => {
     const { as, href, ...other } = props;
 
     return (
-        <NextLink href={process.env.assetPrefix + href} as={process.env.assetPrefix + as}>
+        <NextLink href={href} as={as}>
             <a ref={ref} {...other} />
         </NextLink>
     );
@@ -49,10 +48,10 @@ function Link(props) {
     return (
         <MuiLink
             component={NextComposed}
-            underline="none"
             className={className}
             ref={innerRef}
             href={href}
+            underline="none"
             {...other}
         />
     );

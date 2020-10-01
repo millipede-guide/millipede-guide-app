@@ -24,7 +24,7 @@ import { StorageContext, storageKey, storageVersion } from '../components/Storag
 import Layout from '../components/Layout';
 import { H1, H2, P, ContentBox } from '../components/Typography';
 
-export default () => {
+export default function Export() {
     const [storage, setStorage] = useContext(StorageContext);
     const [loadedStorage, setLoadedStorage] = useState(null);
     const [restoreSuccessful, setRestoreSuccessful] = useState(null);
@@ -265,4 +265,4 @@ export default () => {
             </ContentBox>
         </Layout>
     );
-};
+}

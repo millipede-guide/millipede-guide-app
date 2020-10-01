@@ -17,7 +17,7 @@ const icon = (i) => {
     return <Icon />;
 };
 
-export default ({ doc }) => {
+export default function WebsiteLinks({ doc }) {
     const link = (i) => {
         if (i in doc.links) {
             return (
@@ -25,6 +25,7 @@ export default ({ doc }) => {
                     key={i}
                     color="primary"
                     href={doc.links[i]}
+                    target="_blank"
                     startIcon={icon(i)}
                     style={{ marginRight: '1em' }}
                 >
@@ -40,9 +41,9 @@ export default ({ doc }) => {
             {'links' in doc && (
                 <ContentBox>
                     <H2>Links</H2>
-                    {['official', 'wikipedia', 'wikivoyage'].map(link)}
+                    {['wikipedia', 'wikivoyage', 'official'].map(link)}
                 </ContentBox>
             )}
         </>
     );
-};
+}

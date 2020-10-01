@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import { H2, ContentBox, ContentInner } from './Typography';
 import icon from '../utils/FeatureIcons';
 
-export default ({ heading, features }) => {
+export default function Features({ heading, features }) {
     const chips = (items) =>
         items.map((i) => (
             <Grid item key={`${i}${features[i]}`}>
@@ -41,4 +41,4 @@ export default ({ heading, features }) => {
             )}
         </>
     );
-};
+}

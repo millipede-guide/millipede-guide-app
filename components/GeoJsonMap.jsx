@@ -1,34 +1,21 @@
+/* global process URL */
+
 import Paper from '@material-ui/core/Paper';
-import { useRef, useState, useEffect } from 'react';
-import humanize from 'underscore.string/humanize';
-import { ContentBox } from './Typography';
-import GeoJsonAltitudeProfile from './GeoJsonAltitudeProfile';
-import { markerIcons, pointToLayer, onEachFeature } from '../utils/mapMarkers';
-import photosIndex from '../public/photos/index.json';
-import docToGeoJson from '../utils/docToGeoJson';
+import { useRef, useEffect, useCallback } from 'react';
 
-const geoTemplate = {
-    type: 'FeatureCollection',
-    features: [],
-};
+export default function GeoJsonMap({ geo, callback, onEachFeature, pointToLayer }) {
+    const lMap = useRef();
+    const markerClusterGroup = useRef();
 
-export default ({ doc, center, category, fileName, showAltitudeProfile }) => {
-    const [geoBase, setGeoBase] = useState(null);
-    const mapRef = useRef(null);
-    const geoBaseLayer = useRef(null);
-
-    const setDynamicStyle = (zoom) => {
-        let scale = zoom / 18;
-        if (scale < 0.6) scale = 0.6;
-        document.getElementById('mapDynamicStyle').innerHTML = `.mapicon { transform: scale(${
-            scale > 1 ? 1 : scale
-        }); }`;
-    };
-
-    useEffect(() => {
-        if (typeof window === 'object' && typeof window.L === 'object') {
+    const drawMap = useCallback((container) => {
+        if (
+            container !== null &&
+            typeof window === 'object' &&
+            typeof window.L === 'object' &&
+            !lMap.current
+        ) {
             const osmBaseLayer = window.L.tileLayer(
-                `https://${process.env.osmHost}/{z}/{x}/{y}.png`,
+                `https://${new URL(process.env.OSM_HOST).host}/{z}/{x}/{y}.png`,
                 {
                     attribution:
                         'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
@@ -36,7 +23,7 @@ export default ({ doc, center, category, fileName, showAltitudeProfile }) => {
             );
 
             const thuderforestBaseLayer = window.L.tileLayer(
-                `https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=${process.env.tfApiKey}`,
+                `https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=${process.env.TF_API_KEY}`,
                 {
                     attribution:
                         '<a href="https://www.thunderforest.com/maps/landscape/">thunderforest.com</a>',
@@ -44,43 +31,33 @@ export default ({ doc, center, category, fileName, showAltitudeProfile }) => {
             );
 
             const baseLayers = {
-                Streets: osmBaseLayer,
-                Terrain: thuderforestBaseLayer,
+                Streetmap: osmBaseLayer,
+                Landscape: thuderforestBaseLayer,
             };
 
             const featureLayers = {};
 
-            geoBaseLayer.current = window.L.layerGroup();
-
-            featureLayers['<span class="mdi mdi-map-marker-path"></span> Path'] =
-                geoBaseLayer.current;
-
-            const geoMarkers = docToGeoJson(category, doc, { ...geoTemplate }, photosIndex);
-
-            Object.keys(markerIcons).forEach((t) => {
-                const markerFeatures = geoMarkers.features.filter(
-                    (f) => f.geometry.type === 'Point' && f.properties && f.properties.type === t,
-                );
-
-                if (markerFeatures.length > 0) {
-                    featureLayers[
-                        `<span class="mdi mdi-${markerIcons[t]}"></span> ${humanize(t)}`
-                    ] = window.L.geoJSON(
-                        {
-                            ...geoTemplate,
-                            features: markerFeatures,
-                        },
-                        {
-                            pointToLayer,
-                            onEachFeature: (f, l) => onEachFeature(f, l, photosIndex),
-                        },
-                    );
-                }
+            markerClusterGroup.current = window.L.markerClusterGroup({
+                showCoverageOnHover: false,
+                removeOutsideVisibleBounds: true,
+                animate: false,
+                animateAddingMarkers: false,
+                chunkedLoading: true,
+                zoomToBoundsOnClick: true,
             });
 
-            const lMap = window.L.map('mapContainer', {
-                center,
-                zoom: 4,
+            markerClusterGroup.current.on('clusterclick', (e) => {
+                e.layer.zoomToBounds({ padding: [20, 20], animate: true });
+            });
+
+            window.L.layerGroup();
+
+            featureLayers['<span class="mdi mdi-map-marker-path"></span> Base'] =
+                markerClusterGroup.current;
+
+            lMap.current = window.L.map(container, {
+                center: [0, 0],
+                zoom: 1,
                 scrollWheelZoom: true,
                 fullscreenControl: {
                     pseudoFullscreen: true,
@@ -88,61 +65,84 @@ export default ({ doc, center, category, fileName, showAltitudeProfile }) => {
                 layers: [osmBaseLayer, ...Object.values(featureLayers)],
             });
 
-            setDynamicStyle(4);
+            lMap.current.currentFeatureLayers = featureLayers;
 
-            window.L.control
+            lMap.current.currentLayersControl = window.L.control
                 .layers(baseLayers, featureLayers, { autoZIndex: false, hideSingleBase: true })
-                .addTo(lMap);
+                .addTo(lMap.current);
 
-            lMap.fitBounds(window.L.geoJSON(geoBase || geoMarkers).getBounds(), {
-                animate: false,
-                padding: [10, 10],
-            });
-
-            lMap.on('zoomend', () => setDynamicStyle(lMap.getZoom()));
-
-            mapRef.current = lMap;
-        }
-    }, [doc]);
-
-    useEffect(() => {
-        if (typeof window === 'object' && typeof window.L === 'object') {
-            window
-                .fetch(`${process.env.assetPrefix}/content/${category}/${fileName}.geo.json`)
-                .then((response) => {
-                    if (response.ok) {
-                        response.json().then((obj) => {
-                            setGeoBase(obj);
-                        });
-                    }
-                });
+            if (callback) {
+                callback(lMap.current);
+            }
         }
     }, []);
 
     useEffect(() => {
-        if (geoBase !== null && geoBase.type && geoBase.type === 'FeatureCollection') {
-            if (typeof window === 'object' && typeof window.L === 'object') {
-                const geo = window.L.geoJSON(geoBase, {
-                    pointToLayer: (feature, latlng) => window.L.circleMarker(latlng, { radius: 1 }),
+        if (
+            typeof window === 'object' &&
+            typeof window.L === 'object' &&
+            markerClusterGroup.current
+        ) {
+            markerClusterGroup.current.clearLayers();
+
+            if (geo && geo.type && geo.type === 'FeatureCollection' && geo.features.length > 0) {
+                const geoLayer = window.L.geoJSON(geo, {
+                    pointToLayer:
+                        pointToLayer ||
+                        ((feature, latlng) => {
+                            return window.L.circleMarker(latlng, {
+                                radius: 8,
+                                weight: 5,
+                                color: '#00f',
+                                opacity: 0.2,
+                                fill: true,
+                                fillOpacity: 1,
+                            });
+                        }),
                     style: {
-                        fillOpacity: 0,
+                        fillOpacity: 0.6,
                     },
-                }).addTo(geoBaseLayer.current);
-                mapRef.current.fitBounds(geo.getBounds(), {
-                    animate: false,
-                    padding: [10, 10],
+                    onEachFeature:
+                        onEachFeature ||
+                        (({ properties }, featureLayer) => {
+                            if (properties.title && properties.url) {
+                                featureLayer.bindPopup(
+                                    () =>
+                                        `<a href="${properties.url}">
+                                    ${properties.date ? `${properties.date}<br>` : ''}
+                                    ${properties.title}
+                                    ${
+                                        properties.image
+                                            ? `<br /><img src="${properties.image}" />`
+                                            : ''
+                                    }
+                                 </a>`,
+                                    {
+                                        autoPan: true,
+                                        autoPanPadding: [40, 10],
+                                        closeButton: false,
+                                        closeOnEscapeKey: true,
+                                        closeOnClick: true,
+                                        minWidth: 160,
+                                        minHeight: 160,
+                                    },
+                                );
+                            }
+                        }),
                 });
+
+                markerClusterGroup.current.addLayer(geoLayer);
+
+                if (lMap.current) {
+                    lMap.current.fitBounds(geoLayer.getBounds(), {
+                        animate: true,
+                        padding: [20, 20],
+                    });
+                }
             }
         }
-    }, [geoBase]);
+    }, [geo, markerClusterGroup.current]);
 
-    return (
-        <ContentBox>
-            <Paper elevation={1}>
-                <div id="mapContainer" style={{ height: '25vh', minHeight: '240px' }} />
-            </Paper>
-            <style id="mapDynamicStyle" />
-            {showAltitudeProfile && <GeoJsonAltitudeProfile mapRef={mapRef} geo={geoBase} />}
-        </ContentBox>
-    );
-};
+    // Note, minHeight must be bigger than marker icon popup balloon.
+    return <Paper ref={drawMap} elevation={1} style={{ height: '25vh', minHeight: '220px' }} />;
+}

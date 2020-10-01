@@ -12,8 +12,11 @@
 !/public/photos/sm/.keep
 /public/photos/lg/**
 !/public/photos/lg/.keep
-/.env
+/.env.local
+/.env.docker
 /public/content
 /public/leaflet.js
+/public/manifest.json
+/public/third-party-notices.txt
 scripts/scrapers/sources/*.html
 validation-results.txt

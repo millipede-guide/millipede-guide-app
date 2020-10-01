@@ -18,28 +18,32 @@ import Layout from './Layout';
 import BookmarkControls from './BookmarkControls';
 import Bookmarks from './Bookmarks';
 import { StorageContext } from './Storage';
-import MarkerMap from './MarkerMap';
 import LocationFilterDialog from './LocationFilterDialog';
 import BooleanFilterDialog from './BooleanFilterDialog';
 import { H1 } from './Typography';
 import photosIndex from '../public/photos/index.json';
+import GeoJsonMap from './GeoJsonMap';
+import { pointToLayer, onEachFeature } from '../utils/mapMarkers';
 
 const cardPhoto = (feature) =>
     feature.properties.photo &&
     feature.properties.photo.src &&
     photosIndex[feature.properties.photo.src]
-        ? `${process.env.assetPrefix}/photos/sm/${
+        ? `${process.env.ASSET_PREFIX}/photos/sm/${
               photosIndex[feature.properties.photo.src].hash
           }.jpg`
         : null;
 
-export default ({ category, geo }) => {
+export default function IndexList({ category, geo }) {
     const flags = ['mark', 'done', 'favt'];
 
     const [storage] = useContext(StorageContext);
     const [geoFeatures, setGeoFeatures] = useState((geo && geo.features) || []);
     const [showLocationFilterDialog, setLocationFilterDialog] = useState(false);
     const [showBooleanFilterDialog, setBooleanFilterDialog] = useState(false);
+
+    const onEachFeatureWithPhotosIndex = (feature, featureLayer) =>
+        onEachFeature(feature, featureLayer, photosIndex);
 
     useEffect(
         () =>
@@ -176,14 +180,13 @@ export default ({ category, geo }) => {
                 </Grid>
             </Box>
             <Box mt={1}>
-                <MarkerMap
-                    center={
-                        geo.features.length > 0
-                            ? [...geo.features[0].geometry.coordinates].reverse()
-                            : [0, 0]
-                    }
-                    features={geoFeatures}
-                    category={category}
+                <GeoJsonMap
+                    geo={{
+                        type: 'FeatureCollection',
+                        features: geoFeatures,
+                    }}
+                    pointToLayer={pointToLayer}
+                    onEachFeature={onEachFeatureWithPhotosIndex}
                 />
             </Box>
             {geoFeatures.length === 0 && (
@@ -288,4 +291,4 @@ export default ({ category, geo }) => {
             />
         </Layout>
     );
-};
+}

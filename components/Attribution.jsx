@@ -21,7 +21,7 @@ const LicenseLink = ({ attr, license }) => (
     </>
 );
 
-export default ({ doc }) => {
+export default function Attribution({ doc }) {
     const photos = {};
 
     allPhotosInDocument(doc).forEach(({ src, href, attr, license }, i) => {
@@ -61,4 +61,4 @@ export default ({ doc }) => {
             </ContentInner>
         </ContentBox>
     );
-};
+}

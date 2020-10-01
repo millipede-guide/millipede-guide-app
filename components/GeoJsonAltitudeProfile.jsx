@@ -9,7 +9,7 @@ Chart.defaults.global.elements.line.borderColor = '#558b2f88';
 Chart.defaults.global.elements.line.backgroundColor = '#00000011';
 Chart.defaults.global.animation.duration = 0;
 
-export default ({ mapRef, geo }) => {
+export default function GeoJsonAltitudeProfile({ mapRef, geo }) {
     const [stats, setStats] = useState({});
 
     useEffect(() => {
@@ -214,4 +214,4 @@ export default ({ mapRef, geo }) => {
     }, [geo]);
 
     return <AltitudeProfileContainer stats={stats} />;
-};
+}

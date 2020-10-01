@@ -15,7 +15,7 @@ import truncate from 'underscore.string/truncate';
 import icon from '../utils/FeatureIcons';
 import { StorageContext } from './Storage';
 
-export default ({ open, setOpen, category, geo }) => {
+export default function BooleanFilterDialog({ open, setOpen, category, geo }) {
     const defaultFilters = {
         features: {},
         restrictions: {},
@@ -157,4 +157,4 @@ export default ({ open, setOpen, category, geo }) => {
             </DialogActions>
         </Dialog>
     );
-};
+}

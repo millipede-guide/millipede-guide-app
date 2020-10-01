@@ -6,7 +6,7 @@ import { StorageContext } from './Storage';
 import LightboxContainer from './LightboxContainer';
 import Layout from './Layout';
 import MapToolbar from './MapToolbar';
-import GeoJsonMap from './GeoJsonMap';
+import GeoJsonMapWithAltitudeProfile from './GeoJsonMapWithAltitudeProfile';
 import Photos from './Photos';
 import Attribution from './Attribution';
 import WebsiteLinks from './WebsiteLinks';
@@ -19,7 +19,7 @@ import Link from './Link';
 import photoIndex from '../public/photos/index.json';
 import getFeaturePhoto from '../utils/getFeaturePhoto';
 
-export default ({ category, id, doc, fileName }) => {
+export default function Page({ category, id, doc, fileName }) {
     const featurePhoto =
         (doc.photos && doc.photos.length > 0 && getFeaturePhoto(doc.photos)) || null;
 
@@ -38,7 +38,7 @@ export default ({ category, id, doc, fileName }) => {
                     photoIndex[featurePhoto.src].hash && (
                         <meta
                             property="og:image"
-                            content={`${process.env.assetPrefix}/photos/sm/${
+                            content={`${process.env.ASSET_PREFIX}/photos/sm/${
                                 photoIndex[featurePhoto.src].hash
                             }.jpg`}
                         />
@@ -122,7 +122,7 @@ export default ({ category, id, doc, fileName }) => {
                         </Grid>
                     </Grid>
                     <MapToolbar category={category} id={id} doc={doc} />
-                    <GeoJsonMap
+                    <GeoJsonMapWithAltitudeProfile
                         doc={doc}
                         center={doc.location}
                         category={category}
@@ -152,4 +152,4 @@ export default ({ category, id, doc, fileName }) => {
             </LightboxContainer>
         </>
     );
-};
+}

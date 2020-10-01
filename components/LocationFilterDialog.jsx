@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import { StorageContext } from './Storage';
 
-export default ({ open, setOpen, category, geo }) => {
+export default function LocationFilterDialog({ open, setOpen, category, geo }) {
     const [storage, setStorage] = useContext(StorageContext);
 
     const [country, setCountry] = useState('');
@@ -157,4 +157,4 @@ export default ({ open, setOpen, category, geo }) => {
             </DialogActions>
         </Dialog>
     );
-};
+}

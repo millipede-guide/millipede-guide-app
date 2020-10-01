@@ -1,4 +1,5 @@
-import 'normalize.css/normalize.css';
+// Custom:
+
 import '@mdi/font/css/materialdesignicons.min.css';
 import 'react-image-lightbox/style.css';
 import 'typeface-roboto/index.css';
@@ -7,33 +8,47 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet-fullscreen/dist/leaflet.fullscreen.css';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
-import App from 'next/app';
-import { createMuiTheme, responsiveFontSizes, ThemeProvider } from '@material-ui/core/styles';
+
+// Material UI integration, see:
+// https://github.com/mui-org/material-ui/tree/master/examples/nextjs
+
+import React from 'react';
+import Head from 'next/head';
+import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import theme from '../components/theme';
-
 import { StorageProvider } from '../components/Storage';
+import { FeedbackContextProvider } from '../components/Feedback';
+import theme from '../src/theme';
 
-export default class CustomApp extends App {
-    componentDidMount() {
+export default function MyApp(props) {
+    const { Component, pageProps } = props;
+
+    React.useEffect(() => {
         // Remove the server-side injected CSS.
         const jssStyles = document.querySelector('#jss-server-side');
         if (jssStyles) {
             jssStyles.parentElement.removeChild(jssStyles);
         }
-    }
+    }, []);
 
-    render() {
-        const { Component, pageProps } = this.props;
-
-        return (
-            <StorageProvider>
-                <ThemeProvider theme={responsiveFontSizes(createMuiTheme(theme))}>
-                    {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-                    <CssBaseline />
-                    <Component {...pageProps} />
-                </ThemeProvider>
-            </StorageProvider>
-        );
-    }
+    return (
+        <>
+            <Head>
+                <title>My page</title>
+                <meta
+                    name="viewport"
+                    content="minimum-scale=1, initial-scale=1, width=device-width"
+                />
+            </Head>
+            <ThemeProvider theme={theme}>
+                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                <CssBaseline />
+                <StorageProvider>
+                    <FeedbackContextProvider>
+                        <Component {...pageProps} />
+                    </FeedbackContextProvider>
+                </StorageProvider>
+            </ThemeProvider>
+        </>
+    );
 }

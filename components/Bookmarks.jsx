@@ -48,7 +48,7 @@ export const BookmarkIcon = ({ type, active, color, fontSize = 'default' }) => {
     );
 };
 
-export default ({ category, id, fontSize = 'small' }) => {
+export default function Bookmarks({ category, id, fontSize = 'small' }) {
     const [storage] = useContext(StorageContext);
 
     const get = (i) => {
@@ -81,4 +81,4 @@ export default ({ category, id, fontSize = 'small' }) => {
             )}
         </>
     );
-};
+}

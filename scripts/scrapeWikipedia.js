@@ -44,7 +44,7 @@ const run = async () => {
                                         src,
                                         href: src,
                                         attr: 'Wikimedia',
-                                        licence: 'wikimedia',
+                                        license: 'wikimedia',
                                     },
                                     ...(doc.photos || []),
                                 ];

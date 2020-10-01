@@ -1,31 +1,56 @@
+/* global require module process */
 /* eslint-disable no-console */
 
-const withOffline = require('next-offline');
+const fs = require('fs');
+const _ = require('lodash');
+const LicenseCheckerWebpackPlugin = require('license-checker-webpack-plugin');
+const manifest = require('./manifest.js');
 
-let assetPrefix = '';
+fs.writeFileSync('./public/manifest.json', JSON.stringify(manifest, null, 1));
 
-if (process.env.NODE_ENV === 'production') {
-    if (!process.env.CNAME) {
-        if (process.env.GITHUB_REPOSITORY) {
-            assetPrefix = `/${process.env.GITHUB_REPOSITORY.split('/', 2)[1]}`;
-        }
-    }
+if (process.env.SECRETS_JSON) {
+    // SECRETS_JSON is provided by Github Actions Workflow
+    console.log('GitHub secrets:');
+    console.log(JSON.parse(process.env.SECRETS_JSON));
 }
 
-console.log('assetPrefix: ', assetPrefix);
+const publicEnv = ['.env', '.env.production'].reduce(
+    (acc, f) =>
+        acc.concat(
+            fs
+                .readFileSync(f)
+                .toString()
+                .split('\n')
+                .map((i) => i.trim())
+                .filter(Boolean)
+                .map((i) => i.split('=', 1)[0]),
+        ),
+    [],
+);
+
+console.log(
+    'WARNING: The following settings will be available in the browser for everyone to see:',
+);
+console.log(publicEnv);
 
 const nextConfig = {
-    assetPrefix,
     env: {
-        appName: process.env.APP_NAME || process.env.GITHUB_ACTOR || 'Draft',
-        appShortName: process.env.APP_SHORT_NAME || process.env.GITHUB_ACTOR || 'Draft',
-        twitter: process.env.TWITTER || '',
-        osmHost: process.env.OSM_HOST || '{s}.tile.openstreetmap.org',
-        tfApiKey: process.env.TF_API_KEY || '',
-        assetPrefix,
-        githubRepository: process.env.GITHUB_REPOSITORY,
+        ..._.pick(process.env, publicEnv),
+        ..._.pick(process.env.SECRETS_JSON ? JSON.parse(process.env.SECRETS_JSON) : {}, publicEnv),
     },
     exportTrailingSlash: false,
+    webpack: (config, { dev }) => {
+        if (!dev) {
+            config.plugins.push(
+                new LicenseCheckerWebpackPlugin({
+                    outputFilename: '../public/third-party-notices.txt',
+                }),
+            );
+        }
+        return config;
+    },
 };
 
-module.exports = withOffline(nextConfig);
+console.log(nextConfig.env);
+
+module.exports = nextConfig;

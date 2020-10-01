@@ -39,11 +39,11 @@ export function reducer(state, action) {
     }
 }
 
-export default ({ state, action }) => {
+export default function LightboxWrapper({ state, action }) {
     // const sm = i => `/photos/sm/${photoIndex[state.photos[i].src].hash}.jpg`;
 
     const lg = (i) =>
-        `${process.env.assetPrefix}/photos/lg/${photoIndex[state.photos[i].src].hash}.jpg`;
+        `${process.env.ASSET_PREFIX}/photos/lg/${photoIndex[state.photos[i].src].hash}.jpg`;
 
     const main = (fn) => fn(state.index);
 
@@ -105,4 +105,4 @@ export default ({ state, action }) => {
             )}
         </>
     );
-};
+}

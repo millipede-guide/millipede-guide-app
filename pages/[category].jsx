@@ -5,16 +5,6 @@ import Path from 'path';
 import IndexList from '../components/IndexList';
 import getFeaturePhoto from '../utils/getFeaturePhoto';
 
-const photoObj = (photos) => {
-    if (photos) {
-        const photo = getFeaturePhoto(photos);
-        if (photo) {
-            return photo;
-        }
-    }
-    return null;
-};
-
 export const getStaticPaths = async () => {
     return {
         paths: ['routes', 'parks', 'attractions', 'campsites'].map((category) => ({
@@ -54,7 +44,7 @@ export const getStaticProps = async ({ params }) => {
                             region: doc.region || null,
                             park: doc.park || null,
                             location: doc.location || null,
-                            photo: photoObj(doc.photos) || null,
+                            photo: getFeaturePhoto(doc.photos),
                             features: doc.features || null,
                             restrictions: doc.restrictions || null,
                             accessibility: doc.accessibility || null,

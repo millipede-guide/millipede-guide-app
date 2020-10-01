@@ -10,22 +10,52 @@ const dirPath = process.argv[process.argv.length - 1];
 
 const updateDocuments = async () => {
     for (const filePath of Glob.sync(Path.join(dirPath, '/**/*.yaml'))) {
-        const { draft, ...doc } = YAML.safeLoad(FS.readFileSync(filePath));
+        console.log(filePath);
 
-        if (draft !== undefined) {
-            console.log(filePath);
+        const {
+            draft,
+            // /////////
+            name,
+            country,
+            region,
+            location,
+            osm,
+            // /////////
+            features,
+            photos,
+            // /////////
+            links,
+            copyright,
+            license,
+            // /////////
+            ...doc
+        } = YAML.safeLoad(FS.readFileSync(filePath));
 
-            FS.writeFileSync(
-                filePath,
-                YAML.safeDump(
-                    _omitBy(doc, (i) => i === undefined),
+        FS.writeFileSync(
+            filePath,
+            YAML.safeDump(
+                _omitBy(
                     {
-                        lineWidth: 1000,
-                        noRefs: true,
+                        name,
+                        country,
+                        region,
+                        location,
+                        osm,
+                        features,
+                        ...doc,
+                        photos,
+                        links,
+                        copyright,
+                        license,
                     },
+                    (i) => i === undefined,
                 ),
-            );
-        }
+                {
+                    lineWidth: 1000,
+                    noRefs: true,
+                },
+            ),
+        );
     }
 };
 

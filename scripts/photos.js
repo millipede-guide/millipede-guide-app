@@ -114,7 +114,7 @@ const extractExif = (filePath, obj) =>
                                 dmsToDecimal(data.gps.GPSLongitude) *
                                     (data.gps.GPSLongitudeRef === 'E' ? 1 : -1),
                             ];
-                            console.log(` > ${obj.location[0]},${obj.location[0]}`);
+                            console.log(` > ${obj.location[0]},${obj.location[1]}`);
                         }
                     }
                     console.log(` > ${obj.exif}`);

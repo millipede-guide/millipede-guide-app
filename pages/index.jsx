@@ -40,7 +40,7 @@ export default function Index() {
                                                 style={{
                                                     height: '140px',
                                                 }}
-                                                image={`${process.env.assetPrefix}/photos/sm/${photoIndex[src].hash}.jpg`}
+                                                image={`${process.env.ASSET_PREFIX}/photos/sm/${photoIndex[src].hash}.jpg`}
                                             />
                                             <CardContent>
                                                 <Typography variant="h2" component="span">

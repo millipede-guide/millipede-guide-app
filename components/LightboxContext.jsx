@@ -1,3 +1,5 @@
 import React from 'react';
 
-export default React.createContext(null);
+const LightboxContext = React.createContext(null);
+
+export default LightboxContext;

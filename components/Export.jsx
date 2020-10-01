@@ -20,20 +20,22 @@ const icon = (i) => {
     return <Icon />;
 };
 
-export default ({ category, fileName }) => (
-    <ContentBox>
-        <H2>File Downloads</H2>
-        {Object.keys(iconMap).map((ext) => (
-            <Button
-                key={ext}
-                color="primary"
-                href={`${process.env.assetPrefix}/export/${category}/${fileName}.${ext}`}
-                target="_blank"
-                startIcon={icon(ext)}
-                style={{ marginRight: '1em' }}
-            >
-                {ext.toUpperCase()}
-            </Button>
-        ))}
-    </ContentBox>
-);
+export default function Export({ category, fileName }) {
+    return (
+        <ContentBox>
+            <H2>File Downloads</H2>
+            {Object.keys(iconMap).map((ext) => (
+                <Button
+                    key={ext}
+                    color="primary"
+                    href={`${process.env.ASSET_PREFIX}/export/${category}/${fileName}.${ext}`}
+                    target="_blank"
+                    startIcon={icon(ext)}
+                    style={{ marginRight: '1em' }}
+                >
+                    {ext.toUpperCase()}
+                </Button>
+            ))}
+        </ContentBox>
+    );
+}

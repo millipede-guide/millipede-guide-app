@@ -34,7 +34,9 @@ const LogItem = ({ date, category, id }) => {
                             photo.src &&
                             photoIndex[photo.src] &&
                             photoIndex[photo.src].hash &&
-                            `${process.env.assetPrefix}/photos/sm/${photoIndex[photo.src].hash}.jpg`
+                            `${process.env.ASSET_PREFIX}/photos/sm/${
+                                photoIndex[photo.src].hash
+                            }.jpg`
                         }
                     >
                         <Bookmarks category={category} id={id} />
@@ -60,7 +62,7 @@ const LogItem = ({ date, category, id }) => {
     );
 };
 
-export default () => {
+export default function Log() {
     const [storage] = useContext(StorageContext);
     const [logData, setLogData] = useState([]);
 
@@ -124,4 +126,4 @@ export default () => {
             </Box>
         </Layout>
     );
-};
+}

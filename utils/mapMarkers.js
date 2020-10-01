@@ -64,7 +64,7 @@ export const onEachFeature = (feature, featureLayer, photosIndex) => {
             const props = feature.properties;
             const html = [];
             if (props.photo && photosIndex) {
-                const src = `${process.env.assetPrefix}/photos/sm/${
+                const src = `${process.env.ASSET_PREFIX}/photos/sm/${
                     photosIndex[props.photo.src].hash
                 }.jpg`;
                 html.push(
